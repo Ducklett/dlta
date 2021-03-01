@@ -6,15 +6,7 @@
 
 char infoLog[512];
 
-void resize_framebuffer(GLFWwindow* window, int width, int height) {
-	glViewport(0, 0, width, height);
-}
-
-void process_input(GLFWwindow* window) {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window, true);
-	}
-}
+void resize_framebuffer(GLFWwindow* window, int width, int height);
 
 class Renderer {
 public:
@@ -44,24 +36,39 @@ public:
 
 		glViewport(0, 0, width, height);
 
+		glfwSetWindowUserPointer(window, this);
+
 		glfwSetFramebufferSizeCallback(window, resize_framebuffer);
 
 		triange = makeTriange();
 
 		shaderProgram = makeProgram();
-
 	}
 
 	GLuint makeTriange() {
 		const float vertices[] = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.0f,  0.5f, 0.0f
+			0.5f,  0.5f, 0.0f,  // top right
+			0.5f, -0.5f, 0.0f,  // bottom right
+			-0.5f, -0.5f, 0.0f,  // bottom left
+			-0.5f,  0.5f, 0.0f   // top left 
+		};
+
+		const unsigned int indices[] = {  // note that we start from 0!
+			0, 1, 3,   // first triangle
+			1, 2, 3    // second triangle
 		};
 
 		GLuint VAO;
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
+
+		int drawMode = GL_STATIC_DRAW;
+
+		// === ebo
+		GLuint EBO;
+		glGenBuffers(1, &EBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, drawMode);
 
 		// === vbo
 
@@ -70,7 +77,7 @@ public:
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		// copy verts into the buffer
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, drawMode);
 
 		// === attributes
 
@@ -143,24 +150,34 @@ public:
 
 	void run() {
 		while (!glfwWindowShouldClose(window)) {
-			// input
-			process_input(window);
+			process_input();
 
-			// rendering
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
-
-			// will move to update loop
-			glUseProgram(shaderProgram);
-			glBindVertexArray(triange);
-			glDrawArrays(GL_TRIANGLES, 0 /*first*/, 3 /*vertcount*/);
-
-			// swap buffers
-			glfwSwapBuffers(window);
-			glfwPollEvents();
+			render();
 		}
 
 		glfwTerminate();
+	}
+
+	void process_input() {
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+			glfwSetWindowShouldClose(window, true);
+		}
+	}
+
+	void render() {
+
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// will move to update loop
+		glUseProgram(shaderProgram);
+		glBindVertexArray(triange);
+		//glDrawArrays(GL_TRIANGLES, 0 /*first*/, 3 /*vertcount*/);
+		glDrawElements(GL_TRIANGLES, 6 /*count*/, GL_UNSIGNED_INT, 0);
+
+		// swap buffers
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
 	static void panic(const std::string& msg) {
@@ -169,3 +186,9 @@ public:
 		exit(-1);
 	}
 };
+
+void resize_framebuffer(GLFWwindow* window, int width, int height) {
+	Renderer* r = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+	glViewport(0, 0, width, height);
+	r->render();
+}
