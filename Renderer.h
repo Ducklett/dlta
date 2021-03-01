@@ -38,6 +38,9 @@ public:
 
 		glViewport(0, 0, width, height);
 
+		// lock the framerate to screen refresh rate
+		glfwSwapInterval(1);
+
 		glfwSetWindowUserPointer(window, this);
 
 		glfwSetFramebufferSizeCallback(window, resize_framebuffer);
@@ -202,10 +205,10 @@ public:
 		if (wire) {
 			// pretty sure this won't work for other meshes lmao
 			// but for the quad it's good!
-			glDrawArrays(GL_LINE_LOOP, 0 /*first*/, 4 /*vertcount*/);
+			glDrawArrays(GL_LINE_LOOP, 0 /*first*/, 3 /*vertcount*/);
 		}
 		else {
-			glDrawElements(GL_TRIANGLES, 6 /*count*/, GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, 3 /*count*/, GL_UNSIGNED_INT, 0);
 		}
 
 		// swap buffers
