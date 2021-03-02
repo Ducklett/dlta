@@ -4,7 +4,7 @@
 #include <glad/glad.h> 
 #include <GLFW\glfw3.h>
 #include "Shader.h"
-
+#include "Gizmos.h"
 
 namespace engine {
 	void resize_framebuffer(GLFWwindow* window, int width, int height);
@@ -14,6 +14,7 @@ namespace engine {
 		GLFWwindow* window;
 		GLuint quad;
 		Shader errorShader;
+		Shader gizmoShader;
 		Shader testShader;
 
 		Renderer(int width, int height, const std::string& title = "engine") {
@@ -49,6 +50,7 @@ namespace engine {
 			quad = makeQuad();
 
 			errorShader = Shader("assets/error.vert", "assets/error.frag");
+			gizmoShader = Shader("assets/gizmo.vert", "assets/gizmo.frag");
 			testShader = Shader("assets/test.vert", "assets/test.frag");
 		}
 
@@ -121,7 +123,9 @@ namespace engine {
 
 			float greenValue = (sin(glfwGetTime()) * .5f + .5f);
 			testShader.setVec4("color", 0, greenValue, 0, 1);
+
 			//glUniform4f(colorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
 		}
 
 		void render() {
@@ -129,7 +133,6 @@ namespace engine {
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			// will move to update loop
 			testShader.use();
 			glBindVertexArray(quad);
 
@@ -148,6 +151,9 @@ namespace engine {
 				glDrawElements(GL_TRIANGLES, 3 /*count*/, GL_UNSIGNED_INT, 0);
 			}
 
+			// draw gizmos
+
+
 			// swap buffers
 			glfwSwapBuffers(window);
 			glfwPollEvents();
@@ -163,6 +169,7 @@ namespace engine {
 	void resize_framebuffer(GLFWwindow* window, int width, int height) {
 		Renderer* r = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 		glViewport(0, 0, width, height);
-		r->render();
+		// noticed this allocates a ton of ram...
+		//r->render();
 	}
 }

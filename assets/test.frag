@@ -7,6 +7,6 @@ in vec3 vertcolor;
 uniform vec4 color;
 
 void main() {
-	FragColor = vec4(vertcolor + color.xyz, 1);
+	FragColor = vec4(vertcolor, 1);
 }
 

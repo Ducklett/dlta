@@ -7,6 +7,8 @@
 #include <iostream>
 #include <unordered_map>
 
+#include "Gizmos.h"
+
 namespace engine {
 	using namespace std;
 
@@ -53,6 +55,7 @@ namespace engine {
 		void setFloat(const string& name, float value) const { return glUniform1f(uniformLocation(name), value); }
 		void setVec2(const string& name, float x, float y) const { return glUniform2f(uniformLocation(name), x, y); }
 		void setVec3(const string& name, float x, float y, float z) const { return glUniform3f(uniformLocation(name), x, y, z); }
+		void setVec3(const string& name, Color c) const { return glUniform3f(uniformLocation(name), c.r, c.g, c.b); }
 		void setVec4(const string& name, float x, float y, float z, float w) const { return glUniform4f(uniformLocation(name), x, y, z, w); }
 
 	private:
