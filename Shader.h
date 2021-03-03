@@ -7,6 +7,7 @@
 #include <iostream>
 #include <unordered_map>
 #include "vec.h"
+#include "Texture.h"
 
 namespace engine {
 	using namespace std;
@@ -56,12 +57,7 @@ namespace engine {
 		void setVec3(const string& name, float x, float y, float z) const { glUniform3f(uniformLocation(name), x, y, z); }
 		void setVec3(const string& name, Color c) const { glUniform3f(uniformLocation(name), c.r, c.g, c.b); }
 		void setVec4(const string& name, float x, float y, float z, float w) const { glUniform4f(uniformLocation(name), x, y, z, w); }
-		void setTexture(const string& name, int texture) const { glUniform1i(uniformLocation(name), texture); }
-
-		static void bindTexture(const int index, GLuint texture) {
-			glActiveTexture(GL_TEXTURE0 + index);
-			glBindTexture(GL_TEXTURE_2D, texture);
-		}
+		void setTexture(const string& name, Texture texture) const { glUniform1i(uniformLocation(name), texture.id); }
 
 	private:
 		static string source_from_file(const char* path) {

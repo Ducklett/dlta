@@ -4,9 +4,8 @@
 #include <glad/glad.h> 
 #include <GLFW\glfw3.h>
 #include "Shader.h"
+#include "Texture.h"
 #include "Gizmos.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 
 namespace engine {
 	void resize_framebuffer(GLFWwindow* window, int width, int height);
@@ -15,8 +14,8 @@ namespace engine {
 	public:
 		GLFWwindow* window;
 		GLuint quad;
-		GLuint tex;
-		GLuint tex2;
+		Texture tex;
+		Texture tex2;
 		Shader errorShader;
 		Shader testShader;
 		int width;
@@ -62,29 +61,15 @@ namespace engine {
 
 			Gizmos::init();
 			Gizmos::shader = Shader("assets/gizmo.vert", "assets/gizmo.frag");
-			tex = loadTexture("assets/container.jpg");
-			tex2 = loadTexture("assets/wall.jpg");
+			tex = Texture::load("assets/container.jpg");
+			tex2 = Texture::load("assets/icon.png", false, false, false);
 
-			Shader::bindTexture(0, tex);
-			Shader::bindTexture(1, tex2);
+			tex.bind(0);
+			tex2.bind(1);
 		}
 
 		GLuint loadTexture(const char* path) {
-			int width, height, nrChannels;
-			unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
 
-
-			if (!data) panic("failed to load texture");
-
-			GLuint texture;
-			glGenTextures(1, &texture);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			stbi_image_free(data);
-
-			return texture;
 		}
 		GLuint makeQuad() {
 			const float vertices[] = {
