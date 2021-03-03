@@ -137,6 +137,8 @@ namespace engine {
 
 			Gizmos::SetColor(Color::red);
 			Gizmos::line(0, 0, xpos, ypos);
+			Gizmos::SetColor(Color::cyan);
+			Gizmos::wireCircle(xpos, ypos, .5f);
 			// ===
 
 			if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {

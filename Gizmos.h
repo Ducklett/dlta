@@ -2,6 +2,7 @@
 
 #include <glad/glad.h> 
 #include <vector>
+#include <cmath>
 #include "vec.h"
 #include "Shader.h"
 
@@ -18,6 +19,7 @@ namespace engine {
 	struct GizmoRequest {
 		Color color;
 		int fillmode;
+		int vertCount;
 	};
 
 	class Gizmos {
@@ -39,7 +41,45 @@ namespace engine {
 			vertices.insert(vertices.end(), { x,y,0,x2, y2, 0 });
 			GizmoRequest req{
 				current,
-				GL_LINES
+				GL_LINES,
+				2
+			};
+			requests.push_back(req);
+		}
+
+		static void wireQuad(float x, float y, float w, float h) {
+			float top = y + h / 2;
+			float bottom = y - h / 2;
+			float left = x - w / 2;
+			float right = x + w / 2;
+			vertices.insert(vertices.end(), {
+				left, top, 0,
+				right, top, 0,
+				right, bottom, 0,
+				left, bottom, 0,
+				});
+			GizmoRequest req{
+				current,
+				GL_LINE_LOOP,
+				4
+			};
+			requests.push_back(req);
+		}
+
+		static void wireCircle(float x, float y, float r) {
+			int resolution = (floor(300 * r));
+			if (resolution > 100) resolution = 100;
+
+			float off = M_PI * 2 / resolution;
+
+			for (int i = 0; i < resolution; i++) {
+				vertices.insert(vertices.end(), { x + sin(off * i) * r / 2,y + cos(off * i) * r / 2,0 });
+			}
+
+			GizmoRequest req{
+				current,
+				GL_LINE_LOOP,
+				resolution
 			};
 			requests.push_back(req);
 		}
@@ -57,6 +97,7 @@ namespace engine {
 
 			// ===
 
+			// TODO: detect when we reach the max vertex count and do something about it.
 			int MAX_VERTS = 0xFFFF * 3;
 
 			glGenBuffers(1, &VBO);
@@ -89,10 +130,14 @@ namespace engine {
 			Gizmos::update_mesh();
 			shader.use();
 
+			int vertOffset = 0;
+			for (auto& g : Gizmos::requests) {
+				shader.setVec3("color", g.color);
+				glDrawArrays(g.fillmode, vertOffset, g.vertCount);
+				vertOffset += g.vertCount;
+			}
 			for (int i = 0; i < Gizmos::requests.size(); i++) {
 				int start = i * 2;
-				shader.setVec3("color", Gizmos::requests[i].color);
-				glDrawArrays(GL_LINES, start, 2);
 			}
 			Gizmos::clear();
 		}
