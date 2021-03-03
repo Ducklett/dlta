@@ -1,5 +1,4 @@
 
-#define _USE_MATH_DEFINES
 #include "Renderer.h"
 
 using namespace engine;

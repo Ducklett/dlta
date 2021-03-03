@@ -149,11 +149,12 @@
     <ClCompile Include="glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Deps.h" />
     <ClInclude Include="Gizmos.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="vec.h" />
+    <ClInclude Include="Color.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

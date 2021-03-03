@@ -1,13 +1,10 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <string>
+#include "Deps.h"
+#include "Texture.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
-#include <unordered_map>
-#include "vec.h"
-#include "Texture.h"
+#include "Color.h"
 
 namespace engine {
 	using namespace std;

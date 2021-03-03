@@ -2,10 +2,8 @@
 
 #include <glad/glad.h> 
 #include <vector>
-#include <cmath>
-#include "vec.h"
+#include "Color.h"
 #include "Shader.h"
-
 
 namespace engine {
 
