@@ -5,6 +5,8 @@
 #include <GLFW\glfw3.h>
 #include "Shader.h"
 #include "Gizmos.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 namespace engine {
 	void resize_framebuffer(GLFWwindow* window, int width, int height);
@@ -13,6 +15,7 @@ namespace engine {
 	public:
 		GLFWwindow* window;
 		GLuint quad;
+		GLuint tex;
 		Shader errorShader;
 		Shader testShader;
 		int width;
@@ -58,17 +61,39 @@ namespace engine {
 
 			Gizmos::init();
 			Gizmos::shader = Shader("assets/gizmo.vert", "assets/gizmo.frag");
+			tex = loadTexture("assets/container.jpg");
 		}
 
+		GLuint loadTexture(const char* path) {
+			int width, height, nrChannels;
+			unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+
+
+			if (!data) panic("failed to load texture");
+
+			GLuint texture;
+			glGenTextures(1, &texture);
+			glBindTexture(GL_TEXTURE_2D, texture);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+
+			stbi_image_free(data);
+
+			return texture;
+		}
 		GLuint makeQuad() {
 			const float vertices[] = {
-				// position         color
-				//0.5f,  0.5f, 0.0f,  1,0,0,  // top right
-				0.0f,  0.5f, 0.0f,  1,0,0,  // top right
-				0.5f, -0.5f, 0.0f,  0,1,0,   // bottom right
-				-0.5f, -0.5f, 0.0f, 0,0,1,  // bottom left
-				//-0.5f,  0.5f, 0.0f   // top left 
+				// position         color  uv
+				0.0f,  0.5f, 0.0f,  1,0,0, .5,1, // top
+				0.5f, -0.5f, 0.0f,  0,1,0, 1,0,  // bottom right
+				-0.5f, -0.5f, 0.0f, 0,0,1, 0,0, // bottom left
 			};
+
+			/*const float uvs[] = {
+				0.0f, 0.0f,  // lower-left corner
+				1.0f, 0.0f,  // lower-right corner
+				0.5f, 1.0f   // top-center corner
+			};*/
 
 			const unsigned int indices[] = {  // note that we start from 0!
 				0, 1, 2,   // first triangle
@@ -98,12 +123,16 @@ namespace engine {
 			// ===
 			int posAttribute = 0;
 			// index, size, type, normalized, stride, offset
-			glVertexAttribPointer(posAttribute, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+			glVertexAttribPointer(posAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(posAttribute);
 
 			int colAttribute = 1;
-			glVertexAttribPointer(colAttribute, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+			glVertexAttribPointer(colAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 			glEnableVertexAttribArray(colAttribute);
+
+			int uvAttribute = 2;
+			glVertexAttribPointer(uvAttribute, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+			glEnableVertexAttribArray(uvAttribute);
 
 			return VAO;
 		}
@@ -167,6 +196,8 @@ namespace engine {
 
 			testShader.use();
 			glBindVertexArray(quad);
+
+			glBindTexture(GL_TEXTURE_2D, tex);
 
 			// render experiments:
 			//glDrawArrays(GL_TRIANGLES, 0 /*first*/, 3 /*vertcount*/);
