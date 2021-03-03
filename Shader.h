@@ -6,8 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <unordered_map>
-
-#include "Gizmos.h"
+#include "vec.h"
 
 namespace engine {
 	using namespace std;

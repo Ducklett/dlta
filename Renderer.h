@@ -14,10 +14,14 @@ namespace engine {
 		GLFWwindow* window;
 		GLuint quad;
 		Shader errorShader;
-		Shader gizmoShader;
 		Shader testShader;
+		int width;
+		int height;
 
 		Renderer(int width, int height, const std::string& title = "engine") {
+			this->width = width;
+			this->height = height;
+
 			glfwInit();
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -50,8 +54,10 @@ namespace engine {
 			quad = makeQuad();
 
 			errorShader = Shader("assets/error.vert", "assets/error.frag");
-			gizmoShader = Shader("assets/gizmo.vert", "assets/gizmo.frag");
 			testShader = Shader("assets/test.vert", "assets/test.frag");
+
+			Gizmos::init();
+			Gizmos::shader = Shader("assets/gizmo.vert", "assets/gizmo.frag");
 		}
 
 		GLuint makeQuad() {
@@ -105,6 +111,7 @@ namespace engine {
 
 		void run() {
 			while (!glfwWindowShouldClose(window)) {
+
 				process_input();
 
 				render();
@@ -114,7 +121,24 @@ namespace engine {
 		}
 
 		bool wire = false;
+
+		float rand01() {
+			return ((float)rand()) / (float)RAND_MAX;
+		}
+
 		void process_input() {
+
+			// draw cursor
+			double xpos, ypos;
+			glfwGetCursorPos(window, &xpos, &ypos);
+
+			xpos = (xpos / width) * 2 - 1;
+			ypos = (1 - (ypos / height)) * 2 - 1;
+
+			Gizmos::SetColor(Color::red);
+			Gizmos::line(0, 0, xpos, ypos);
+			// ===
+
 			if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 				glfwSetWindowShouldClose(window, true);
 			}
@@ -125,7 +149,13 @@ namespace engine {
 			testShader.setVec4("color", 0, greenValue, 0, 1);
 
 			//glUniform4f(colorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+			float t = glfwGetTime();
+			Gizmos::SetColor(Color::rgb(
+				(float)(sin(t) * .5 + .5),
+				sin(t + 1.48) * .5 + .5,
+				sin(t + 3.456) * .5 + .5));
 
+			Gizmos::line(0, 0, cos(glfwGetTime()), sin(glfwGetTime()));
 		}
 
 		void render() {
@@ -152,7 +182,7 @@ namespace engine {
 			}
 
 			// draw gizmos
-
+			Gizmos::draw();
 
 			// swap buffers
 			glfwSwapBuffers(window);
@@ -168,6 +198,8 @@ namespace engine {
 
 	void resize_framebuffer(GLFWwindow* window, int width, int height) {
 		Renderer* r = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+		r->width = width;
+		r->height = height;
 		glViewport(0, 0, width, height);
 		// noticed this allocates a ton of ram...
 		//r->render();
