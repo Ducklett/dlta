@@ -49,13 +49,19 @@ namespace engine {
 		}
 
 		void use() { glUseProgram(ID); }
-		void setBool(const string& name, bool value) const { return glUniform1i(uniformLocation(name), (int)value); }
-		void setInt(const string& name, int value) const { return glUniform1i(uniformLocation(name), value); }
-		void setFloat(const string& name, float value) const { return glUniform1f(uniformLocation(name), value); }
-		void setVec2(const string& name, float x, float y) const { return glUniform2f(uniformLocation(name), x, y); }
-		void setVec3(const string& name, float x, float y, float z) const { return glUniform3f(uniformLocation(name), x, y, z); }
-		void setVec3(const string& name, Color c) const { return glUniform3f(uniformLocation(name), c.r, c.g, c.b); }
-		void setVec4(const string& name, float x, float y, float z, float w) const { return glUniform4f(uniformLocation(name), x, y, z, w); }
+		void setBool(const string& name, bool value) const { glUniform1i(uniformLocation(name), (int)value); }
+		void setInt(const string& name, int value) const { glUniform1i(uniformLocation(name), value); }
+		void setFloat(const string& name, float value) const { glUniform1f(uniformLocation(name), value); }
+		void setVec2(const string& name, float x, float y) const { glUniform2f(uniformLocation(name), x, y); }
+		void setVec3(const string& name, float x, float y, float z) const { glUniform3f(uniformLocation(name), x, y, z); }
+		void setVec3(const string& name, Color c) const { glUniform3f(uniformLocation(name), c.r, c.g, c.b); }
+		void setVec4(const string& name, float x, float y, float z, float w) const { glUniform4f(uniformLocation(name), x, y, z, w); }
+		void setTexture(const string& name, int texture) const { glUniform1i(uniformLocation(name), texture); }
+
+		static void bindTexture(const int index, GLuint texture) {
+			glActiveTexture(GL_TEXTURE0 + index);
+			glBindTexture(GL_TEXTURE_2D, texture);
+		}
 
 	private:
 		static string source_from_file(const char* path) {

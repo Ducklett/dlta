@@ -16,6 +16,7 @@ namespace engine {
 		GLFWwindow* window;
 		GLuint quad;
 		GLuint tex;
+		GLuint tex2;
 		Shader errorShader;
 		Shader testShader;
 		int width;
@@ -62,6 +63,10 @@ namespace engine {
 			Gizmos::init();
 			Gizmos::shader = Shader("assets/gizmo.vert", "assets/gizmo.frag");
 			tex = loadTexture("assets/container.jpg");
+			tex2 = loadTexture("assets/wall.jpg");
+
+			Shader::bindTexture(0, tex);
+			Shader::bindTexture(1, tex2);
 		}
 
 		GLuint loadTexture(const char* path) {
@@ -83,21 +88,16 @@ namespace engine {
 		}
 		GLuint makeQuad() {
 			const float vertices[] = {
-				// position         color  uv
-				0.0f,  0.5f, 0.0f,  1,0,0, .5,1, // top
-				0.5f, -0.5f, 0.0f,  0,1,0, 1,0,  // bottom right
-				-0.5f, -0.5f, 0.0f, 0,0,1, 0,0, // bottom left
+				// position         color                uv
+				0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+				0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+				-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+				-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
 			};
 
-			/*const float uvs[] = {
-				0.0f, 0.0f,  // lower-left corner
-				1.0f, 0.0f,  // lower-right corner
-				0.5f, 1.0f   // top-center corner
-			};*/
-
 			const unsigned int indices[] = {  // note that we start from 0!
-				0, 1, 2,   // first triangle
-				//1, 2, 3    // second triangle
+				0, 1, 3,   // first triangle
+				1, 2, 3    // second triangle
 			};
 
 			GLuint VAO;
@@ -197,7 +197,8 @@ namespace engine {
 			testShader.use();
 			glBindVertexArray(quad);
 
-			glBindTexture(GL_TEXTURE_2D, tex);
+			testShader.setTexture("tex", tex);
+			testShader.setTexture("tex1", tex2);
 
 			// render experiments:
 			//glDrawArrays(GL_TRIANGLES, 0 /*first*/, 3 /*vertcount*/);
@@ -208,10 +209,10 @@ namespace engine {
 			if (wire) {
 				// pretty sure this won't work for other meshes lmao
 				// but for the quad it's good!
-				glDrawArrays(GL_LINE_LOOP, 0 /*first*/, 3 /*vertcount*/);
+				glDrawArrays(GL_LINE_LOOP, 0 /*first*/, 4 /*vertcount*/);
 			}
 			else {
-				glDrawElements(GL_TRIANGLES, 3 /*count*/, GL_UNSIGNED_INT, 0);
+				glDrawElements(GL_TRIANGLES, 6 /*count*/, GL_UNSIGNED_INT, 0);
 			}
 
 			// draw gizmos
