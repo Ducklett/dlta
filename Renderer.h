@@ -6,12 +6,15 @@
 #include "Gizmos.h"
 
 namespace engine {
+	using namespace glm;
+
 	void resize_framebuffer(GLFWwindow* window, int width, int height);
 
 	class Renderer {
 	public:
 		GLFWwindow* window;
 		GLuint quad;
+		GLuint cube;
 		Texture tex;
 		Texture tex2;
 		Shader errorShader;
@@ -45,6 +48,8 @@ namespace engine {
 
 			glViewport(0, 0, width, height);
 
+			glEnable(GL_DEPTH_TEST);
+
 			// lock the framerate to screen refresh rate
 			glfwSwapInterval(1);
 
@@ -53,6 +58,7 @@ namespace engine {
 			glfwSetFramebufferSizeCallback(window, resize_framebuffer);
 
 			quad = makeQuad();
+			cube = makeCube();
 
 			errorShader = Shader("assets/error.vert", "assets/error.frag");
 			testShader = Shader("assets/test.vert", "assets/test.frag");
@@ -66,9 +72,6 @@ namespace engine {
 			tex2.bind(1);
 		}
 
-		GLuint loadTexture(const char* path) {
-
-		}
 		GLuint makeQuad() {
 			const float vertices[] = {
 				// position         color                uv
@@ -120,6 +123,77 @@ namespace engine {
 			return VAO;
 		}
 
+		GLuint makeCube() {
+			float vertices[] = {
+				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+				 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+				-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+			};
+
+			GLuint VAO;
+			glGenVertexArrays(1, &VAO);
+			glBindVertexArray(VAO);
+
+			int drawMode = GL_STATIC_DRAW;
+
+			// ===
+			GLuint VBO;
+
+			glGenBuffers(1, &VBO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, drawMode);
+
+			// ===
+			int posAttribute = 0;
+			// index, size, type, normalized, stride, offset
+			glVertexAttribPointer(posAttribute, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+			glEnableVertexAttribArray(posAttribute);
+
+			int uvAttribute = 1;
+			glVertexAttribPointer(uvAttribute, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+			glEnableVertexAttribArray(uvAttribute);
+
+			return VAO;
+		}
+
 
 		void run() {
 			while (!glfwWindowShouldClose(window)) {
@@ -159,10 +233,6 @@ namespace engine {
 
 			wire = (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS);
 
-			float greenValue = (sin(glfwGetTime()) * .5f + .5f);
-			testShader.setVec4("color", 0, greenValue, 0, 1);
-
-			//glUniform4f(colorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 			float t = glfwGetTime();
 			Gizmos::SetColor(Color::rgb(
 				(float)(sin(t) * .5 + .5),
@@ -175,13 +245,27 @@ namespace engine {
 		void render() {
 
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			glm::mat4 model = glm::mat4(1.0f);
+			model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+
+			glm::mat4 view = glm::mat4(1.0f);
+			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+			glm::mat4 projection;
+			projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 
 			testShader.use();
-			glBindVertexArray(quad);
+			glBindVertexArray(cube);
+
+			testShader.setMat4("model", model);
+			testShader.setMat4("view", view);
+			testShader.setMat4("projection", projection);
+			testShader.setFloat("iTime", glfwGetTime());
 
 			testShader.setTexture("tex", tex);
-			testShader.setTexture("tex1", tex2);
+			testShader.setTexture("tex2", tex2);
 
 			// render experiments:
 			//glDrawArrays(GL_TRIANGLES, 0 /*first*/, 3 /*vertcount*/);
@@ -195,7 +279,8 @@ namespace engine {
 				glDrawArrays(GL_LINE_LOOP, 0 /*first*/, 4 /*vertcount*/);
 			}
 			else {
-				glDrawElements(GL_TRIANGLES, 6 /*count*/, GL_UNSIGNED_INT, 0);
+				glDrawArrays(GL_TRIANGLES, 0 /*first*/, 36 /*vertcount*/);
+				//glDrawElements(GL_TRIANGLES, 6 /*count*/, GL_UNSIGNED_INT, 0);
 			}
 
 			// draw gizmos

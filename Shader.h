@@ -8,6 +8,7 @@
 
 namespace engine {
 	using namespace std;
+	using namespace glm;
 
 	class Shader {
 	public:
@@ -50,11 +51,18 @@ namespace engine {
 		void setBool(const string& name, bool value) const { glUniform1i(uniformLocation(name), (int)value); }
 		void setInt(const string& name, int value) const { glUniform1i(uniformLocation(name), value); }
 		void setFloat(const string& name, float value) const { glUniform1f(uniformLocation(name), value); }
+		void setVec2(const string& name, vec2 v) const { glUniform2f(uniformLocation(name), v.x, v.y); }
 		void setVec2(const string& name, float x, float y) const { glUniform2f(uniformLocation(name), x, y); }
+		void setVec3(const string& name, vec3 v) const { glUniform3f(uniformLocation(name), v.x, v.y, v.z); }
 		void setVec3(const string& name, float x, float y, float z) const { glUniform3f(uniformLocation(name), x, y, z); }
 		void setVec3(const string& name, Color c) const { glUniform3f(uniformLocation(name), c.r, c.g, c.b); }
+		void setVec4(const string& name, vec4 v) const { glUniform4f(uniformLocation(name), v.x, v.y, v.z, v.w); }
 		void setVec4(const string& name, float x, float y, float z, float w) const { glUniform4f(uniformLocation(name), x, y, z, w); }
-		void setTexture(const string& name, Texture texture) const { glUniform1i(uniformLocation(name), texture.id); }
+		void setVec4(const string& name, Color c) const { glUniform4f(uniformLocation(name), c.r, c.g, c.b, c.a); }
+
+		void setMat4(const string& name, mat4 mat) const { glUniformMatrix4fv(uniformLocation(name), 1, false, glm::value_ptr(mat)); }
+
+		void setTexture(const string& name, Texture texture) const { glUniform1i(uniformLocation(name), texture.unit); }
 
 	private:
 		static string source_from_file(const char* path) {

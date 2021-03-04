@@ -9,6 +9,7 @@ namespace engine {
 
 	struct Texture {
 		GLuint id;
+		int unit = -1;
 
 		static Texture load(const char* path, bool filter = true, bool wrap = true, bool mipmap = true) {
 			stbi_set_flip_vertically_on_load(true);
@@ -40,6 +41,7 @@ namespace engine {
 		}
 
 		void bind(const int index) {
+			unit = index;
 			glActiveTexture(GL_TEXTURE0 + index);
 			glBindTexture(GL_TEXTURE_2D, id);
 		}

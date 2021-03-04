@@ -1,15 +1,17 @@
 #version 330 core
 
-out vec4 FragColor;
-
-in vec3 vertcolor;
 in vec2 uv;
 
-uniform vec4 color;
+uniform float iTime;
 uniform sampler2D tex;
 uniform sampler2D tex2;
 
+out vec4 FragColor;
+
 void main() {
-	FragColor =  mix(texture(tex, uv), texture(tex2, uv),.5) * vec4(vertcolor,1);
+	vec3 col = texture(tex, uv).rgb;
+	vec3 logo = texture(tex2, uv).rgb;
+	col = mix(col, col*logo, sin(iTime)*.5+.5);
+	FragColor = vec4(col,1);
 }
 
