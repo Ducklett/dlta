@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Gizmos.h"
+#include "Input.h"
 
 namespace engine {
 	using namespace glm;
@@ -12,6 +13,7 @@ namespace engine {
 
 	class Renderer {
 	public:
+		void (*update_loop)() = NULL;
 		GLFWwindow* window;
 		GLuint quad;
 		GLuint cube;
@@ -198,6 +200,7 @@ namespace engine {
 		void run() {
 			while (!glfwWindowShouldClose(window)) {
 
+				Input::Update(window, vec2(width, height));
 				process_input();
 
 				render();
@@ -213,18 +216,7 @@ namespace engine {
 		}
 
 		void process_input() {
-
 			// draw cursor
-			double xpos, ypos;
-			glfwGetCursorPos(window, &xpos, &ypos);
-
-			xpos = (xpos / width) * 2 - 1;
-			ypos = (1 - (ypos / height)) * 2 - 1;
-
-			Gizmos::SetColor(Color::red);
-			Gizmos::line(0, 0, xpos, ypos);
-			Gizmos::SetColor(Color::cyan);
-			Gizmos::wireCircle(xpos, ypos, .5f);
 			// ===
 
 			if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -240,6 +232,10 @@ namespace engine {
 				sin(t + 3.456) * .5 + .5));
 
 			Gizmos::line(0, 0, cos(glfwGetTime()), sin(glfwGetTime()));
+
+			if (update_loop != NULL) {
+				update_loop();
+			}
 		}
 
 		void render() {

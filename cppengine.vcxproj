@@ -146,15 +146,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cppengine.cpp" />
-    <ClCompile Include="glad.c" />
+    <ClCompile Include="Engine\glad.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Deps.h" />
-    <ClInclude Include="Gizmos.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Color.h" />
+    <ClInclude Include="Engine\Deps.h" />
+    <ClInclude Include="Engine\Gizmos.h" />
+    <ClInclude Include="Engine\Input.h" />
+    <ClInclude Include="Engine\Renderer.h" />
+    <ClInclude Include="Engine\Shader.h" />
+    <ClInclude Include="Engine\Texture.h" />
+    <ClInclude Include="Engine\Color.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

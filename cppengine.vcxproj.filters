@@ -18,28 +18,31 @@
     <ClCompile Include="cppengine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
+    <ClCompile Include="Engine\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="Engine\Color.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gizmos.h">
+    <ClInclude Include="Engine\Deps.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
+    <ClInclude Include="Engine\Gizmos.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="Engine\Renderer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Deps.h">
+    <ClInclude Include="Engine\Shader.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Color.h">
+    <ClInclude Include="Engine\Texture.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

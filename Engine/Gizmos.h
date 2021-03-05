@@ -35,6 +35,7 @@ namespace engine {
 			current = c;
 		}
 
+		static inline void line(vec2 p1, vec2 p2) { return line(p1.x, p1.y, p2.x, p2.y); }
 		static void line(float x, float y, float x2, float y2) {
 			vertices.insert(vertices.end(), { x,y,0,x2, y2, 0 });
 			GizmoRequest req{
@@ -45,6 +46,7 @@ namespace engine {
 			requests.push_back(req);
 		}
 
+		static inline void wireQuad(vec2 p, vec2 s) { return wireQuad(p.x, p.y, s.x, s.y); }
 		static void wireQuad(float x, float y, float w, float h) {
 			float top = y + h / 2;
 			float bottom = y - h / 2;
@@ -64,6 +66,7 @@ namespace engine {
 			requests.push_back(req);
 		}
 
+		static inline void wireCircle(vec2 p, float r) { return wireCircle(p.x, p.y, r); }
 		static void wireCircle(float x, float y, float r) {
 			int resolution = (floor(300 * r));
 			if (resolution > 100) resolution = 100;
