@@ -8,17 +8,17 @@
 #include "Time.h"
 #include "Scripting/Transform.h"
 #include "Scripting/Camera.h"
+#include "Scripting/Entity.h"
 
 namespace engine {
 	using namespace glm;
 
 	void resize_framebuffer(GLFWwindow* window, int width, int height);
 
-	class Renderer {
+	class Application {
 	public:
 		void (*update_loop)() = NULL;
 		//Transform cam;
-		Camera cam;
 		GLFWwindow* window;
 		GLuint quad;
 		GLuint cube;
@@ -26,11 +26,11 @@ namespace engine {
 		Texture tex2;
 		Shader errorShader;
 		Shader testShader;
+		vector<Entity*> entities;
 		int width;
 		int height;
 
-		Renderer(int width, int height, const std::string& title = "engine") {
-			cam = Camera(vec3(0, 0, 3));
+		Application(int width, int height, const std::string& title = "engine") {
 			this->width = width;
 			this->height = height;
 
@@ -80,6 +80,10 @@ namespace engine {
 
 			tex.bind(0);
 			tex2.bind(1);
+
+			// Initialize input
+			// this ensures the mouse delta becomes zero on the first frame
+			Input::Update(window, vec2(width, height));
 		}
 
 		GLuint makeQuad() {
@@ -206,6 +210,10 @@ namespace engine {
 
 
 		void run() {
+			for (auto entity : entities) {
+				entity->start();
+			}
+
 			while (!glfwWindowShouldClose(window)) {
 
 				Time::Update(glfwGetTime());
@@ -213,6 +221,10 @@ namespace engine {
 
 				if (update_loop != NULL) {
 					update_loop();
+				}
+
+				for (auto entity : entities) {
+					entity->update();
 				}
 
 				render();
@@ -226,6 +238,10 @@ namespace engine {
 		}
 
 		void render() {
+			if (Camera::main == NULL) {
+				cout << "no active camera" << endl;
+				return;
+			}
 
 			const glm::vec3 cubePositions[] = {
 				glm::vec3(0.0f,  0.0f,  0.0f),
@@ -258,7 +274,9 @@ namespace engine {
 
 			//glm::mat4 projection;
 			//projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
-			glm::mat4 projection = glm::perspective(glm::radians(cam.Zoom), (float)width / (float)height, 0.1f, 100.0f);
+
+			Camera& cam = *Camera::main;
+			glm::mat4 projection = glm::perspective(glm::radians(cam.fov), (float)width / (float)height, 0.1f, 100.0f);
 			mat4 view = cam.GetViewMatrix();
 
 			glBindVertexArray(cube);
@@ -290,10 +308,14 @@ namespace engine {
 			std::cout << msg << std::endl;
 			exit(-1);
 		}
+
+		void quit() {
+			glfwSetWindowShouldClose(window, true);
+		}
 	};
 
 	void resize_framebuffer(GLFWwindow* window, int width, int height) {
-		Renderer* r = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+		Application* r = static_cast<Application*>(glfwGetWindowUserPointer(window));
 		r->width = width;
 		r->height = height;
 		glViewport(0, 0, width, height);

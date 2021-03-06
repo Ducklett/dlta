@@ -8,11 +8,6 @@
 namespace engine {
 
 	using namespace std;
-	// records gizmo calls as a vertexbuffer+color+fill mode (probably? might have to change)
-	// after rendering the main geometry the gizmos are drawn by looping over the collected calls
-	// then clear the buffer at the end of the frame
-
-	// TODO: initialize current color to white or something..
 
 	struct GizmoRequest {
 		Color color;

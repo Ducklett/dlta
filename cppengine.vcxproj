@@ -152,13 +152,15 @@
     <ClInclude Include="Engine\Deps.h" />
     <ClInclude Include="Engine\Gizmos.h" />
     <ClInclude Include="Engine\Input.h" />
-    <ClInclude Include="Engine\Renderer.h" />
+    <ClInclude Include="Engine\Application.h" />
     <ClInclude Include="Engine\Scripting\Camera.h" />
+    <ClInclude Include="Engine\Scripting\Entity.h" />
     <ClInclude Include="Engine\Scripting\Transform.h" />
     <ClInclude Include="Engine\Shader.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Color.h" />
     <ClInclude Include="Engine\Time.h" />
+    <ClInclude Include="Game\Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
