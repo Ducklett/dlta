@@ -30,6 +30,10 @@ public:
 
 	void update() {
 
+		if (Input::Key(Keycode::MINUS)) cam.fov -= Time::deltaTime * 100;
+		if (Input::Key(Keycode::EQUAL)) cam.fov += Time::deltaTime * 100;
+		if (Input::Key(Keycode::BACKSPACE)) cam.fov = 45;
+
 		transform.euler += vec3(Input::mouseDelta.y, Input::mouseDelta.x, 0) * MouseSensitivity;
 
 		if (transform.euler.x > 89.0f)
@@ -39,6 +43,8 @@ public:
 
 
 		float velocity = MovementSpeed * Time::deltaTime;
+		if (Input::Key(Keycode::Q)) transform.position += vec3(0,-1,0) * velocity;
+		if (Input::Key(Keycode::E)) transform.position += vec3(0,1,0) * velocity;
 		if (Input::Key(Keycode::W)) transform.position += transform.forward() * velocity;
 		if (Input::Key(Keycode::A)) transform.position -= transform.right() * velocity;
 		if (Input::Key(Keycode::S)) transform.position -= transform.forward() * velocity;
