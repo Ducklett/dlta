@@ -145,7 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cppengine.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\glad.c" />
   </ItemGroup>
   <ItemGroup>
@@ -153,9 +153,12 @@
     <ClInclude Include="Engine\Gizmos.h" />
     <ClInclude Include="Engine\Input.h" />
     <ClInclude Include="Engine\Renderer.h" />
+    <ClInclude Include="Engine\Scripting\Camera.h" />
+    <ClInclude Include="Engine\Scripting\Transform.h" />
     <ClInclude Include="Engine\Shader.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Color.h" />
+    <ClInclude Include="Engine\Time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

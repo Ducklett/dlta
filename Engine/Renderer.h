@@ -5,6 +5,9 @@
 #include "Texture.h"
 #include "Gizmos.h"
 #include "Input.h"
+#include "Time.h"
+#include "Scripting/Transform.h"
+#include "Scripting/Camera.h"
 
 namespace engine {
 	using namespace glm;
@@ -14,6 +17,8 @@ namespace engine {
 	class Renderer {
 	public:
 		void (*update_loop)() = NULL;
+		//Transform cam;
+		Camera cam;
 		GLFWwindow* window;
 		GLuint quad;
 		GLuint cube;
@@ -25,6 +30,7 @@ namespace engine {
 		int height;
 
 		Renderer(int width, int height, const std::string& title = "engine") {
+			cam = Camera(vec3(0, 0, 3));
 			this->width = width;
 			this->height = height;
 
@@ -56,6 +62,8 @@ namespace engine {
 			glfwSwapInterval(1);
 
 			glfwSetWindowUserPointer(window, this);
+
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 			glfwSetFramebufferSizeCallback(window, resize_framebuffer);
 
@@ -200,8 +208,12 @@ namespace engine {
 		void run() {
 			while (!glfwWindowShouldClose(window)) {
 
+				Time::Update(glfwGetTime());
 				Input::Update(window, vec2(width, height));
-				process_input();
+
+				if (update_loop != NULL) {
+					update_loop();
+				}
 
 				render();
 			}
@@ -209,74 +221,60 @@ namespace engine {
 			glfwTerminate();
 		}
 
-		bool wire = false;
-
 		float rand01() {
 			return ((float)rand()) / (float)RAND_MAX;
 		}
 
-		void process_input() {
-			// draw cursor
-			// ===
-
-			if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-				glfwSetWindowShouldClose(window, true);
-			}
-
-			wire = (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS);
-
-			float t = glfwGetTime();
-			Gizmos::SetColor(Color::rgb(
-				(float)(sin(t) * .5 + .5),
-				sin(t + 1.48) * .5 + .5,
-				sin(t + 3.456) * .5 + .5));
-
-			Gizmos::line(0, 0, cos(glfwGetTime()), sin(glfwGetTime()));
-
-			if (update_loop != NULL) {
-				update_loop();
-			}
-		}
-
 		void render() {
+
+			const glm::vec3 cubePositions[] = {
+				glm::vec3(0.0f,  0.0f,  0.0f),
+				glm::vec3(2.0f,  5.0f, -15.0f),
+				glm::vec3(-1.5f, -2.2f, -2.5f),
+				glm::vec3(-3.8f, -2.0f, -12.3f),
+				glm::vec3(2.4f, -0.4f, -3.5f),
+				glm::vec3(-1.7f,  3.0f, -7.5f),
+				glm::vec3(1.3f, -2.0f, -2.5f),
+				glm::vec3(1.5f,  2.0f, -2.5f),
+				glm::vec3(1.5f,  0.2f, -1.5f),
+				glm::vec3(-1.3f,  1.0f, -1.5f)
+			};
 
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glm::mat4 model = glm::mat4(1.0f);
-			model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-
-			glm::mat4 view = glm::mat4(1.0f);
-			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
-			glm::mat4 projection;
-			projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
-
 			testShader.use();
-			glBindVertexArray(cube);
 
-			testShader.setMat4("model", model);
+			// rotate around
+			//float xIn = Input::mouse.x * 4;
+			//float yIn = Input::mouse.y;
+			//glm::mat4 view = glm::mat4(1.0f);
+			/*float radius = camPos.x;
+			float camX = sin(xIn) * radius;
+			float camZ = cos(xIn) * radius;
+			float camY = yIn * radius;*/
+			//view = glm::lookAt(cam.position, cam.position + vec3(0, 0, -1), vec3(0, 1, 0));
+
+
+			//glm::mat4 projection;
+			//projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+			glm::mat4 projection = glm::perspective(glm::radians(cam.Zoom), (float)width / (float)height, 0.1f, 100.0f);
+			mat4 view = cam.GetViewMatrix();
+
+			glBindVertexArray(cube);
 			testShader.setMat4("view", view);
 			testShader.setMat4("projection", projection);
 			testShader.setFloat("iTime", glfwGetTime());
-
 			testShader.setTexture("tex", tex);
 			testShader.setTexture("tex2", tex2);
 
-			// render experiments:
-			//glDrawArrays(GL_TRIANGLES, 0 /*first*/, 3 /*vertcount*/);
-			//glDrawArrays(GL_POINTS, 0 /*first*/, 4 /*vertcount*/);
-			//glPolygonMode(GL_FRONT_AND_BACK,  GL_LINE);
-			//glPolygonMode(GL_FRONT_AND_BACK,  GL_FILL);
-
-			if (wire) {
-				// pretty sure this won't work for other meshes lmao
-				// but for the quad it's good!
-				glDrawArrays(GL_LINE_LOOP, 0 /*first*/, 4 /*vertcount*/);
-			}
-			else {
+			for (int i = 0; i < 10; i++) {
+				mat4 model = glm::mat4(1);
+				model = glm::translate(model, cubePositions[i]);
+				float angle = 20.0f * i;
+				model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+				testShader.setMat4("model", model);
 				glDrawArrays(GL_TRIANGLES, 0 /*first*/, 36 /*vertcount*/);
-				//glDrawElements(GL_TRIANGLES, 6 /*count*/, GL_UNSIGNED_INT, 0);
 			}
 
 			// draw gizmos

@@ -4,6 +4,8 @@
 
 namespace engine {
 
+	using namespace glm;
+
 	enum class Keycode {
 		// keycodes taken directly from GLFW so they can be casted to those for now
 
@@ -133,7 +135,8 @@ namespace engine {
 	struct Input {
 		static GLFWwindow* window;
 
-		static vec2 mousePosition;
+		static vec2 mouse;
+		static vec2 mouseDelta;
 
 		static bool Key(Keycode c) {
 			return glfwGetKey(window, (int)c) == GLFW_PRESS;
@@ -145,14 +148,17 @@ namespace engine {
 			double xpos, ypos;
 			glfwGetCursorPos(window, &xpos, &ypos);
 
+			// TODO: option to get mouse in pixel coordinates
 			xpos = (xpos / size.x) * 2 - 1;
 			ypos = (1 - (ypos / size.y)) * 2 - 1;
-			mousePosition = vec2(xpos, ypos);
+			vec2 newmouse = vec2(xpos, ypos);
 
-
+			mouseDelta = newmouse - mouse;
+			mouse = newmouse;
 		}
 	};
 
 	GLFWwindow* Input::window = NULL;
-	vec2 Input::mousePosition = vec2(0,0);
+	vec2 Input::mouse = vec2(0,0);
+	vec2 Input::mouseDelta = vec2(0,0);
 }
