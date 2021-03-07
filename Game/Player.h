@@ -12,7 +12,7 @@ public:
 	Application& app;
 	Camera cam;
 	float MovementSpeed = 2.5f;
-	float MouseSensitivity = 30;
+	float MouseSensitivity = .1f;
 
 	// Default camera values
 	const float YAW = -90;
@@ -34,7 +34,7 @@ public:
 		if (Input::Key(Keycode::EQUAL)) cam.fov += Time::deltaTime * 100;
 		if (Input::Key(Keycode::BACKSPACE)) cam.fov = 45;
 
-		transform.euler += vec3(Input::mouseDelta.y, Input::mouseDelta.x, 0) * MouseSensitivity;
+		transform.euler += vec3(-Input::mouseDelta.y, Input::mouseDelta.x, 0) * MouseSensitivity;
 
 		if (transform.euler.x > 89.0f)
 			transform.euler.x = 89.0f;

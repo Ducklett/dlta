@@ -66,6 +66,7 @@ namespace engine {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 			glfwSetFramebufferSizeCallback(window, resize_framebuffer);
+			glfwSetKeyCallback(window, Input::key_change);
 
 			quad = makeQuad();
 			cube = makeCube();
@@ -300,6 +301,8 @@ namespace engine {
 
 			// swap buffers
 			glfwSwapBuffers(window);
+
+			Input::keyState.clear();
 			glfwPollEvents();
 		}
 

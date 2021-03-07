@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include "Deps.h"
 
 namespace engine {
@@ -132,33 +133,52 @@ namespace engine {
 		MENU = 348,
 	};
 
+	enum class KeyState {
+		Depressed = 0,
+		Pressed = 1,
+	};
+
 	struct Input {
 		static GLFWwindow* window;
 
 		static vec2 mouse;
 		static vec2 mouseDelta;
+		static std::unordered_map<int, int> keyState;
 
 		static bool Key(Keycode c) {
 			return glfwGetKey(window, (int)c) == GLFW_PRESS;
 		}
 
-		static void Update(GLFWwindow *window, vec2 size) {
+		static bool KeyDown(Keycode c) {
+			auto r = keyState.find((int)c);
+			return  r != keyState.end() && r->second == (int)KeyState::Pressed;
+		}
+
+		static bool KeyUp(Keycode c) {
+			auto r = keyState.find((int)c);
+			return  r != keyState.end() && r->second == (int)KeyState::Depressed;
+		}
+
+		static void Update(GLFWwindow* window, vec2 size) {
 			Input::window = window;
 
 			double xpos, ypos;
 			glfwGetCursorPos(window, &xpos, &ypos);
 
-			// TODO: option to get mouse in pixel coordinates
-			xpos = (xpos / size.x) * 2 - 1;
-			ypos = (1 - (ypos / size.y)) * 2 - 1;
 			vec2 newmouse = vec2(xpos, ypos);
 
 			mouseDelta = newmouse - mouse;
 			mouse = newmouse;
 		}
+
+		static void key_change(GLFWwindow* window, int key, int scancode, int action, int mods) {
+			if (action == GLFW_REPEAT) return;
+			keyState.insert({ key, action });
+		}
 	};
 
 	GLFWwindow* Input::window = NULL;
-	vec2 Input::mouse = vec2(0,0);
-	vec2 Input::mouseDelta = vec2(0,0);
+	std::unordered_map<int, int> Input::keyState;
+	vec2 Input::mouse = vec2(0, 0);
+	vec2 Input::mouseDelta = vec2(0, 0);
 }

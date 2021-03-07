@@ -8,7 +8,7 @@ namespace engine {
 	using namespace std;
 
 	struct Texture {
-		GLuint id;
+		GLuint id = 0;
 		int unit = -1;
 
 		static Texture load(const char* path, bool filter = true, bool wrap = true, bool mipmap = true) {
