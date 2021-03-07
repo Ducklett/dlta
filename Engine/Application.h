@@ -38,7 +38,7 @@ namespace engine {
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-			glfwWindowHint(GLFW_SAMPLES, 4);
+			//glfwWindowHint(GLFW_SAMPLES, 4);
 
 #ifdef __APPLE
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -57,8 +57,7 @@ namespace engine {
 
 			glViewport(0, 0, width, height);
 
-			glEnable(GL_DEPTH_TEST);
-			glEnable(GL_MULTISAMPLE);
+			//glEnable(GL_MULTISAMPLE);
 
 			// lock the framerate to screen refresh rate
 			glfwSwapInterval(1);
@@ -248,6 +247,8 @@ namespace engine {
 				return;
 			}
 
+			glEnable(GL_DEPTH_TEST);
+
 			const glm::vec3 cubePositions[] = {
 				glm::vec3(0.0f,  0.0f,  0.0f),
 				glm::vec3(2.0f,  5.0f, -15.0f),
@@ -264,33 +265,16 @@ namespace engine {
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			testShader.use();
-
-			// rotate around
-			//float xIn = Input::mouse.x * 4;
-			//float yIn = Input::mouse.y;
-			//glm::mat4 view = glm::mat4(1.0f);
-			/*float radius = camPos.x;
-			float camX = sin(xIn) * radius;
-			float camZ = cos(xIn) * radius;
-			float camY = yIn * radius;*/
-			//view = glm::lookAt(cam.position, cam.position + vec3(0, 0, -1), vec3(0, 1, 0));
-
-
-			//glm::mat4 projection;
-			//projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
-
 			Camera& cam = *Camera::main;
 			glm::mat4 projection = glm::perspective(glm::radians(cam.fov), (float)width / (float)height, 0.1f, 100.0f);
 			mat4 view = cam.GetViewMatrix();
 
-			glBindVertexArray(cube);
-			testShader.setMat4("view", view);
-			testShader.setMat4("projection", projection);
-			testShader.setFloat("iTime", glfwGetTime());
+			testShader.use(true);
+
 			testShader.setTexture("tex", tex);
 			testShader.setTexture("tex2", tex2);
 
+			glBindVertexArray(cube);
 			for (int i = 0; i < 10; i++) {
 				mat4 model = glm::mat4(1);
 				model = glm::translate(model, cubePositions[i]);

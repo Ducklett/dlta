@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include "Color.h"
+#include "./Scripting/Camera.h"
 
 namespace engine {
 	using namespace std;
@@ -47,7 +48,15 @@ namespace engine {
 			ID = program;
 		}
 
-		void use() { glUseProgram(ID); }
+		void use(bool setCommonUniforms = false) {
+			glUseProgram(ID);
+			if (setCommonUniforms) {
+				Camera& cam = *Camera::main;
+				setMat4("view", cam.GetViewMatrix());
+				setMat4("projection", cam.GetProjectionMatrix());
+				setFloat("iTime", glfwGetTime());
+			}
+		}
 		void setBool(const string& name, bool value) const { glUniform1i(uniformLocation(name), (int)value); }
 		void setInt(const string& name, int value) const { glUniform1i(uniformLocation(name), value); }
 		void setFloat(const string& name, float value) const { glUniform1f(uniformLocation(name), value); }

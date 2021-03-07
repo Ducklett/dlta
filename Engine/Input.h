@@ -192,7 +192,7 @@ namespace engine {
 			double xpos, ypos;
 			glfwGetCursorPos(window, &xpos, &ypos);
 
-			vec2 newmouse = vec2(xpos, ypos);
+			vec2 newmouse = vec2(xpos, -ypos);
 
 			mouseDelta = newmouse - mouse;
 			mouse = newmouse;

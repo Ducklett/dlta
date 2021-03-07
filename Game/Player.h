@@ -26,12 +26,13 @@ public:
 	}
 
 	void update() {
-		if (Input::Key(Keycode::MINUS)) cam.fov -= Time::deltaTime * 100;
-		if (Input::Key(Keycode::EQUAL)) cam.fov += Time::deltaTime * 100;
-		if (Input::Key(Keycode::BACKSPACE)) cam.fov = 45;
+
+		if (Input::Key(Keycode::ESCAPE)) {
+			app.quit();
+		}
 
 		if (Input::Mouse(MouseButton::Right)) {
-			transform.euler += vec3(-Input::mouseDelta.y, Input::mouseDelta.x, 0) * MouseSensitivity;
+			transform.euler += vec3(Input::mouseDelta.y, Input::mouseDelta.x, 0) * MouseSensitivity;
 		}
 
 		if (transform.euler.x > 89.0f)
@@ -44,7 +45,7 @@ public:
 
 		if (Input::Mouse(MouseButton::Middle)) {
 			transform.position += transform.right() * -Input::mouseDelta.x * Time::deltaTime;
-			transform.position += transform.up() * Input::mouseDelta.y * Time::deltaTime;
+			transform.position += transform.up() * -Input::mouseDelta.y * Time::deltaTime;
 		}
 		else {
 			float velocity = MovementSpeed * Time::deltaTime;
@@ -57,29 +58,12 @@ public:
 		}
 
 		if (Input::Key(Keycode::SPACE)) {
+			cam.projection = Projection::Orthographic;
 			glEnable(GL_FRAMEBUFFER_SRGB);
 		}
 		else {
+			cam.projection = Projection::Perspective;
 			glDisable(GL_FRAMEBUFFER_SRGB);
 		}
-
-		Gizmos::SetColor(Color::red);
-		Gizmos::line(vec2(0), Input::mouse);
-		Gizmos::SetColor(Color::cyan);
-		Gizmos::line(vec2(0), Input::mouseDelta);
-		Gizmos::wireCircle(vec2(0), glm::length(Input::mouseDelta));
-		Gizmos::wireCircle(Input::mouse, .5f);
-
-		if (Input::Key(Keycode::ESCAPE)) {
-			app.quit();
-		}
-
-		float t = Time::time;
-		Gizmos::SetColor(Color::rgb(
-			(float)(sin(t) * .5 + .5),
-			sin(t + 1.48) * .5 + .5,
-			sin(t + 3.456) * .5 + .5));
-
-		Gizmos::line(0, 0, cos(Time::time), sin(Time::time));
 	}
 };

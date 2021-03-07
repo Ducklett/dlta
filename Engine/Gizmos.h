@@ -30,9 +30,9 @@ namespace engine {
 			current = c;
 		}
 
-		static inline void line(vec2 p1, vec2 p2) { return line(p1.x, p1.y, p2.x, p2.y); }
-		static void line(float x, float y, float x2, float y2) {
-			vertices.insert(vertices.end(), { x,y,0,x2, y2, 0 });
+		static inline void line(vec2 p1, vec2 p2) { return line(vec3(p1.x, p1.y, 0), vec3(p2.x, p2.y, 0)); }
+		static void line(vec3 p1, vec3 p2) {
+			vertices.insert(vertices.end(), { p1.x,p1.y,p1.z,p2.x, p2.y, p2.z });
 			GizmoRequest req{
 				current,
 				GL_LINES,
@@ -124,9 +124,13 @@ namespace engine {
 		}
 		static void draw() {
 			Gizmos::update_mesh();
-			shader.use();
+			shader.use(true);
+
+			glDisable(GL_DEPTH_TEST);
 
 			int vertOffset = 0;
+			mat4 model = mat4(1);
+			shader.setMat4("model", model);
 			for (auto& g : Gizmos::requests) {
 				shader.setVec3("color", g.color);
 				glDrawArrays(g.fillmode, vertOffset, g.vertCount);
