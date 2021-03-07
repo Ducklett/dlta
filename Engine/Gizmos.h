@@ -123,7 +123,9 @@ namespace engine {
 			//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), &vertices[0], drawMode);
 		}
 		static void draw() {
-			Gizmos::update_mesh();
+			if (requests.empty()) return;
+
+			update_mesh();
 			shader.use(true);
 
 			glDisable(GL_DEPTH_TEST);
@@ -131,13 +133,10 @@ namespace engine {
 			int vertOffset = 0;
 			mat4 model = mat4(1);
 			shader.setMat4("model", model);
-			for (auto& g : Gizmos::requests) {
+			for (auto& g : requests) {
 				shader.setVec3("color", g.color);
 				glDrawArrays(g.fillmode, vertOffset, g.vertCount);
 				vertOffset += g.vertCount;
-			}
-			for (int i = 0; i < Gizmos::requests.size(); i++) {
-				int start = i * 2;
 			}
 			Gizmos::clear();
 		}
