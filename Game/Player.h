@@ -13,11 +13,8 @@ public:
 	Camera cam;
 	float MovementSpeed = 2.5f;
 	float MouseSensitivity = .1f;
+	float scrollSpeed = 20;
 
-	// Default camera values
-	const float YAW = -90;
-	const float PITCH = 0.0f;
-	const float ZOOM = 45.0f;
 	Player(Application& app) : app(app), cam(Camera(transform)) {
 		transform.position = vec3(0, 0, 3);
 		transform.euler.y = -90; // TODO: make it so objest look into the +z axis by default instead of +x(?)
@@ -29,26 +26,35 @@ public:
 	}
 
 	void update() {
-
 		if (Input::Key(Keycode::MINUS)) cam.fov -= Time::deltaTime * 100;
 		if (Input::Key(Keycode::EQUAL)) cam.fov += Time::deltaTime * 100;
 		if (Input::Key(Keycode::BACKSPACE)) cam.fov = 45;
 
-		transform.euler += vec3(-Input::mouseDelta.y, Input::mouseDelta.x, 0) * MouseSensitivity;
+		if (Input::Mouse(MouseButton::Right)) {
+			transform.euler += vec3(-Input::mouseDelta.y, Input::mouseDelta.x, 0) * MouseSensitivity;
+		}
 
 		if (transform.euler.x > 89.0f)
 			transform.euler.x = 89.0f;
 		if (transform.euler.x < -89.0f)
 			transform.euler.x = -89.0f;
 
+		transform.position += transform.forward() * Input::scrollDelta.y * scrollSpeed * Time::deltaTime;
 
-		float velocity = MovementSpeed * Time::deltaTime;
-		if (Input::Key(Keycode::Q)) transform.position += vec3(0,-1,0) * velocity;
-		if (Input::Key(Keycode::E)) transform.position += vec3(0,1,0) * velocity;
-		if (Input::Key(Keycode::W)) transform.position += transform.forward() * velocity;
-		if (Input::Key(Keycode::A)) transform.position -= transform.right() * velocity;
-		if (Input::Key(Keycode::S)) transform.position -= transform.forward() * velocity;
-		if (Input::Key(Keycode::D)) transform.position += transform.right() * velocity;
+
+		if (Input::Mouse(MouseButton::Middle)) {
+			transform.position += transform.right() * -Input::mouseDelta.x * Time::deltaTime;
+			transform.position += transform.up() * Input::mouseDelta.y * Time::deltaTime;
+		}
+		else {
+			float velocity = MovementSpeed * Time::deltaTime;
+			if (Input::Key(Keycode::Q)) transform.position += vec3(0, -1, 0) * velocity;
+			if (Input::Key(Keycode::E)) transform.position += vec3(0, 1, 0) * velocity;
+			if (Input::Key(Keycode::W)) transform.position += transform.forward() * velocity;
+			if (Input::Key(Keycode::A)) transform.position -= transform.right() * velocity;
+			if (Input::Key(Keycode::S)) transform.position -= transform.forward() * velocity;
+			if (Input::Key(Keycode::D)) transform.position += transform.right() * velocity;
+		}
 
 		if (Input::Key(Keycode::SPACE)) {
 			glEnable(GL_FRAMEBUFFER_SRGB);

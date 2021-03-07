@@ -138,12 +138,25 @@ namespace engine {
 		Pressed = 1,
 	};
 
+	enum class MouseButtonState {
+		Press = 1,
+		Release = 0,
+	};
+
+	enum class MouseButton {
+		Left = 0,
+		Middle = 2,
+		Right = 1,
+	};
+
 	struct Input {
 		static GLFWwindow* window;
 
+		static vec2 scrollDelta;
 		static vec2 mouse;
 		static vec2 mouseDelta;
 		static std::unordered_map<int, int> keyState;
+		static std::unordered_map<int, int> mouseState;
 
 		static bool Key(Keycode c) {
 			return glfwGetKey(window, (int)c) == GLFW_PRESS;
@@ -159,6 +172,20 @@ namespace engine {
 			return  r != keyState.end() && r->second == (int)KeyState::Depressed;
 		}
 
+		static bool Mouse(MouseButton b) {
+			return glfwGetMouseButton(window, (int)b);
+		}
+
+		static bool MouseDown(MouseButton b) {
+			auto r = mouseState.find((int)b);
+			return  r != mouseState.end() && r->second == (int)MouseButtonState::Press;
+		}
+
+		static bool MouseUp(MouseButton b) {
+			auto r = mouseState.find((int)b);
+			return  r != mouseState.end() && r->second == (int)MouseButtonState::Release;
+		}
+
 		static void Update(GLFWwindow* window, vec2 size) {
 			Input::window = window;
 
@@ -171,14 +198,33 @@ namespace engine {
 			mouse = newmouse;
 		}
 
+		static void Clear() {
+			Input::keyState.clear();
+			Input::mouseState.clear();
+			scrollDelta = vec2(0);
+		}
+
 		static void key_change(GLFWwindow* window, int key, int scancode, int action, int mods) {
 			if (action == GLFW_REPEAT) return;
 			keyState.insert({ key, action });
+		}
+
+		static void mouse_change(GLFWwindow* window, int button, int action, int mods)
+		{
+			if (button >= 3) return;
+			mouseState.insert({ button, action });
+		}
+
+		static void scroll_change(GLFWwindow* window, double xoffset, double yoffset)
+		{
+			scrollDelta = vec2(xoffset, yoffset);
 		}
 	};
 
 	GLFWwindow* Input::window = NULL;
 	std::unordered_map<int, int> Input::keyState;
+	std::unordered_map<int, int> Input::mouseState;
+	vec2 Input::scrollDelta = vec2(0, 0);
 	vec2 Input::mouse = vec2(0, 0);
 	vec2 Input::mouseDelta = vec2(0, 0);
 }
