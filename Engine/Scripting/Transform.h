@@ -8,6 +8,7 @@ namespace engine {
 	struct Transform {
 		vec3 position;
 		vec3 euler;
+		vec3 scale = vec3(1);
 
 		vec3 forward() {
 			vec3 front = vec3(0);

@@ -58,11 +58,11 @@ public:
 		}
 
 		if (Input::Key(Keycode::SPACE)) {
-			cam.projection = Projection::Orthographic;
+			//cam.projection = Projection::Orthographic;
 			glEnable(GL_FRAMEBUFFER_SRGB);
 		}
 		else {
-			cam.projection = Projection::Perspective;
+			//cam.projection = Projection::Perspective;
 			glDisable(GL_FRAMEBUFFER_SRGB);
 		}
 	}

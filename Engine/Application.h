@@ -9,6 +9,7 @@
 #include "Scripting/Transform.h"
 #include "Scripting/Camera.h"
 #include "Scripting/Entity.h"
+#include "Scripting/MeshRenderer.h"
 
 namespace engine {
 	using namespace glm;
@@ -26,7 +27,9 @@ namespace engine {
 		Texture tex2;
 		Shader errorShader;
 		Shader testShader;
+		Shader testShader2;
 		vector<Entity*> entities;
+		vector<MeshRenderer*> renderers;
 		int width;
 		int height;
 
@@ -76,6 +79,7 @@ namespace engine {
 
 			errorShader = Shader("assets/error.vert", "assets/error.frag");
 			testShader = Shader("assets/test.vert", "assets/test.frag");
+			testShader2 = Shader("assets/test2.vert", "assets/test2.frag");
 
 			Gizmos::init();
 			Gizmos::shader = Shader("assets/gizmo.vert", "assets/gizmo.frag");
@@ -249,38 +253,26 @@ namespace engine {
 
 			glEnable(GL_DEPTH_TEST);
 
-			const glm::vec3 cubePositions[] = {
-				glm::vec3(0.0f,  0.0f,  0.0f),
-				glm::vec3(2.0f,  5.0f, -15.0f),
-				glm::vec3(-1.5f, -2.2f, -2.5f),
-				glm::vec3(-3.8f, -2.0f, -12.3f),
-				glm::vec3(2.4f, -0.4f, -3.5f),
-				glm::vec3(-1.7f,  3.0f, -7.5f),
-				glm::vec3(1.3f, -2.0f, -2.5f),
-				glm::vec3(1.5f,  2.0f, -2.5f),
-				glm::vec3(1.5f,  0.2f, -1.5f),
-				glm::vec3(-1.3f,  1.0f, -1.5f)
-			};
-
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			Camera& cam = *Camera::main;
-			glm::mat4 projection = glm::perspective(glm::radians(cam.fov), (float)width / (float)height, 0.1f, 100.0f);
-			mat4 view = cam.GetViewMatrix();
+			for (auto rndr : renderers) {
+				glBindVertexArray(rndr->mesh);
+				Shader& shader = rndr->shader;
+				shader.use(true);
+				// TODO: move this into material
+				shader.setTexture("tex", tex);
+				shader.setTexture("tex2", tex2);
 
-			testShader.use(true);
-
-			testShader.setTexture("tex", tex);
-			testShader.setTexture("tex2", tex2);
-
-			glBindVertexArray(cube);
-			for (int i = 0; i < 10; i++) {
 				mat4 model = glm::mat4(1);
-				model = glm::translate(model, cubePositions[i]);
-				float angle = 20.0f * i;
-				model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+				model = glm::translate(model, rndr->transform.position);
+				// TODO: apply rotation
+				model = glm::rotate(model, rndr->transform.euler.x, vec3(1, 0, 0));
+				model = glm::rotate(model, rndr->transform.euler.y, vec3(0, 1, 0));
+				model = glm::rotate(model, rndr->transform.euler.z, vec3(0, 0, 1));
+				model = glm::scale(model, rndr->transform.scale);
 				testShader.setMat4("model", model);
+				// TODO: store vert count in mesh, retrieve from renderer
 				glDrawArrays(GL_TRIANGLES, 0 /*first*/, 36 /*vertcount*/);
 			}
 

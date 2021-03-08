@@ -155,6 +155,7 @@
     <ClInclude Include="Engine\Application.h" />
     <ClInclude Include="Engine\Scripting\Camera.h" />
     <ClInclude Include="Engine\Scripting\Entity.h" />
+    <ClInclude Include="Engine\Scripting\MeshRenderer.h" />
     <ClInclude Include="Engine\Scripting\Transform.h" />
     <ClInclude Include="Engine\Shader.h" />
     <ClInclude Include="Engine\Texture.h" />

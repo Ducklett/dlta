@@ -55,6 +55,7 @@ namespace engine {
 				setMat4("view", cam.GetViewMatrix());
 				setMat4("projection", cam.GetProjectionMatrix());
 				setFloat("iTime", glfwGetTime());
+				setVec3("iCamera", cam.transform.position);
 			}
 		}
 		void setBool(const string& name, bool value) const { glUniform1i(uniformLocation(name), (int)value); }
