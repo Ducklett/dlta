@@ -6,6 +6,7 @@
 #include <sstream>
 #include "Color.h"
 #include "./Scripting/Camera.h"
+#include "./Input.h"
 
 namespace engine {
 	using namespace std;
@@ -56,6 +57,8 @@ namespace engine {
 				setMat4("projection", cam.GetProjectionMatrix());
 				setFloat("iTime", glfwGetTime());
 				setVec3("iCamera", cam.transform.position);
+				setVec3("iLight", Input::light);
+				setVec3("iLightColor", Input::lightColor);
 			}
 		}
 		void setBool(const string& name, bool value) const { glUniform1i(uniformLocation(name), (int)value); }

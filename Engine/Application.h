@@ -147,47 +147,47 @@ namespace engine {
 
 		GLuint makeCube() {
 			float vertices[] = {
-				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-				 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0,0,-1,
+				 0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0,0,-1,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0,0,-1,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0,0,-1,
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0,0,-1,
+				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0,0,-1,
 
-				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-				-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0,0,1,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0,0,1,
+				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0,0,1,
+				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0,0,1,
+				-0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0,0,1,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0,0,1,
 
-				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1,0,0,
+				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, -1,0,0,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1,0,0,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1,0,0,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, -1,0,0,
+				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1,0,0,
 
-				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-				 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1,0,0,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1,0,0,
+				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1,0,0,
+				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1,0,0,
+				 0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1,0,0,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1,0,0,
 
-				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-				 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0,-1,0,
+				 0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0,-1,0,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0,-1,0,
+				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0,-1,0,
+				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0,-1,0,
+				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0,-1,0,
 
-				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-				-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0,1,0,
+				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0,1,0,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0,1,0,
+				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0,1,0,
+				-0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0,1,0,
+				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0,1,0
 			};
 
 			GLuint VAO;
@@ -206,12 +206,16 @@ namespace engine {
 			// ===
 			int posAttribute = 0;
 			// index, size, type, normalized, stride, offset
-			glVertexAttribPointer(posAttribute, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+			glVertexAttribPointer(posAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(posAttribute);
 
 			int uvAttribute = 1;
-			glVertexAttribPointer(uvAttribute, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+			glVertexAttribPointer(uvAttribute, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
 			glEnableVertexAttribArray(uvAttribute);
+
+			int normalAttribute = 2;
+			glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+			glEnableVertexAttribArray(normalAttribute);
 
 			return VAO;
 		}

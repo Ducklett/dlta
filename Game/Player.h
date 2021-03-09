@@ -57,13 +57,20 @@ public:
 			if (Input::Key(Keycode::D)) transform.position += transform.right() * velocity;
 		}
 
-		if (Input::Key(Keycode::SPACE)) {
+		//if (Input::Key(Keycode::SPACE)) {
 			//cam.projection = Projection::Orthographic;
 			glEnable(GL_FRAMEBUFFER_SRGB);
-		}
+		/*}
 		else {
 			//cam.projection = Projection::Perspective;
 			glDisable(GL_FRAMEBUFFER_SRGB);
-		}
+		}*/
+
+		// draw light
+		Input::lightColor = Color::rgb((float)(sin(Time::time + 0)*.5+.5), sin(Time::time + 1)*.5+.5, sin(Time::time + 2)*.5+.5);
+		Gizmos::SetColor(Input::lightColor);
+		Gizmos::wireSphere(Input::light, .2f);
+		Gizmos::quad(Input::light, vec2(.2f));
+		Input::light = vec3(sin(Time::time), 1, cos(Time::time));
 	}
 };

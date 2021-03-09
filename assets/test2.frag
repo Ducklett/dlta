@@ -6,6 +6,8 @@ in vec3 hitPos;
 
 uniform float iTime;
 uniform vec3 iCamera;
+uniform vec3 iLight;
+uniform vec3 iLightColor;
 uniform sampler2D tex;
 uniform sampler2D tex2;
 
@@ -68,6 +70,28 @@ vec2 march(vec3 ro, vec3 rd) {
 	return vec2(dO, float(i)/MAX_STEPS);
 }
 
+vec3 lighting(vec3 albedo, vec3 n, vec3 p) {
+	vec3 lightDir = normalize(iLight - p);
+
+	// ambient
+	float ambientStrength = 0.1;
+	vec3 ambient = ambientStrength * iLightColor;
+
+	// diffuse
+	float diff = max(dot(n, lightDir), 0);
+	vec3 diffuse = diff*iLightColor;
+
+	// specular
+	float specularStrength = 1.0;
+	vec3 viewDir = normalize(iCamera - p);
+	vec3 reflectDir = reflect(-lightDir, n);
+	float spec = pow(max(dot(viewDir, reflectDir),0), 32);
+	vec3 specular = specularStrength * spec * iLightColor;
+
+	vec3 result = (ambient + diffuse + specular) * albedo;
+	return result;
+}
+
 void main() {
 	vec3 rd = normalize(hitPos-ro);
 
@@ -77,21 +101,11 @@ void main() {
 	float d = m.x;
 	float s = m.y;
 
-	if (d < MAX_DIST) {
-		vec3 n = getNormal(ro+rd*d);
-		vec3 light = vec3(.2,.1,.5);
-		vec3 shadow = vec3(.0,.0,.01);
-		vec3 ambient = vec3(0.2f, 0.3f, 0.3f);
-		float ambientStrength = .2f;
-		vec3 lightPos = vec3(.5,1,0);
-		float l = dot(n, lightPos);
-		float ao = s*s;
-		l -= ao;
-		l = max(l,0);
-		col = mix(shadow, texture(tex, n.xy).xyz, l); //mix(shadow, light, l);
-		col += ambient * (1-l) * ambientStrength * (1-ao);
-		col = max(col,0);
-	}
+	vec3 p = ro+rd*d;
+	vec3 n = getNormal(ro+rd*d);
+	vec3 albedo = vec3(1,.5,.1);
+	//vec3 albedo = texture(tex, n.xy).xyz;
+	col = lighting(albedo, n, p);
 
 	FragColor = vec4(col, 1);
 }

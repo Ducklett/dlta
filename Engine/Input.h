@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include "Deps.h"
+#include "./Color.h"
 
 namespace engine {
 
@@ -152,6 +153,10 @@ namespace engine {
 	struct Input {
 		static GLFWwindow* window;
 
+		// temp
+		static vec3 light;
+		static Color lightColor;
+
 		static vec2 scrollDelta;
 		static vec2 mouse;
 		static vec2 mouseDelta;
@@ -224,6 +229,8 @@ namespace engine {
 	GLFWwindow* Input::window = NULL;
 	std::unordered_map<int, int> Input::keyState;
 	std::unordered_map<int, int> Input::mouseState;
+	vec3 Input::light = vec3(0);
+	Color Input::lightColor = Color::white;
 	vec2 Input::scrollDelta = vec2(0, 0);
 	vec2 Input::mouse = vec2(0, 0);
 	vec2 Input::mouseDelta = vec2(0, 0);

@@ -38,6 +38,8 @@ namespace engine {
 		static Color cyan;
 		static Color yellow;
 		static Color magenta;
+		static Color white;
+		static Color black;
 		static Color clear;
 	};
 
@@ -48,5 +50,7 @@ namespace engine {
 	Color Color::cyan = Color{ .10f,.87f,.84f,1 };
 	Color Color::yellow = Color{ .92f,.81f,.35f,1 };
 	Color Color::magenta = Color{ .64f,.20f,.81f,1 };
+	Color Color::white = Color{ 1,1,1,1 };
+	Color Color::black = Color{ 0,0,0,1 };
 	Color Color::clear = Color{ 0,0,0,0 };
 }

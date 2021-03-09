@@ -41,17 +41,18 @@ namespace engine {
 			requests.push_back(req);
 		}
 
-		static inline void wireQuad(vec2 p, vec2 s) { return wireQuad(p.x, p.y, s.x, s.y); }
-		static void wireQuad(float x, float y, float w, float h) {
+		static inline void wireQuad(vec2 p, vec2 s) { return wireQuad(p.x, p.y, 0, s.x, s.y); }
+		static inline void wireQuad(vec3 p, vec2 s) { return wireQuad(p.x, p.y, p.z, s.x, s.y); }
+		static void wireQuad(float x, float y, float z, float w, float h) {
 			float top = y + h / 2;
 			float bottom = y - h / 2;
 			float left = x - w / 2;
 			float right = x + w / 2;
 			vertices.insert(vertices.end(), {
-				left, top, 0,
-				right, top, 0,
-				right, bottom, 0,
-				left, bottom, 0,
+				left, top, z,
+				right, top, z,
+				right, bottom, z,
+				left, bottom, z,
 				});
 			GizmoRequest req{
 				current,
@@ -61,15 +62,48 @@ namespace engine {
 			requests.push_back(req);
 		}
 
-		static inline void wireCircle(vec2 p, float r) { return wireCircle(p.x, p.y, r); }
-		static void wireCircle(float x, float y, float r) {
+		static inline void quad(vec2 p, vec2 s) { return quad(p.x, p.y, 0, s.x, s.y); }
+		static inline void quad(vec3 p, vec2 s) { return quad(p.x, p.y, p.z, s.x, s.y); }
+		static void quad(float x, float y, float z, float w, float h) {
+			float top = y + h / 2;
+			float bottom = y - h / 2;
+			float left = x - w / 2;
+			float right = x + w / 2;
+			vertices.insert(vertices.end(), {
+				left, top, z,
+				right, top, z,
+				right, bottom, z,
+
+				left, bottom, z,
+				left, top, z,
+				right, bottom, z,
+				});
+			GizmoRequest req{
+				current,
+				GL_TRIANGLES,
+				6
+			};
+			requests.push_back(req);
+		}
+
+		static inline void wireCircle(vec2 p, float r) { return wireCircle(p.x, p.y, 0, r); }
+		static inline void wireCircle(vec3 p, float r) { return wireCircle(p.x, p.y, p.z, r); }
+		static void wireCircle(float x, float y, float z, float r, int axis = 0) {
 			int resolution = (floor(300 * r));
 			if (resolution > 100) resolution = 100;
 
 			float off = M_PI * 2 / resolution;
 
 			for (int i = 0; i < resolution; i++) {
-				vertices.insert(vertices.end(), { x + sin(off * i) * r / 2,y + cos(off * i) * r / 2,0 });
+				if (axis == 0) { // xy
+					vertices.insert(vertices.end(), { x + sin(off * i) * r / 2,y + cos(off * i) * r / 2,z });
+				}
+				else if (axis == 1) { // xz
+					vertices.insert(vertices.end(), { x + sin(off * i) * r / 2, y, z + cos(off * i) * r / 2 });
+				}
+				else { // yz
+					vertices.insert(vertices.end(), { x, y + sin(off * i) * r / 2, z + cos(off * i) * r / 2 });
+				}
 			}
 
 			GizmoRequest req{
@@ -78,6 +112,21 @@ namespace engine {
 				resolution
 			};
 			requests.push_back(req);
+		}
+
+		static void wireSphere(vec3 p, float r) {
+			wireCircle(p.x, p.y, p.z, r);
+			wireCircle(p.x, p.y, p.z, r, 1);
+			wireCircle(p.x, p.y, p.z, r, 2);
+		}
+
+		static void wireCube(vec3 p, vec3 b) {
+			wireQuad(p + vec3(0, 0, b.z * .5f), vec2(b.x, b.y));
+			wireQuad(p - vec3(0, 0, b.z * .5f), vec2(b.x, b.y));
+			line(p + vec3(b.x, b.y, b.z) * .5f, p + vec3(b.x, b.y, -b.z) * .5f);
+			line(p + vec3(b.x, -b.y, b.z) * .5f, p + vec3(b.x, -b.y, -b.z) * .5f);
+			line(p + vec3(-b.x, b.y, b.z) * .5f, p + vec3(-b.x, b.y, -b.z) * .5f);
+			line(p + vec3(-b.x, -b.y, b.z) * .5f, p + vec3(-b.x, -b.y, -b.z) * .5f);
 		}
 
 		static void clear() {
@@ -124,7 +173,6 @@ namespace engine {
 		}
 		static void draw() {
 			if (requests.empty()) return;
-
 			update_mesh();
 			shader.use(true);
 
