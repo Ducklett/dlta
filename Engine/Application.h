@@ -21,8 +21,6 @@ namespace engine {
 		void (*update_loop)() = NULL;
 		//Transform cam;
 		GLFWwindow* window;
-		GLuint quad;
-		GLuint cube;
 		Texture tex;
 		Texture tex2;
 		Shader errorShader;
@@ -74,9 +72,6 @@ namespace engine {
 			glfwSetMouseButtonCallback(window, Input::mouse_change);
 			glfwSetScrollCallback(window, Input::scroll_change);
 
-			quad = makeQuad();
-			cube = makeCube();
-
 			errorShader = Shader("assets/error.vert", "assets/error.frag");
 			testShader = Shader("assets/test.vert", "assets/test.frag");
 			testShader2 = Shader("assets/test2.vert", "assets/test2.frag");
@@ -93,133 +88,6 @@ namespace engine {
 			// this ensures the mouse delta becomes zero on the first frame
 			Input::Update(window, vec2(width, height));
 		}
-
-		GLuint makeQuad() {
-			const float vertices[] = {
-				// position         color                uv
-				0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-				0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-				-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-				-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
-			};
-
-			const unsigned int indices[] = {  // note that we start from 0!
-				0, 1, 3,   // first triangle
-				1, 2, 3    // second triangle
-			};
-
-			GLuint VAO;
-			glGenVertexArrays(1, &VAO);
-			glBindVertexArray(VAO);
-
-			int drawMode = GL_STATIC_DRAW;
-
-			// ===
-			GLuint VBO;
-
-			glGenBuffers(1, &VBO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, drawMode);
-
-			// ===
-			GLuint EBO;
-			glGenBuffers(1, &EBO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, drawMode);
-
-
-			// ===
-			int posAttribute = 0;
-			// index, size, type, normalized, stride, offset
-			glVertexAttribPointer(posAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(posAttribute);
-
-			int colAttribute = 1;
-			glVertexAttribPointer(colAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-			glEnableVertexAttribArray(colAttribute);
-
-			int uvAttribute = 2;
-			glVertexAttribPointer(uvAttribute, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-			glEnableVertexAttribArray(uvAttribute);
-
-			return VAO;
-		}
-
-		GLuint makeCube() {
-			float vertices[] = {
-				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0,0,-1,
-				 0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0,0,-1,
-				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0,0,-1,
-				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0,0,-1,
-				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0,0,-1,
-				-0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 0,0,-1,
-
-				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0,0,1,
-				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0,0,1,
-				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0,0,1,
-				 0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0,0,1,
-				-0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0,0,1,
-				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0,0,1,
-
-				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1,0,0,
-				-0.5f,  0.5f, -0.5f,  1.0f, 1.0f, -1,0,0,
-				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1,0,0,
-				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, -1,0,0,
-				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, -1,0,0,
-				-0.5f,  0.5f,  0.5f,  1.0f, 0.0f, -1,0,0,
-
-				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1,0,0,
-				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1,0,0,
-				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1,0,0,
-				 0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1,0,0,
-				 0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1,0,0,
-				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1,0,0,
-
-				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0,-1,0,
-				 0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0,-1,0,
-				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0,-1,0,
-				 0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0,-1,0,
-				-0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0,-1,0,
-				-0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0,-1,0,
-
-				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0,1,0,
-				 0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0,1,0,
-				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0,1,0,
-				 0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0,1,0,
-				-0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0,1,0,
-				-0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0,1,0
-			};
-
-			GLuint VAO;
-			glGenVertexArrays(1, &VAO);
-			glBindVertexArray(VAO);
-
-			int drawMode = GL_STATIC_DRAW;
-
-			// ===
-			GLuint VBO;
-
-			glGenBuffers(1, &VBO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, drawMode);
-
-			// ===
-			int posAttribute = 0;
-			// index, size, type, normalized, stride, offset
-			glVertexAttribPointer(posAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(posAttribute);
-
-			int uvAttribute = 1;
-			glVertexAttribPointer(uvAttribute, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-			glEnableVertexAttribArray(uvAttribute);
-
-			int normalAttribute = 2;
-			glVertexAttribPointer(normalAttribute, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
-			glEnableVertexAttribArray(normalAttribute);
-
-			return VAO;
-		}
-
 
 		void run() {
 			for (auto entity : entities) {
@@ -261,7 +129,7 @@ namespace engine {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			for (auto rndr : renderers) {
-				glBindVertexArray(rndr->mesh);
+				rndr->mesh.use();
 				Shader& shader = rndr->shader;
 				shader.use(true);
 				// TODO: move this into material
@@ -270,14 +138,14 @@ namespace engine {
 
 				mat4 model = glm::mat4(1);
 				model = glm::translate(model, rndr->transform.position);
-				// TODO: apply rotation
+
 				model = glm::rotate(model, rndr->transform.euler.x, vec3(1, 0, 0));
 				model = glm::rotate(model, rndr->transform.euler.y, vec3(0, 1, 0));
 				model = glm::rotate(model, rndr->transform.euler.z, vec3(0, 0, 1));
 				model = glm::scale(model, rndr->transform.scale);
 				testShader.setMat4("model", model);
-				// TODO: store vert count in mesh, retrieve from renderer
-				glDrawArrays(GL_TRIANGLES, 0 /*first*/, 36 /*vertcount*/);
+
+				rndr->mesh.draw();
 			}
 
 			// draw gizmos

@@ -153,8 +153,10 @@
     <ClInclude Include="Engine\Gizmos.h" />
     <ClInclude Include="Engine\Input.h" />
     <ClInclude Include="Engine\Application.h" />
+    <ClInclude Include="Engine\Mesh.h" />
     <ClInclude Include="Engine\Scripting\Camera.h" />
     <ClInclude Include="Engine\Scripting\Entity.h" />
+    <ClInclude Include="Engine\Scripting\Light.h" />
     <ClInclude Include="Engine\Scripting\MeshRenderer.h" />
     <ClInclude Include="Engine\Scripting\Transform.h" />
     <ClInclude Include="Engine\Shader.h" />

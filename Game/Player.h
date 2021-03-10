@@ -25,7 +25,13 @@ public:
 		Camera::main = &cam;
 	}
 
+	bool wire = false;
 	void update() {
+
+		if (Input::KeyDown(Keycode::SPACE)) {
+			wire = !wire;
+			glPolygonMode(GL_FRONT_AND_BACK, wire ? GL_LINE : GL_FILL);
+		}
 
 		if (Input::Key(Keycode::ESCAPE)) {
 			app.quit();
@@ -59,7 +65,7 @@ public:
 
 		//if (Input::Key(Keycode::SPACE)) {
 			//cam.projection = Projection::Orthographic;
-			glEnable(GL_FRAMEBUFFER_SRGB);
+		glEnable(GL_FRAMEBUFFER_SRGB);
 		/*}
 		else {
 			//cam.projection = Projection::Perspective;
@@ -67,10 +73,9 @@ public:
 		}*/
 
 		// draw light
-		Input::lightColor = Color::rgb((float)(sin(Time::time + 0)*.5+.5), sin(Time::time + 1)*.5+.5, sin(Time::time + 2)*.5+.5);
+		Input::lightColor = Color::rgb((float)(sin(Time::time + 0) * .5 + .5), sin(Time::time + 1) * .5 + .5, sin(Time::time + 2) * .5 + .5);
 		Gizmos::SetColor(Input::lightColor);
 		Gizmos::wireSphere(Input::light, .2f);
-		Gizmos::quad(Input::light, vec2(.2f));
 		Input::light = vec3(sin(Time::time), 1, cos(Time::time));
 	}
 };

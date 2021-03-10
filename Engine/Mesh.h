@@ -1,0 +1,87 @@
+#pragma once
+
+#include <vector>;
+#include "./Deps.h"
+
+namespace engine {
+	using namespace std;
+
+	enum class Vattr {
+		FLOAT = 1,
+		UV = 2,
+		FLOAT2 = 1,
+		XYZ = 3,
+		RGB = 3,
+		FLOAT3 = 1,
+		NORMAL = 3,
+		RGBA = 4,
+		FLOAT4 = 4,
+	};
+
+	class Mesh {
+	public:
+		GLuint VAO;
+		vector<Vattr> layout;
+		vector<float> vertices;
+		int vertexCount;
+
+		// fill vertices
+		// fill layout
+		// call create()
+		void create(size_t maxVertexCount = 0) {
+			assert(!layout.empty());
+
+			int vertexSize = 0;
+			for (auto attr : layout) {
+				assert((int)attr > 0);
+				vertexSize += (int)attr;
+			}
+
+			if (maxVertexCount != 0) {
+				vertices.reserve(maxVertexCount);
+			}
+
+			vertexCount = vertices.capacity() / vertexSize;
+
+			assert(vertexCount != 0);
+
+			GLuint VAO;
+			glGenVertexArrays(1, &VAO);
+			glBindVertexArray(VAO);
+
+			int drawMode = GL_STATIC_DRAW;
+
+			// ===
+			GLuint VBO;
+
+			glGenBuffers(1, &VBO);
+			glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.capacity(), &vertices[0], drawMode);
+
+			int attributes = layout.size();
+			int offset = 0;
+			for (int i = 0; i < attributes; i++) {
+				uint8_t attr_size = (int)layout[i];
+				// index, size, type, normalized, stride, offset
+				glVertexAttribPointer(i, attr_size, GL_FLOAT, GL_FALSE, vertexSize * sizeof(float), (void*)(offset * sizeof(float)));
+				glEnableVertexAttribArray(i);
+				offset += attr_size;
+			}
+
+			this->VAO = VAO;
+		}
+
+		void update() {
+
+		}
+
+		void use() {
+			glBindVertexArray(VAO);
+		}
+
+		void draw(int from = 0, int to = 0) {
+			if (to == 0) to = vertexCount;
+			glDrawArrays(GL_TRIANGLES, from, to);
+		}
+	};
+}
