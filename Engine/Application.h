@@ -59,6 +59,8 @@ namespace engine {
 			glViewport(0, 0, width, height);
 
 			//glEnable(GL_MULTISAMPLE);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 			// lock the framerate to screen refresh rate
 			glfwSwapInterval(1);

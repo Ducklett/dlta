@@ -35,29 +35,34 @@ vec3 lighting(vec3 albedo, vec3 n, vec3 p) {
 	return result;
 }
 
-float line(float d) {
+float line(float d, float smoothing) {
   float lw = .01;
-  float ls = .003;
-  return smoothstep(lw+ls,lw,abs(d-.5));
+  return smoothstep(lw+smoothing,lw,abs(d-.5));
 }
 
 void main() {
-	float visibility = length(iCamera-position)/20;
+	float viewDistance = 20;
+	float visibility = length(vec3(iCamera-position)*vec3(1,1,.2))/viewDistance;
 
+	// TODO: proper anti aliasing based on camera location/screen size
+	// No idea how to do it properly as of right now...
+	vec2 texelSize = vec2(1)/(800,600);
 	vec2 uv = fract(position.xz);
-	float col = 0;
-    for(int i = 0;i<2;i++) {
-        vec2 suv = fract(uv*pow(10.,float(i)));
-		float l = max(line(suv.x),line(suv.y));
+	float mask = 0;
+    for(int i = 0;i<3;i++) {
+		float scale = pow(10.,float(i));
+		vec2 smoothing = texelSize * scale;
+        vec2 suv = fract(uv*scale+(scale==1?0:.5));
+
+		float l = max(line(suv.x, smoothing.x),line(suv.y, smoothing.y));
 		l -= visibility*pow(10, float(i+0));
-        col = max(col,l);
+        mask = max(mask,l);
     }
 
-	col -= visibility;
+	mask -= visibility;
 
-	if (col<.2) discard;
-	col*=.2;
+	vec3 col = vec3(0);
 
-	FragColor = vec4(vec3(col),1);//vec4(lighting(col, normal, position),1);
+	FragColor = vec4(col,mask);
 }
 
