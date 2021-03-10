@@ -15,6 +15,8 @@ namespace engine {
 	class Shader {
 	public:
 		GLuint ID;
+		bool commonUniforms = true;
+		bool disableTranslation = false;
 
 		Shader() {
 			ID = 0;
@@ -49,11 +51,15 @@ namespace engine {
 			ID = program;
 		}
 
-		void use(bool setCommonUniforms = false) {
+		void use() {
 			glUseProgram(ID);
-			if (setCommonUniforms) {
+			if (commonUniforms) {
 				Camera& cam = *Camera::main;
-				setMat4("view", cam.GetViewMatrix());
+
+				setMat4("view", disableTranslation
+					? glm::mat4(glm::mat3(cam.GetViewMatrix()))
+					: cam.GetViewMatrix());
+
 				setMat4("projection", cam.GetProjectionMatrix());
 				setFloat("iTime", glfwGetTime());
 				setVec3("iCamera", cam.transform.position);

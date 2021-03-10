@@ -149,6 +149,7 @@
     <ClCompile Include="Engine\glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Cubemap.h" />
     <ClInclude Include="Engine\Deps.h" />
     <ClInclude Include="Engine\Gizmos.h" />
     <ClInclude Include="Engine\Input.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Engine\Scripting\MeshRenderer.h" />
     <ClInclude Include="Engine\Scripting\Transform.h" />
     <ClInclude Include="Engine\Shader.h" />
+    <ClInclude Include="Engine\Skybox.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Color.h" />
     <ClInclude Include="Engine\Time.h" />

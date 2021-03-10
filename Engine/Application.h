@@ -3,6 +3,7 @@
 #include "Deps.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Skybox.h"
 #include "Gizmos.h"
 #include "Input.h"
 #include "Time.h"
@@ -23,6 +24,7 @@ namespace engine {
 		GLFWwindow* window;
 		Texture tex;
 		Texture tex2;
+		Skybox skybox;
 		Shader errorShader;
 		Shader testShader;
 		Shader testShader2;
@@ -59,6 +61,7 @@ namespace engine {
 			glViewport(0, 0, width, height);
 
 			//glEnable(GL_MULTISAMPLE);
+
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -82,6 +85,8 @@ namespace engine {
 			Gizmos::shader = Shader("assets/shaders/gizmo.vert", "assets/shaders/gizmo.frag");
 			tex = Texture::load("assets/container.jpg");
 			tex2 = Texture::load("assets/icon.png", false, false, false);
+
+			skybox = Skybox("assets/cubemaps/sea", "assets/shaders/skybox.vert", "assets/shaders/skybox.frag", ".jpg");
 
 			tex.bind(0);
 			tex2.bind(1);
@@ -129,11 +134,15 @@ namespace engine {
 
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			//glClear(GL_DEPTH_BUFFER_BIT);
+
+			// TODO: render after opaque qeometry but before transparent
+			skybox.draw();
 
 			for (auto rndr : renderers) {
 				rndr->mesh.use();
 				Shader& shader = rndr->shader;
-				shader.use(true);
+				shader.use();
 				// TODO: move this into material
 				shader.setTexture("tex", tex);
 				shader.setTexture("tex2", tex2);

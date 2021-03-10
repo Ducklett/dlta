@@ -11,11 +11,19 @@ namespace engine {
 		GLuint id = 0;
 		int unit = -1;
 
-		static Texture load(const char* path, bool filter = true, bool wrap = true, bool mipmap = true) {
-			stbi_set_flip_vertically_on_load(true);
-			int width, height, nrChannels;
-			unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+		static unsigned char* loadImageData(const char* path, int* width, int* height, int* channels, bool flip = true) {
+			stbi_set_flip_vertically_on_load(flip);
+			unsigned char* data = stbi_load(path, width, height, channels, 0);
+			return data;
+		}
 
+		static void freeImageData(unsigned char* data) {
+			stbi_image_free(data);
+		}
+
+		static Texture load(const char* path, bool filter = true, bool wrap = true, bool mipmap = true) {
+			int width, height, nrChannels;
+			unsigned char* data = loadImageData(path, &width, &height, &nrChannels);
 
 			if (!data) return Texture{};
 
@@ -35,7 +43,7 @@ namespace engine {
 
 			if (mipmap) glGenerateMipmap(GL_TEXTURE_2D);
 
-			stbi_image_free(data);
+			freeImageData(data);
 
 			return { texture };
 		}

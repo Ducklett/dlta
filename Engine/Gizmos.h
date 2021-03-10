@@ -174,7 +174,7 @@ namespace engine {
 		static void draw() {
 			if (requests.empty()) return;
 			update_mesh();
-			shader.use(true);
+			shader.use();
 
 			glDisable(GL_DEPTH_TEST);
 
