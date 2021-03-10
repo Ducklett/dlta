@@ -7,19 +7,6 @@ using namespace engine;
 const int WIDTH = 800;
 const int HEIGHT = 600;
 
-/*const glm::vec3 cubePositions[] = {
-	glm::vec3(0.0f,  0.0f,  0.0f),
-	glm::vec3(2.0f,  5.0f, -15.0f),
-	glm::vec3(-1.5f, -2.2f, -2.5f),
-	glm::vec3(-3.8f, -2.0f, -12.3f),
-	glm::vec3(2.4f, -0.4f, -3.5f),
-	glm::vec3(-1.7f,  3.0f, -7.5f),
-	glm::vec3(1.3f, -2.0f, -2.5f),
-	glm::vec3(1.5f,  2.0f, -2.5f),
-	glm::vec3(1.5f,  0.2f, -1.5f),
-	glm::vec3(-1.3f,  1.0f, -1.5f)
-};*/
-
 Mesh makeCube() {
 	Mesh cube;
 
@@ -79,6 +66,7 @@ Mesh makePlane() {
 	Mesh plane;
 
 	plane.layout = { Vattr::XYZ, Vattr::UV, Vattr::NORMAL };
+	plane.indexed = true;
 	plane.vertices = {
 		// bottom left
 		-.5f,0,.5f, 0,0, 0,1,0,
@@ -86,13 +74,13 @@ Mesh makePlane() {
 		-.5f,0,-.5f, 0,1, 0,1,0,
 		// bottom right
 		.5f,0,.5f, 1,0, 0,1,0,
-
-		// top left
-		-.5f,0,-.5f, 0,1, 0,1,0,
 		// top right
 		.5f,0,-.5f, 1,1, 0,1,0,
-		// bottom right
-		.5f,0,.5f, 1,0, 0,1,0,
+	};
+
+	plane.indices = {
+		0,1,2,
+		1,3,2,
 	};
 
 	plane.create();
@@ -104,6 +92,7 @@ int main()
 {
 	Application game(WIDTH, HEIGHT, "Pog");
 
+	Shader floorShader("assets/shaders/floor.vert", "assets/shaders/floor.frag");
 	Mesh cubeMesh = makeCube();
 	Mesh planeMesh = makePlane();
 
@@ -112,7 +101,7 @@ int main()
 	Transform planeTransform = Transform();
 	planeTransform.position = vec3(0, -1, 0);
 	planeTransform.scale = vec3(20);
-	MeshRenderer plane(game.testShader, planeTransform, planeMesh);
+	MeshRenderer plane(floorShader, planeTransform, planeMesh);
 
 	Transform cubeTransform = Transform();
 	MeshRenderer cube(game.testShader2, cubeTransform, cubeMesh);

@@ -21,8 +21,12 @@ namespace engine {
 	class Mesh {
 	public:
 		GLuint VAO;
+		GLuint VBO;
+		GLuint EBO;
 		vector<Vattr> layout;
 		vector<float> vertices;
+		vector<unsigned int> indices;
+		bool indexed = false;
 		int vertexCount;
 
 		// fill vertices
@@ -41,7 +45,12 @@ namespace engine {
 				vertices.reserve(maxVertexCount);
 			}
 
-			vertexCount = vertices.capacity() / vertexSize;
+			if (indexed) {
+				vertexCount = indices.size();
+			}
+			else {
+				vertexCount = vertices.size() / vertexSize;
+			}
 
 			assert(vertexCount != 0);
 
@@ -58,6 +67,16 @@ namespace engine {
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.capacity(), &vertices[0], drawMode);
 
+			// ===
+			if (indexed) {
+				unsigned int EBO;
+				glGenBuffers(1, &EBO);
+
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indices.size(), &indices[0], drawMode);
+			}
+
+			// ===
 			int attributes = layout.size();
 			int offset = 0;
 			for (int i = 0; i < attributes; i++) {
@@ -69,6 +88,8 @@ namespace engine {
 			}
 
 			this->VAO = VAO;
+			this->VBO = VBO;
+			this->EBO = EBO;
 		}
 
 		void update() {
@@ -81,7 +102,15 @@ namespace engine {
 
 		void draw(int from = 0, int to = 0) {
 			if (to == 0) to = vertexCount;
-			glDrawArrays(GL_TRIANGLES, from, to);
+
+			if (indexed) {
+				glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);
+			}
+			else {
+
+				glDrawArrays(GL_TRIANGLES, from, to);
+			}
+
 		}
 	};
 }

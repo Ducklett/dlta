@@ -72,12 +72,12 @@ namespace engine {
 			glfwSetMouseButtonCallback(window, Input::mouse_change);
 			glfwSetScrollCallback(window, Input::scroll_change);
 
-			errorShader = Shader("assets/error.vert", "assets/error.frag");
-			testShader = Shader("assets/test.vert", "assets/test.frag");
-			testShader2 = Shader("assets/test2.vert", "assets/test2.frag");
+			errorShader = Shader("assets/shaders/error.vert", "assets/shaders/error.frag");
+			testShader = Shader("assets/shaders/test.vert", "assets/shaders/test.frag");
+			testShader2 = Shader("assets/shaders/test2.vert", "assets/shaders/test2.frag");
 
 			Gizmos::init();
-			Gizmos::shader = Shader("assets/gizmo.vert", "assets/gizmo.frag");
+			Gizmos::shader = Shader("assets/shaders/gizmo.vert", "assets/shaders/gizmo.frag");
 			tex = Texture::load("assets/container.jpg");
 			tex2 = Texture::load("assets/icon.png", false, false, false);
 
