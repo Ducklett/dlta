@@ -10,6 +10,7 @@ uniform vec3 iLightColor;
 uniform vec3 iCamera;
 uniform sampler2D tex;
 uniform sampler2D tex2;
+uniform samplerCube skybox;
 
 out vec4 FragColor;
 
@@ -31,7 +32,16 @@ vec3 lighting(vec3 albedo, vec3 n, vec3 p) {
 	float spec = pow(max(dot(viewDir, reflectDir),0), 32);
 	vec3 specular = specularStrength * spec * iLightColor;
 
-	vec3 result = (ambient + diffuse + specular) * albedo;
+	// reflection
+	float reflectivity = .8;
+	float glossiness = .75;
+	vec3 i = normalize(p - iCamera);
+	vec3 r = reflect(i, n);
+	const float lods = 8.;
+	vec3 reflection = reflectivity * textureLod(skybox, r, lods-(lods*glossiness)).rgb;
+	diffuse*=1-reflectivity;
+
+	 vec3 result = (ambient + diffuse + specular + reflection) * albedo;
 	return result;
 }
 
@@ -41,6 +51,7 @@ void main() {
 	col = mix(col, col*logo, sin(iTime)*.5+.5);
 
 	//col = vec3(1,.5,.1);
+	col = vec3(1,1,1);
 
 	FragColor = vec4(lighting(col, normal, position),1);
 }
