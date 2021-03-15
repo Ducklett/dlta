@@ -23,6 +23,9 @@ namespace engine {
 		}
 
 		Shader(const char* vertexPath, const char* fragmentPath) {
+
+			cout << "compiling shader " << fragmentPath << endl;
+
 			string vSource = source_from_file(vertexPath);
 			string fSource = source_from_file(fragmentPath);
 			char infoLog[512];
@@ -38,6 +41,7 @@ namespace engine {
 
 			int  success;
 			glGetShaderiv(program, GL_COMPILE_STATUS, &success);
+
 
 			if (!success)
 			{

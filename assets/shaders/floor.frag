@@ -63,6 +63,6 @@ void main() {
 
 	vec3 col = vec3(0);
 
-	FragColor = vec4(col,mask);
+	FragColor = vec4(col,mask*.5);
 }
 

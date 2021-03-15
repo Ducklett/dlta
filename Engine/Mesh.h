@@ -9,6 +9,7 @@ namespace engine {
 	enum class Vattr {
 		FLOAT = 1,
 		UV = 2,
+		XY = 2,
 		FLOAT2 = 1,
 		XYZ = 3,
 		RGB = 3,

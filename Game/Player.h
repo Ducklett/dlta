@@ -30,8 +30,8 @@ public:
 
 		if (Input::KeyDown(Keycode::SPACE)) {
 			wire = !wire;
-			glPolygonMode(GL_FRONT_AND_BACK, wire ? GL_LINE : GL_FILL);
 		}
+		glPolygonMode(GL_FRONT_AND_BACK, wire ? GL_LINE : GL_FILL);
 
 		if (Input::Key(Keycode::ESCAPE)) {
 			app.quit();
@@ -65,7 +65,6 @@ public:
 
 		//if (Input::Key(Keycode::SPACE)) {
 			//cam.projection = Projection::Orthographic;
-		glEnable(GL_FRAMEBUFFER_SRGB);
 		/*}
 		else {
 			//cam.projection = Projection::Perspective;

@@ -151,10 +151,15 @@
   <ItemGroup>
     <ClInclude Include="Engine\Cubemap.h" />
     <ClInclude Include="Engine\Deps.h" />
+    <ClInclude Include="Engine\FrameBuffer.h" />
     <ClInclude Include="Engine\Gizmos.h" />
     <ClInclude Include="Engine\Input.h" />
     <ClInclude Include="Engine\Application.h" />
     <ClInclude Include="Engine\Mesh.h" />
+    <ClInclude Include="Engine\Postprocessing\AntiAliasing.h" />
+    <ClInclude Include="Engine\Postprocessing\Bloom.h" />
+    <ClInclude Include="Engine\Postprocessing\Effect.h" />
+    <ClInclude Include="Engine\Postprocessing\Vignette.h" />
     <ClInclude Include="Engine\Scripting\Camera.h" />
     <ClInclude Include="Engine\Scripting\Entity.h" />
     <ClInclude Include="Engine\Scripting\Light.h" />

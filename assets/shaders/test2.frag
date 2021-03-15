@@ -91,14 +91,26 @@ vec3 lighting(vec3 albedo, vec3 n, vec3 p) {
 
 	// reflection
 	float reflectivity = .8;
-	float glossiness = .32;
-	vec3 i = normalize(p - iCamera);
-	vec3 r = reflect(i, n);
+	float glossiness = .95;
 	const float lods = 8.;
-	vec3 reflection = reflectivity * textureLod(skybox, r, lods-(lods*glossiness)).rgb;
+	// vec3 i = normalize(p - iCamera);
+	// vec3 r = reflect(i, n);
+	// vec3 reflection = reflectivity * textureLod(skybox, r, lods-(lods*glossiness)).rgb;
 	diffuse*=1-reflectivity;
 
-	 vec3 result = (ambient + diffuse + specular + reflection) * albedo;
+	// refraction
+	// Air	1.00
+	// Water	1.33
+	// Ice	1.309
+	// Glass	1.52
+	// Diamond	2.42
+	float ratio = 1.00 / 1.52;
+    vec3 I = normalize(p - iCamera);
+    vec3 R = refract(I, normalize(n), ratio);
+	vec3 refraction = reflectivity * textureLod(skybox, R, lods-(lods*glossiness)).rgb;
+
+	 vec3 result = (ambient + diffuse + specular + refraction) * albedo;
+	//  vec3 result = refraction;
 
 	return result;
 }
@@ -114,8 +126,8 @@ void main() {
 
 	vec3 p = ro+rd*d;
 	vec3 n = getNormal(ro+rd*d);
-	 vec3 albedo = vec3(1,.5,.1);
-	//vec3 albedo = vec3(1,1,1);
+	//  vec3 albedo = vec3(1,.5,.1);
+	vec3 albedo = vec3(1,1,1);
 	//vec3 albedo = texture(tex, n.xy).xyz;
 	col = lighting(albedo, n, p);
 

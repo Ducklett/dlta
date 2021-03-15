@@ -9,7 +9,7 @@ namespace engine {
 
 	struct Texture {
 		GLuint id = 0;
-		int unit = -1;
+		int16_t unit = -1;
 
 		static unsigned char* loadImageData(const char* path, int* width, int* height, int* channels, bool flip = true) {
 			stbi_set_flip_vertically_on_load(flip);
@@ -27,10 +27,27 @@ namespace engine {
 
 			if (!data) return Texture{};
 
+			Texture t = create(data, width, height, filter, wrap, mipmap);
+
+			freeImageData(data);
+
+			return move(t);
+		}
+
+		static Texture create_empty(int width, int height, bool filter = true, bool wrap = true, bool mipmap = true) {
+			return move(create(NULL, width, height, filter, wrap, mipmap));
+		}
+
+		static Texture create(unsigned char* data, int width, int height, bool filter = true, bool wrap = true, bool mipmap = true) {
+
+			// fixes color flickering in render texture in low ranges
+			// TODO: parametarize format
+			int format = !data ? GL_RGB16 : GL_RGB;
+
 			GLuint texture;
 			glGenTextures(1, &texture);
 			glBindTexture(GL_TEXTURE_2D, texture);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 
 			int wrapMode = wrap ? GL_REPEAT : GL_CLAMP_TO_EDGE;
 			int filterMode = filter ? GL_LINEAR : GL_NEAREST;
@@ -42,8 +59,6 @@ namespace engine {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMode);
 
 			if (mipmap) glGenerateMipmap(GL_TEXTURE_2D);
-
-			freeImageData(data);
 
 			return { texture };
 		}

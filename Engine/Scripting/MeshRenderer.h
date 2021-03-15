@@ -9,6 +9,7 @@ namespace engine {
 		Shader& shader;
 		Transform& transform;
 		Mesh& mesh;
+		bool ignoreDepth = false;
 
 		MeshRenderer(Shader& shader, Transform& transform, Mesh& mesh) :shader(shader), transform(transform), mesh(mesh) {}
 	};

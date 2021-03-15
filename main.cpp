@@ -102,6 +102,7 @@ int main()
 	planeTransform.position = vec3(0, -1, 0);
 	planeTransform.scale = vec3(20);
 	MeshRenderer plane(floorShader, planeTransform, planeMesh);
+	plane.ignoreDepth = true;
 
 	Transform cubeTransform = Transform();
 	MeshRenderer cube(game.testShader2, cubeTransform, cubeMesh);

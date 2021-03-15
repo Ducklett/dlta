@@ -33,25 +33,39 @@ vec3 lighting(vec3 albedo, vec3 n, vec3 p) {
 	vec3 specular = specularStrength * spec * iLightColor;
 
 	// reflection
-	float reflectivity = .8;
-	float glossiness = .75;
+	float reflectivity = .5;
+	// float glossiness = .75;
+	float glossiness = 1.;
+	const float lods = 8.;
 	vec3 i = normalize(p - iCamera);
 	vec3 r = reflect(i, n);
-	const float lods = 8.;
 	vec3 reflection = reflectivity * textureLod(skybox, r, lods-(lods*glossiness)).rgb;
 	diffuse*=1-reflectivity;
 
+	// refraction
+	// Air	1.00
+	// Water	1.33
+	// Ice	1.309
+	// Glass	1.52
+	// Diamond	2.42
+	float ratio = 1.00 / 1.33;
+    vec3 I = normalize(p - iCamera);
+    vec3 R = refract(I, normalize(n), ratio);
+	vec3 refraction = (1-reflectivity) * textureLod(skybox, R, lods-(lods*glossiness)).rgb;
+
 	 vec3 result = (ambient + diffuse + specular + reflection) * albedo;
+	//  vec3 result = refraction + reflection;
+
 	return result;
 }
 
 void main() {
 	vec3 col = texture(tex, uv).rgb;
 	vec3 logo = texture(tex2, uv).rgb;
-	col = mix(col, col*logo, sin(iTime)*.5+.5);
+	//col = mix(col, col*logo, sin(iTime)*.5+.5);
 
-	//col = vec3(1,.5,.1);
-	col = vec3(1,1,1);
+	col = vec3(1,.5,.1);
+	// col = vec3(1,1,1);
 
 	FragColor = vec4(lighting(col, normal, position),1);
 }
