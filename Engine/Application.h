@@ -8,6 +8,7 @@
 #include "Input.h"
 #include "Time.h"
 #include "FrameBuffer.h"
+#include "EditorGui.h"
 #include "Scripting/Transform.h"
 #include "Scripting/Camera.h"
 #include "Scripting/Entity.h"
@@ -20,6 +21,11 @@
 
 namespace engine {
 	using namespace glm;
+
+	static void glfw_error_callback(int error, const char* description)
+	{
+		fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+	}
 
 	void resize_framebuffer(GLFWwindow* window, int width, int height);
 
@@ -45,6 +51,8 @@ namespace engine {
 		Application(int width, int height, const std::string& title = "engine") {
 			this->width = width;
 			this->height = height;
+
+			glfwSetErrorCallback(glfw_error_callback);
 
 			glfwInit();
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -79,7 +87,8 @@ namespace engine {
 
 			glfwSetWindowUserPointer(window, this);
 
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			// hide and center cursor
+			//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 			glfwSetFramebufferSizeCallback(window, resize_framebuffer);
 			glfwSetKeyCallback(window, Input::key_change);
@@ -123,6 +132,9 @@ namespace engine {
 		}
 
 		void run() {
+
+			EditorGUI::Init(window);
+
 			for (auto entity : entities) {
 				entity->start();
 			}
@@ -143,6 +155,8 @@ namespace engine {
 				render();
 			}
 
+			EditorGUI::Cleanup();
+			glfwDestroyWindow(window);
 			glfwTerminate();
 		}
 
@@ -226,6 +240,9 @@ namespace engine {
 
 			// draw gizmos
 			Gizmos::draw();
+
+			// draw editor gui
+			EditorGUI::Update(window);
 
 			// swap buffers
 			glfwSwapBuffers(window);
