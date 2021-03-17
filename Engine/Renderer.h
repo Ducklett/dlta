@@ -47,7 +47,7 @@ namespace engine {
 		/// <summary>
 		/// render the scene, the result is store in the front buffer
 		/// </summary>
-		void render(Skybox& skybox, const vector<MeshRenderer*>& renderers, vector<postprocessing::Effect>& effects, Shader& testShader) {
+		void render(Skybox& skybox, const vector<MeshRenderer*>& renderers, vector<postprocessing::Effect*>& effects, Shader& testShader) {
 			bool willDrawToScreen = false;
 
 			if (effects.empty()) {
@@ -57,7 +57,7 @@ namespace engine {
 			else {
 				back.bind();
 			}
-			
+
 			//fb.bind();
 
 			glEnable(GL_DEPTH_TEST);
@@ -118,7 +118,8 @@ namespace engine {
 					glClearColor(0, 0, 0, 0);
 					glClear(GL_COLOR_BUFFER_BIT);
 
-					effect.shader.use();
+					effect->shader.use();
+					effect->onBind();
 
 					// send previous render pass to shader
 					front.color.bind(0);

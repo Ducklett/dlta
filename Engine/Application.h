@@ -14,7 +14,7 @@
 #include "Scripting/Entity.h"
 #include "Scripting/MeshRenderer.h"
 
-#include "Postprocessing/Effect.h"
+#include "Postprocessing/EffectStack.h"
 #include "Postprocessing/AntiAliasing.h"
 #include "Postprocessing/Bloom.h"
 #include "Postprocessing/Vignette.h"
@@ -44,7 +44,7 @@ namespace engine {
 		Shader testShader2;
 		vector<Entity*> entities;
 		vector<MeshRenderer*> renderers;
-		vector<postprocessing::Effect> postProcessEffects;
+		postprocessing::EffectStack postProcessEffects;
 		int width;
 		int height;
 		Renderer renderer;
@@ -111,10 +111,11 @@ namespace engine {
 			tex.bind(0);
 			tex2.bind(1);
 
-			//postProcessEffects.push_back(move(postprocessing::Bloom()));
-			//postProcessEffects.push_back(move(postprocessing::AntiAliasing()));
-			postProcessEffects.push_back(move(postprocessing::Vignette()));
-			postProcessEffects.push_back(move(postprocessing::Gamma()));
+			// TODO: unique_ptr craziness
+			postProcessEffects.push(new postprocessing::Bloom());
+			postProcessEffects.push(new postprocessing::AntiAliasing());
+			postProcessEffects.push(new postprocessing::Vignette());
+			postProcessEffects.push(new postprocessing::Gamma());
 
 			renderer = Renderer(width, height, false);
 
@@ -162,12 +163,12 @@ namespace engine {
 				return;
 			}
 
-			renderer.render(skybox, renderers, postProcessEffects, testShader);
+			renderer.render(skybox, renderers, postProcessEffects.stack, testShader);
 
 			const Texture& tex = renderer.getResultTexture();
 
 			// draw editor gui
-			EditorGUI::Update(window, tex.id);
+			EditorGUI::Update(window, postProcessEffects, tex.id);
 
 			// swap buffers
 			glfwSwapBuffers(window);

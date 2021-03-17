@@ -160,7 +160,6 @@
     <ClInclude Include="Engine\Deps.h" />
     <ClInclude Include="Engine\Editor\EditorGui.h" />
     <ClInclude Include="Engine\Editor\GameView.h" />
-    <ClInclude Include="Engine\Editor\PostProcessingEditor.h" />
     <ClInclude Include="Engine\Editor\StatOverlay.h" />
     <ClInclude Include="Engine\FrameBuffer.h" />
     <ClInclude Include="Engine\Gizmos.h" />
@@ -170,6 +169,7 @@
     <ClInclude Include="Engine\Postprocessing\AntiAliasing.h" />
     <ClInclude Include="Engine\Postprocessing\Bloom.h" />
     <ClInclude Include="Engine\Postprocessing\Effect.h" />
+    <ClInclude Include="Engine\Postprocessing\EffectStack.h" />
     <ClInclude Include="Engine\Postprocessing\Gamma.h" />
     <ClInclude Include="Engine\Postprocessing\Vignette.h" />
     <ClInclude Include="Engine\Renderer.h" />

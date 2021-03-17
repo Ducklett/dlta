@@ -4,14 +4,14 @@ out vec4 FragColor;
 in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
+uniform float threshold = 1.;
+uniform float transition = .6;
+uniform float intensity = .5;
 
 void main()
 { 
     vec2 px = (1/vec2(800,600))*2.381;
 
-    float threshold = 1.;
-    float transition = .6;
-    float intensity = .5;
 
     vec3 col = texture(screenTexture, TexCoords).rgb;
 

@@ -137,9 +137,6 @@
     <ClInclude Include="Engine\Editor\EditorGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Editor\PostProcessingEditor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Editor\StatOverlay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -150,6 +147,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Postprocessing\Gamma.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Postprocessing\EffectStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
