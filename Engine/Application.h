@@ -8,7 +8,7 @@
 #include "Input.h"
 #include "Time.h"
 #include "FrameBuffer.h"
-#include "EditorGui.h"
+#include "Editor/EditorGui.h"
 #include "Scripting/Transform.h"
 #include "Scripting/Camera.h"
 #include "Scripting/Entity.h"
@@ -111,7 +111,7 @@ namespace engine {
 
 			fb = FrameBuffer(width, height);
 
-			postProcessEffects.push_back(move(postprocessing::AntiAliasing()));
+			postProcessEffects.push_back(move(postprocessing::Bloom()));
 
 			ppQuad.layout = { Vattr::XY, Vattr::UV };
 			ppQuad.vertices = {
@@ -129,6 +129,8 @@ namespace engine {
 			// Initialize input
 			// this ensures the mouse delta becomes zero on the first frame
 			Input::Update(window, vec2(width, height));
+
+			cout << "fb " << fb.color.id << endl;
 		}
 
 		void run() {
