@@ -69,13 +69,13 @@ public:
 		//IM_ASSERT(font != NULL);
 	}
 
-	static void Update(GLFWwindow* window) {
+	static void Update(GLFWwindow* window, unsigned int gameTexId) {
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::DockSpaceOverViewport(NULL, ImGuiDockNodeFlags_PassthruCentralNode);
+		ImGui::DockSpaceOverViewport(NULL);
 
 		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 		bool show_demo_window = true;
@@ -83,7 +83,7 @@ public:
 
 		postProcessingEditor();
 		statOverlay();
-		gameView();
+		gameView(gameTexId);
 
 		// Rendering
 		ImGui::Render();

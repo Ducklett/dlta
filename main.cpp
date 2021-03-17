@@ -4,8 +4,8 @@
 
 using namespace engine;
 
-const int WIDTH = 800;
-const int HEIGHT = 600;
+const int WIDTH = 1440;
+const int HEIGHT = 810;
 
 Mesh makeCube() {
 	Mesh cube;

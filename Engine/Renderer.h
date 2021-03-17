@@ -11,6 +11,7 @@ namespace engine {
 	struct Renderer {
 		FrameBuffer front;
 		FrameBuffer back;
+		FrameBuffer screen;
 
 		Mesh ppQuad;
 
@@ -19,9 +20,15 @@ namespace engine {
 		/// </summary>
 		bool targetScreen = true;
 
+		Renderer() {}
 		Renderer(int width, int height, bool targetScreen = true) : targetScreen(targetScreen) {
 			front = FrameBuffer(width, height);
 			back = FrameBuffer(width, height);
+			if (!targetScreen) screen = FrameBuffer(width, height);
+
+			cout << "front: " << front.color.id << endl;
+			cout << "back: " << back.color.id << endl;
+			cout << "screen: " << screen.color.id << endl;
 
 			ppQuad.layout = { Vattr::XY, Vattr::UV };
 			ppQuad.vertices = {
@@ -43,14 +50,14 @@ namespace engine {
 		void render(Skybox& skybox, const vector<MeshRenderer*>& renderers, vector<postprocessing::Effect>& effects, Shader& testShader) {
 			bool willDrawToScreen = false;
 
-			if (effects.empty() && targetScreen) {
-				back.unbind();
+			if (effects.empty()) {
+				screen.bind();
 				willDrawToScreen = true;
 			}
 			else {
 				back.bind();
 			}
-
+			
 			//fb.bind();
 
 			glEnable(GL_DEPTH_TEST);
@@ -90,11 +97,6 @@ namespace engine {
 
 			if (!effects.empty()) {
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				//fb.unbind();
-
-				// TODO: create a double framebuffer and swap on each pass; rendering to screen on the final pass
-				// TODO: support having no effects, immediately render to screen if this is the case
-				assert(effects.size() == 1);
 
 				glDisable(GL_DEPTH_TEST);
 				ppQuad.use();
@@ -103,11 +105,10 @@ namespace engine {
 
 					bool lastPass = &effect == &effects.back();
 
-					if (lastPass) glEnable(GL_FRAMEBUFFER_SRGB);
 
 					swapBuffers();
-					if (lastPass && targetScreen) {
-						back.unbind();
+					if (lastPass) {
+						screen.bind();
 						willDrawToScreen = true;
 					}
 					else {
@@ -125,8 +126,6 @@ namespace engine {
 					glBindTexture(GL_TEXTURE_2D, front.color.id);
 
 					ppQuad.draw();
-
-					if (lastPass) glDisable(GL_FRAMEBUFFER_SRGB);
 				}
 			}
 
@@ -136,10 +135,12 @@ namespace engine {
 			if (!willDrawToScreen) {
 				swapBuffers();
 			}
+
+			FrameBuffer::unbind();
 		}
 
 		void swapBuffers() {
-			auto& temp = front;
+			auto temp = front;
 			front = back;
 			back = temp;
 		}
@@ -148,7 +149,7 @@ namespace engine {
 		/// returns texture with the last rendered result, use when targetScreen = false
 		/// </summary>
 		const Texture& getResultTexture() const {
-			return front.color;
+			return screen.color;
 		}
 	};
 }

@@ -9,7 +9,7 @@ void main()
 { 
     vec2 center = TexCoords-.5;
     float radius = .2;
-    float density = 1.;
+    float density = 4.;
     float falloff = 2.;
 
     vec3 col = texture(screenTexture, TexCoords).rgb;

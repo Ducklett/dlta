@@ -42,7 +42,7 @@ namespace engine {
 			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 		}
 
-		void unbind() {
+		static void unbind() {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 	};

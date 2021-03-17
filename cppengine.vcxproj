@@ -170,6 +170,7 @@
     <ClInclude Include="Engine\Postprocessing\AntiAliasing.h" />
     <ClInclude Include="Engine\Postprocessing\Bloom.h" />
     <ClInclude Include="Engine\Postprocessing\Effect.h" />
+    <ClInclude Include="Engine\Postprocessing\Gamma.h" />
     <ClInclude Include="Engine\Postprocessing\Vignette.h" />
     <ClInclude Include="Engine\Renderer.h" />
     <ClInclude Include="Engine\Scripting\Camera.h" />
