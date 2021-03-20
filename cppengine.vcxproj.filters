@@ -137,12 +137,6 @@
     <ClInclude Include="Engine\Editor\EditorGui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Editor\StatOverlay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Editor\GameView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -155,7 +149,13 @@
     <ClInclude Include="Engine\Editor\EditorWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Editor\EffectEditor.h">
+    <ClInclude Include="Engine\Editor\Windows\EffectEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Editor\Windows\StatOverlay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Editor\Windows\GameView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

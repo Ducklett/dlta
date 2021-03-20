@@ -21,9 +21,9 @@
 #include "Postprocessing/Gamma.h"
 #include "Renderer.h"
 
-#include "./Editor/StatOverlay.h"
-#include "./Editor/EffectEditor.h"
-#include "./Editor/GameView.h"
+#include "./Editor/Windows/StatOverlay.h"
+#include "./Editor/Windows/EffectEditor.h"
+#include "./Editor/Windows/GameView.h"
 
 namespace engine {
 	using namespace glm;

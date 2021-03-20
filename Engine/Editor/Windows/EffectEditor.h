@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../vendor/imgui/imgui.h"
-#include "EditorWindow.h"
-#include "../Postprocessing/EffectStack.h"
+#include "../../../vendor/imgui/imgui.h"
+#include "../EditorWindow.h"
+#include "../../Postprocessing/EffectStack.h"
 
 namespace engine {
 	using namespace postprocessing;

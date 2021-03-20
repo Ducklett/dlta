@@ -1,6 +1,6 @@
 #pragma once
-#include "../../vendor/imgui/imgui.h"
-#include "EditorWindow.h"
+#include "../../../vendor/imgui/imgui.h"
+#include "../EditorWindow.h"
 
 namespace engine {
 
