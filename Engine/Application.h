@@ -22,6 +22,8 @@
 #include "Renderer.h"
 
 #include "./Editor/StatOverlay.h"
+#include "./Editor/EffectEditor.h"
+#include "./Editor/GameView.h"
 
 namespace engine {
 	using namespace glm;
@@ -113,6 +115,8 @@ namespace engine {
 			tex.bind(0);
 			tex2.bind(1);
 
+			renderer = Renderer(width, height, false);
+
 			// register postprocessing effects
 			// TODO: unique_ptr craziness
 			postProcessEffects.push(new postprocessing::Bloom());
@@ -122,8 +126,8 @@ namespace engine {
 
 			// register editor windows
 			new StatOverlay();
-
-			renderer = Renderer(width, height, false);
+			new EffectEditor(postProcessEffects);
+			new GameView(renderer.screen.color.id);
 
 			// Initialize input
 			// this ensures the mouse delta becomes zero on the first frame
@@ -174,7 +178,7 @@ namespace engine {
 			const Texture& tex = renderer.getResultTexture();
 
 			// draw editor gui
-			EditorGUI::Update(window, postProcessEffects, tex.id);
+			EditorGUI::Update(window, tex.id);
 
 			// swap buffers
 			glfwSwapBuffers(window);

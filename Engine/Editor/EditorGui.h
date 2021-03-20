@@ -5,7 +5,6 @@
 #include "../../vendor/imgui/imgui_impl_glfw.h"
 #include "../../vendor/imgui/imgui_impl_opengl3.h"
 #include "StatOverlay.h"
-#include "GameView.h"
 #include "../postprocessing/EffectStack.h"
 #include "EditorWindow.h"
 
@@ -70,7 +69,7 @@ namespace engine {
 			//IM_ASSERT(font != NULL);
 		}
 
-		static void Update(GLFWwindow* window, postprocessing::EffectStack& effectStack, unsigned int gameTexId) {
+		static void Update(GLFWwindow* window, unsigned int gameTexId) {
 			// Start the Dear ImGui frame
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
@@ -78,12 +77,24 @@ namespace engine {
 
 			ImGui::DockSpaceOverViewport(NULL);
 
-			// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-			bool show_demo_window = true;
-			if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
+			static bool show_demo_window = true;
 
-			effectStack.onEditorGui();
-			gameView(gameTexId);
+			if (ImGui::BeginMainMenuBar())
+			{
+				if (ImGui::BeginMenu("Window"))
+				{
+					if (ImGui::MenuItem("Demo window", "", show_demo_window)) show_demo_window = !show_demo_window;
+
+					for (auto w : EditorWindow::editorWindows) {
+						if (ImGui::MenuItem(w->title, "", w->open)) w->open = !w->open;
+					}
+
+					ImGui::EndMenu();
+				}
+				ImGui::EndMainMenuBar();
+			}
+
+			if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
 
 			for (auto w : EditorWindow::editorWindows) {
 				if (w->open) w->windowBegin();

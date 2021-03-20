@@ -155,5 +155,8 @@
     <ClInclude Include="Engine\Editor\EditorWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Editor\EffectEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

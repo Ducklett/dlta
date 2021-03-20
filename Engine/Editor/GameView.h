@@ -1,28 +1,30 @@
 #pragma once
 #include "../../vendor/imgui/imgui.h"
+#include "EditorWindow.h"
 
-static bool gameViewOpen = true;
+namespace engine {
 
-void gameView(unsigned int textureId) {
-	if (!gameViewOpen) return;
+	class GameView : public EditorWindow {
+	public:
+		int screenTexId;
 
-	auto& style = ImGui::GetStyle();
-	auto pad = style.WindowPadding;
-	style.WindowPadding = ImVec2(0, 0);
+		GameView(int screenTexId) : EditorWindow("Game view"), screenTexId(screenTexId) { open = true; }
 
-	ImGui::Begin("Game View", &gameViewOpen);
-	// TODO: feed in the real texture id 
+		virtual void onGui() override {
+			auto& style = ImGui::GetStyle();
+			auto pad = style.WindowPadding;
+			style.WindowPadding = ImVec2(0, 0);
 
-			//ImGui::SetCursorPosX(ImGui::GetCursorPosX() + (float)offset_x);
-	const int gamewidth = 800;
-	const int gameheight = 600;
+			// TODO: feed in real game dims that are set somewhere
+			const int gamewidth = 800;
+			const int gameheight = 600;
 
-	ImGui::SetCursorPosX((ImGui::GetWindowWidth() - gamewidth) * .5);
-	ImGui::SetCursorPosY((ImGui::GetWindowHeight() - gameheight) * .5);
-	
-	ImGui::Image((void*)(intptr_t)textureId, ImVec2(gamewidth, gameheight), ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::SetCursorPosX((ImGui::GetWindowWidth() - gamewidth) * .5);
+			ImGui::SetCursorPosY((ImGui::GetWindowHeight() - gameheight) * .5);
 
-	ImGui::End();
+			ImGui::Image((void*)(intptr_t)screenTexId, ImVec2(gamewidth, gameheight), ImVec2(0, 1), ImVec2(1, 0));
 
-	style.WindowPadding = pad;
+			style.WindowPadding = pad;
+		}
+	};
 }
