@@ -21,6 +21,8 @@
 #include "Postprocessing/Gamma.h"
 #include "Renderer.h"
 
+#include "./Editor/StatOverlay.h"
+
 namespace engine {
 	using namespace glm;
 
@@ -111,11 +113,15 @@ namespace engine {
 			tex.bind(0);
 			tex2.bind(1);
 
+			// register postprocessing effects
 			// TODO: unique_ptr craziness
-			postProcessEffects.push(new postprocessing::Bloom());
-			postProcessEffects.push(new postprocessing::AntiAliasing());
-			postProcessEffects.push(new postprocessing::Vignette());
+			//postProcessEffects.push(new postprocessing::Bloom());
+			//postProcessEffects.push(new postprocessing::AntiAliasing());
+			//postProcessEffects.push(new postprocessing::Vignette());
 			postProcessEffects.push(new postprocessing::Gamma());
+
+			// register editor windows
+			new StatOverlay();
 
 			renderer = Renderer(width, height, false);
 
