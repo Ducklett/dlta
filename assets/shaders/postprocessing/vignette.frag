@@ -13,6 +13,10 @@ void main()
 { 
     vec2 center = TexCoords-.5;
 
+    vec2 uv = TexCoords;
+    // ugly aspect ratio fix
+    uv.x*=800./600.;
+
     vec3 col = texture(screenTexture, TexCoords).rgb;
     float vignette = 1-max(0,pow(length(center)/radius, falloff) * density);
     col *= vignette;

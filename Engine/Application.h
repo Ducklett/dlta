@@ -107,8 +107,8 @@ namespace engine {
 			tex = Texture::load("assets/container.jpg");
 			tex2 = Texture::load("assets/icon.png", false, false, false);
 
-			//skybox = Skybox("assets/cubemaps/sea", "assets/shaders/skybox.vert", "assets/shaders/skybox.frag", ".jpg");
-			skybox = Skybox("assets/cubemaps/station", "assets/shaders/skybox.vert", "assets/shaders/skybox.frag", ".png");
+			skybox = Skybox("assets/cubemaps/sea", "assets/shaders/skybox.vert", "assets/shaders/skybox.frag", ".jpg");
+			//skybox = Skybox("assets/cubemaps/station", "assets/shaders/skybox.vert", "assets/shaders/skybox.frag", ".png");
 
 			tex.bind(0);
 			tex2.bind(1);

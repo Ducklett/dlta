@@ -19,7 +19,6 @@ namespace engine {
 			void onEditorGui() {
 				static bool pp_window = true;
 				ImGui::Begin("Postprocessing", &pp_window);
-				ImGui::Text(":DDDD");
 				for (auto& e : stack) {
 					ImGui::BeginGroup();
 					ImGui::Text(e->title);
