@@ -96,7 +96,9 @@ namespace dlta {
 					if (ImGui::MenuItem("Demo window", "", show_demo_window)) show_demo_window = !show_demo_window;
 
 					for (auto w : EditorWindow::editorWindows) {
-						if (ImGui::MenuItem(w->title, "", w->open)) w->open = !w->open;
+						if (w->includeInWindowList) {
+							if (ImGui::MenuItem(w->title, "", w->open)) w->open = !w->open;
+						}
 					}
 
 					ImGui::EndMenu();
