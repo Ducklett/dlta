@@ -86,7 +86,7 @@ namespace engine {
 				model = glm::rotate(model, rndr->transform.euler.y, vec3(0, 1, 0));
 				model = glm::rotate(model, rndr->transform.euler.z, vec3(0, 0, 1));
 				model = glm::scale(model, rndr->transform.scale);
-				testShader.setMat4("model", model);
+				shader.setMat4("model", model);
 
 				rndr->mesh.draw();
 

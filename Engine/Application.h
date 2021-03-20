@@ -115,9 +115,9 @@ namespace engine {
 
 			// register postprocessing effects
 			// TODO: unique_ptr craziness
-			//postProcessEffects.push(new postprocessing::Bloom());
-			//postProcessEffects.push(new postprocessing::AntiAliasing());
-			//postProcessEffects.push(new postprocessing::Vignette());
+			postProcessEffects.push(new postprocessing::Bloom());
+			postProcessEffects.push(new postprocessing::AntiAliasing());
+			postProcessEffects.push(new postprocessing::Vignette());
 			postProcessEffects.push(new postprocessing::Gamma());
 
 			// register editor windows
