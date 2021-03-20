@@ -17,7 +17,7 @@ namespace engine {
 			editorWindows.push_back(this);
 		}
 
-		void windowBegin() {
+		virtual void windowBegin() {
 			if (ImGui::Begin(title, &open, ImGuiWindowFlags_None)) {
 				onGui();
 			}

@@ -8,7 +8,7 @@ namespace engine {
 	public:
 		StatOverlay() : EditorWindow("Stat overlay") { open = true; }
 
-		void windowBegin() {
+		virtual void windowBegin() override {
 			// Top left 0, top right 1, bottom left 2, bottom right 3
 			static int corner = 1;
 			if (corner != -1)
@@ -34,6 +34,7 @@ namespace engine {
 				ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove;
 
 			if (ImGui::Begin(title, &open, window_flags)) onGui();
+			windowEnd();
 		}
 
 		virtual void onGui() override {
