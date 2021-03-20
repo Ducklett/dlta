@@ -3,7 +3,7 @@
 #include <vector>
 #include "../Deps.h"
 
-namespace engine {
+namespace dlta {
 	using namespace std;
 
 	class EditorWindow {
@@ -11,6 +11,7 @@ namespace engine {
 		static vector<EditorWindow*> editorWindows;
 
 		bool open = false;
+		bool includeInWindowList = true;
 		const char* title;
 
 		EditorWindow(const char* title) : title(title) {

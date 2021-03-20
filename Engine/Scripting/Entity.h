@@ -2,7 +2,7 @@
 
 #include "Transform.h"
 
-namespace engine {
+namespace dlta {
 
 	class Entity {
 	public:

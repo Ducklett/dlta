@@ -7,7 +7,7 @@
 #include "Scripting/MeshRenderer.h"
 #include "Postprocessing/Effect.h"
 
-namespace engine {
+namespace dlta {
 	struct Renderer {
 		FrameBuffer front;
 		FrameBuffer back;

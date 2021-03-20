@@ -1,8 +1,9 @@
 #pragma once
 #include "../../../vendor/imgui/imgui.h"
 #include "../EditorWindow.h"
+#include "../../Input.h"
 
-namespace engine {
+namespace dlta {
 
 	class GameView : public EditorWindow {
 	public:
@@ -19,8 +20,15 @@ namespace engine {
 			const int gamewidth = 800;
 			const int gameheight = 600;
 
-			ImGui::SetCursorPosX((ImGui::GetWindowWidth() - gamewidth) * .5);
-			ImGui::SetCursorPosY((ImGui::GetWindowHeight() - gameheight) * .5);
+			float offsetX = (ImGui::GetWindowWidth() - gamewidth) * .5;
+			float offsetY = ((ImGui::GetWindowHeight() - gameheight) * .5);
+
+			auto pos = ImGui::GetWindowPos();
+
+			Input::setMouseOffset(vec2(offsetX + pos.x, offsetY + pos.y));
+
+			ImGui::SetCursorPosX(offsetX);
+			ImGui::SetCursorPosY(offsetY);
 
 			ImGui::Image((void*)(intptr_t)screenTexId, ImVec2(gamewidth, gameheight), ImVec2(0, 1), ImVec2(1, 0));
 

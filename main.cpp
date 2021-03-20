@@ -2,7 +2,7 @@
 #include "Engine/Application.h"
 #include "Game/Player.h"
 
-using namespace engine;
+using namespace dlta;
 
 const int WIDTH = 1440;
 const int HEIGHT = 810;

@@ -4,7 +4,7 @@
 #include "../EditorWindow.h"
 #include "../../Postprocessing/EffectStack.h"
 
-namespace engine {
+namespace dlta {
 	using namespace postprocessing;
 
 	class EffectEditor : public EditorWindow {

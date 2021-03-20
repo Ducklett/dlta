@@ -4,7 +4,7 @@
 #include "../Mesh.h"
 #include "./Transform.h"
 
-namespace engine {
+namespace dlta {
 	struct MeshRenderer {
 		Shader& shader;
 		Transform& transform;

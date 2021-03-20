@@ -4,7 +4,7 @@
 #include "Deps.h"
 #include "./Color.h"
 
-namespace engine {
+namespace dlta {
 
 	using namespace glm;
 
@@ -154,6 +154,7 @@ namespace engine {
 		static GLFWwindow* window;
 
 		// temp
+		static vec2 cursorOffset;
 		static vec3 light;
 		static Color lightColor;
 
@@ -209,6 +210,10 @@ namespace engine {
 			scrollDelta = vec2(0);
 		}
 
+		static void setMouseOffset(vec2 off) {
+			cursorOffset = off;
+		}
+
 		static void key_change(GLFWwindow* window, int key, int scancode, int action, int mods) {
 			if (action == GLFW_REPEAT) return;
 			keyState.insert({ key, action });
@@ -229,6 +234,7 @@ namespace engine {
 	GLFWwindow* Input::window = NULL;
 	std::unordered_map<int, int> Input::keyState;
 	std::unordered_map<int, int> Input::mouseState;
+	vec2 Input::cursorOffset = vec2(0);
 	vec3 Input::light = vec3(0);
 	Color Input::lightColor = Color::white;
 	vec2 Input::scrollDelta = vec2(0, 0);

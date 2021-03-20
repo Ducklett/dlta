@@ -2,7 +2,7 @@
 
 #include "./Effect.h"
 
-namespace engine {
+namespace dlta {
 	namespace postprocessing {
 		class Vignette : public Effect {
 		public:

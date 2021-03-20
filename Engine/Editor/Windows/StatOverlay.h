@@ -2,8 +2,9 @@
 
 #include "../../../vendor/imgui/imgui.h"
 #include "../EditorWindow.h"
+#include "../../Input.h"
 
-namespace engine {
+namespace dlta {
 	class StatOverlay : public EditorWindow {
 	public:
 		StatOverlay() : EditorWindow("Stat overlay") { open = true; }
@@ -43,10 +44,22 @@ namespace engine {
 
 			ImGui::Separator();
 
-			if (ImGui::IsMousePosValid())
-				ImGui::Text("Mouse Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
-			else
+			vec2 mous = vec2(io.MousePos.x, io.MousePos.y);
+			float mouseX = mous.x - Input::cursorOffset.x;
+			float mouseY = mous.y - Input::cursorOffset.y;
+
+			// TODO: feed into window
+			const float gameWidth = 800;
+			const float gameHeight = 600;
+
+			bool isInGameView = mouseX > 0 && mouseX < gameWidth && mouseY > 0 && mouseY < gameHeight;
+
+			if (ImGui::IsMousePosValid() && isInGameView) {
+				ImGui::Text("Mouse Position: (%.1f,%.1f)", mouseX, mouseY);
+			}
+			else {
 				ImGui::Text("Mouse Position: <invalid>");
+			}
 
 			ImGui::Separator();
 

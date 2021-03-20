@@ -4,7 +4,7 @@
 #include "../Engine/Application.h"
 #include "../Engine/Scripting/Entity.h"
 
-using namespace engine;
+using namespace dlta;
 
 class Player : public Entity {
 public:

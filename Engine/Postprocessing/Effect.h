@@ -1,7 +1,7 @@
 #pragma once
 #include "../Shader.h"
 
-namespace engine {
+namespace dlta {
 	namespace postprocessing {
 		class Effect {
 

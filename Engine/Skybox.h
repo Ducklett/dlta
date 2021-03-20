@@ -6,7 +6,7 @@
 #include "./Scripting/Camera.h"
 #include <vector>
 
-namespace engine {
+namespace dlta {
 	using namespace std;
 
 	class Skybox {

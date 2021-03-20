@@ -2,7 +2,7 @@
 
 #include "./Effect.h"
 
-namespace engine {
+namespace dlta {
 	namespace postprocessing {
 		class Gamma : public Effect {
 		public:

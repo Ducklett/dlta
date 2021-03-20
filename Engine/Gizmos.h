@@ -5,7 +5,7 @@
 #include "Color.h"
 #include "Shader.h"
 
-namespace engine {
+namespace dlta {
 
 	using namespace std;
 

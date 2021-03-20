@@ -8,7 +8,7 @@
 #include "./Scripting/Camera.h"
 #include "./Input.h"
 
-namespace engine {
+namespace dlta {
 	using namespace std;
 	using namespace glm;
 

@@ -2,7 +2,7 @@
 
 #include "../Deps.h"
 
-namespace engine {
+namespace dlta {
 	using namespace glm;
 
 	struct Transform {

@@ -4,7 +4,7 @@
 #include "Texture.h"
 #include <vector>
 
-namespace engine {
+namespace dlta {
 	using namespace std;
 
 	class Cubemap {

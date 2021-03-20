@@ -25,7 +25,7 @@
 #include "./Editor/Windows/EffectEditor.h"
 #include "./Editor/Windows/GameView.h"
 
-namespace engine {
+namespace dlta {
 	using namespace glm;
 
 	static void glfw_error_callback(int error, const char* description)

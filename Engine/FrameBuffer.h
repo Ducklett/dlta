@@ -3,7 +3,7 @@
 #include "./Deps.h"
 #include "./Texture.h"
 
-namespace engine {
+namespace dlta {
 	using namespace std;
 
 	struct FrameBuffer {

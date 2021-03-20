@@ -2,7 +2,7 @@
 
 #include "Effect.h"
 
-namespace engine {
+namespace dlta {
 	using namespace std;
 
 	namespace postprocessing {

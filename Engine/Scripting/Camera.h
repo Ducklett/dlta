@@ -3,7 +3,7 @@
 #include "../Deps.h"
 #include "Transform.h"
 
-namespace engine {
+namespace dlta {
 
 	enum class Projection {
 		Perspective,

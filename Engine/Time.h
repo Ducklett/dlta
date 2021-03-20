@@ -1,6 +1,6 @@
 #pragma once
 
-namespace engine {
+namespace dlta {
 	struct Time {
 		static float deltaTime;
 		static float time;

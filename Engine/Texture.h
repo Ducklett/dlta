@@ -4,7 +4,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-namespace engine {
+namespace dlta {
 	using namespace std;
 
 	struct Texture {
