@@ -160,9 +160,11 @@
     <ClInclude Include="Engine\Deps.h" />
     <ClInclude Include="Engine\Editor\EditorGui.h" />
     <ClInclude Include="Engine\Editor\EditorWindow.h" />
+    <ClInclude Include="Engine\Editor\Theme.h" />
     <ClInclude Include="Engine\Editor\Windows\About.h" />
     <ClInclude Include="Engine\Editor\Windows\EffectEditor.h" />
     <ClInclude Include="Engine\Editor\Windows\GameView.h" />
+    <ClInclude Include="Engine\Editor\Windows\Preferences.h" />
     <ClInclude Include="Engine\Editor\Windows\StatOverlay.h" />
     <ClInclude Include="Engine\FrameBuffer.h" />
     <ClInclude Include="Engine\Gizmos.h" />

@@ -7,6 +7,8 @@
 #include "../postprocessing/EffectStack.h"
 #include "EditorWindow.h"
 #include "./Windows/About.h"
+#include "./Windows/Preferences.h"
+#include "./Theme.h"
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
 // To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
@@ -18,6 +20,7 @@
 namespace dlta {
 	static ImGuiIO* io;
 	static AboutEditor* about;
+	static PreferencesEditor* preferences;
 
 	class EditorGUI {
 	public:
@@ -39,7 +42,8 @@ namespace dlta {
 
 			// Setup Dear ImGui style
 			//ImGui::StyleColorsDark();
-			ApplyMidnightTheme();
+			EditorTheme::theme.apply();
+			//ApplyMidnightTheme();
 			//ImGui::StyleColorsClassic();
 
 			// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
@@ -72,6 +76,7 @@ namespace dlta {
 
 			// register permanent editor windows
 			about = new AboutEditor();
+			preferences = new PreferencesEditor();
 		}
 
 		static void Update(GLFWwindow* window, unsigned int gameTexId) {
@@ -87,8 +92,14 @@ namespace dlta {
 			if (ImGui::BeginMainMenuBar())
 			{
 				// placeholder menu items
-				if (ImGui::MenuItem("File", "")) {}
-				if (ImGui::MenuItem("Edit", "")) {}
+				if (ImGui::MenuItem("File", "")) {
+				}
+
+				// TODO: more sophisticated system that lets you add windows into any of these sub menus
+				if (ImGui::BeginMenu("Edit", "")) {
+					if (ImGui::MenuItem(preferences->title)) preferences->open = !preferences->open;
+					ImGui::EndMenu();
+				}
 				// ===
 
 				if (ImGui::BeginMenu("Window"))
@@ -146,95 +157,5 @@ namespace dlta {
 			ImGui_ImplGlfw_Shutdown();
 			ImGui::DestroyContext();
 		}
-	private:
-		static void ApplyMidnightTheme()
-		{
-			ImGuiStyle* style = &ImGui::GetStyle();
-			ImVec4* colors = style->Colors;
-
-			colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 0.93f);
-			colors[ImGuiCol_TextDisabled] = ImVec4(1.00f, 1.00f, 1.00f, 0.61f);
-			colors[ImGuiCol_WindowBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-			colors[ImGuiCol_ChildBg] = ImVec4(0.28f, 0.28f, 0.28f, 0.00f);
-			colors[ImGuiCol_PopupBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);
-			colors[ImGuiCol_Border] = ImVec4(0.00f, 0.00f, 0.00f, 0.08f);
-			colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-			colors[ImGuiCol_FrameBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);
-			colors[ImGuiCol_FrameBgHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-			colors[ImGuiCol_FrameBgActive] = ImVec4(0.28f, 0.28f, 0.28f, 1.00f);
-			colors[ImGuiCol_TitleBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-			colors[ImGuiCol_TitleBgActive] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-			colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-			colors[ImGuiCol_MenuBarBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-			colors[ImGuiCol_ScrollbarBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);
-			colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.28f, 0.28f, 0.28f, 1.00f);
-			colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.30f, 0.30f, 0.30f, 1.00f);
-			colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.30f, 0.30f, 0.30f, 1.00f);
-			colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 1.00f, 1.00f, 0.88f);
-			colors[ImGuiCol_SliderGrab] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_SliderGrabActive] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_Button] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_ButtonHovered] = ImVec4(0.27f, 0.42f, 0.64f, 1.00f);
-			colors[ImGuiCol_ButtonActive] = ImVec4(0.27f, 0.41f, 0.63f, 1.00f);
-			colors[ImGuiCol_Header] = ImVec4(0.22f, 0.22f, 0.22f, 1.00f);
-			colors[ImGuiCol_HeaderHovered] = ImVec4(0.24f, 0.24f, 0.24f, 1.00f);
-			colors[ImGuiCol_HeaderActive] = ImVec4(0.38f, 0.38f, 0.38f, 1.00f);
-			colors[ImGuiCol_Separator] = ImVec4(0.27f, 0.27f, 0.27f, 1.00f);
-			colors[ImGuiCol_SeparatorHovered] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
-			colors[ImGuiCol_SeparatorActive] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 1.00f, 1.00f, 0.25f);
-			colors[ImGuiCol_ResizeGripHovered] = ImVec4(1.00f, 1.00f, 1.00f, 0.67f);
-			colors[ImGuiCol_ResizeGripActive] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_Tab] = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);
-			colors[ImGuiCol_TabHovered] = ImVec4(0.35f, 0.35f, 0.35f, 1.00f);
-			colors[ImGuiCol_TabActive] = ImVec4(0.24f, 0.24f, 0.24f, 1.00f);
-			colors[ImGuiCol_TabUnfocused] = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);
-			colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.17f, 0.17f, 0.17f, 1.00f);
-			colors[ImGuiCol_PlotLines] = ImVec4(0.47f, 0.47f, 0.47f, 1.00f);
-			colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_PlotHistogram] = ImVec4(0.59f, 0.59f, 0.59f, 1.00f);
-			colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_TableHeaderBg] = ImVec4(0.19f, 0.19f, 0.20f, 1.00f);
-			colors[ImGuiCol_TableBorderStrong] = ImVec4(0.31f, 0.31f, 0.35f, 1.00f);
-			colors[ImGuiCol_TableBorderLight] = ImVec4(0.23f, 0.23f, 0.25f, 1.00f);
-			colors[ImGuiCol_TableRowBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-			colors[ImGuiCol_TableRowBgAlt] = ImVec4(1.00f, 1.00f, 1.00f, 0.06f);
-			colors[ImGuiCol_TextSelectedBg] = ImVec4(0.33f, 0.47f, 0.71f, 0.55f);
-			colors[ImGuiCol_DragDropTarget] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_NavHighlight] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_NavWindowingHighlight] = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
-			colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.59f);
-			colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.59f);
-
-			// margin / padding / spacing
-			style->WindowPadding = ImVec2(8, 8);
-			style->FramePadding = ImVec2(8, 4);
-			style->CellPadding = ImVec2(2, 2);
-			style->ItemSpacing = ImVec2(6, 6);
-			style->ItemInnerSpacing = ImVec2(6, 6);
-			style->TouchExtraPadding = ImVec2(0, 0);
-			style->IndentSpacing = 24;
-			style->ScrollbarSize = 14;
-			style->GrabMinSize = 8;
-
-			// borders
-			style->WindowBorderSize = 1;
-			style->ChildBorderSize = 1;
-			style->PopupBorderSize = 1;
-			style->FrameBorderSize = 0;
-			style->TabBorderSize = 0;
-
-			// rounding
-			style->WindowRounding = 2;
-			style->ChildRounding = 2;
-			style->FrameRounding = 4;
-			style->PopupRounding = 4;
-			style->ScrollbarRounding = 12;
-			style->GrabRounding = 4;
-			style->LogSliderDeadzone = 4;
-			style->TabRounding = 4;
-		}
-
-
 	};
 }

@@ -184,8 +184,8 @@ namespace dlta {
 			glfwSwapBuffers(window);
 
 			Input::Clear();
-			glfwPollEvents();
-			//glfwWaitEvents();
+			//glfwPollEvents();
+			glfwWaitEvents();
 		}
 
 		static void panic(const std::string& msg) {
