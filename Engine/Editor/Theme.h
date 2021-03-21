@@ -4,10 +4,13 @@
 
 namespace dlta {
 	static bool editor_compact_mode = false;
+	static int editor_theme_index = 0;
 
 	struct EditorTheme {
+		static EditorTheme themes[];
 		static EditorTheme referenceTheme;
-		static EditorTheme theme;
+
+		const char* title;
 
 		ImVec4 primary = ImVec4(0.33f, 0.47f, 0.71f, 1.00f);
 		ImVec4 primaryHover = ImVec4(0.27f, 0.42f, 0.64f, 1.00f);
@@ -19,7 +22,7 @@ namespace dlta {
 		ImVec4 text = ImVec4(1.00f, 1.00f, 1.00f, 0.93f);
 		ImVec4 textDisabled = ImVec4(1.00f, 1.00f, 1.00f, 0.61f);
 
-		void apply() {
+		void apply(bool softreset = false, int lastThemeIndex = -1) {
 			ImGuiStyle* style = &ImGui::GetStyle();
 			ImVec4* colors = style->Colors;
 
@@ -119,7 +122,10 @@ namespace dlta {
 			style->LogSliderDeadzone = 4;
 			style->TabRounding = 4;
 
-			referenceTheme = *this;
+			if (!softreset) {
+				if (lastThemeIndex > -1) themes[lastThemeIndex] = referenceTheme;
+				referenceTheme = *this;
+			}
 		}
 
 		void onGui() {
@@ -151,12 +157,47 @@ namespace dlta {
 				ImGui::TextUnformatted(name);
 				ImGui::PopID();
 			}
-			apply();
+			apply(true);
 		}
 	};
 
 	EditorTheme EditorTheme::referenceTheme;
-	EditorTheme EditorTheme::theme;
-
-
+	EditorTheme EditorTheme::themes[] = {
+		{
+			 "Midnight",
+			ImVec4(0.33f, 0.47f, 0.71f, 1.00f),
+			ImVec4(0.27f, 0.42f, 0.64f, 1.00f),
+			ImVec4(0.16f, 0.16f, 0.16f, 1.00f),
+			ImVec4(0.18f, 0.18f, 0.18f, 1.00f),
+			ImVec4(0.24f, 0.24f, 0.24f, 1.00f),
+			ImVec4(0.28f, 0.28f, 0.28f, 1.00f),
+			ImVec4(0.35f, 0.35f, 0.35f, 1.00f),
+			ImVec4(1.00f, 1.00f, 1.00f, 0.93f),
+			ImVec4(1.00f, 1.00f, 1.00f, 0.61f),
+		},
+		{
+			"Cherry",
+			ImVec4(0.8980392156862745f,0.48627450980392156f,0.6627450980392157f,1),
+			ImVec4(0.8117647058823529f,0.30196078431372547f,0.6274509803921569f,1),
+			ImVec4(0.8470588235294118f,0.8470588235294118f,0.8470588235294118f,1),
+			ImVec4(0.8980392156862745f,0.8980392156862745f,0.8980392156862745f,1),
+			ImVec4(0.9450980392156862f,0.9450980392156862f,0.9450980392156862f,1),
+			ImVec4(0.9607843137254902f,0.9607843137254902f,0.9607843137254902f,1),
+			ImVec4(1.f,1.f,1.f,1),
+			ImVec4(0.2196078431372549f,0.17254901960784313f,0.20392156862745098f,1),
+			ImVec4(0.1607843137254902f,0.058823529411764705f,0.12549019607843137f,1),
+		},
+		{
+			"Cyber",
+			ImVec4(0.33f, 0.87f, 0.31f, 1.00f),
+			ImVec4(0.27f, 0.82f, 0.34f, 1.00f),
+			ImVec4(0.16f, 0.16f, 0.16f, 1.00f),
+			ImVec4(0.18f, 0.18f, 0.18f, 1.00f),
+			ImVec4(0.24f, 0.24f, 0.24f, 1.00f),
+			ImVec4(0.28f, 0.28f, 0.28f, 1.00f),
+			ImVec4(0.35f, 0.35f, 0.35f, 1.00f),
+			ImVec4(1.00f, 1.00f, 1.00f, 0.93f),
+			ImVec4(1.00f, 1.00f, 1.00f, 0.61f),
+		},
+	};
 }

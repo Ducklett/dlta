@@ -42,7 +42,7 @@ namespace dlta {
 
 			// Setup Dear ImGui style
 			//ImGui::StyleColorsDark();
-			EditorTheme::theme.apply();
+			EditorTheme::themes[0].apply();
 			//ApplyMidnightTheme();
 			//ImGui::StyleColorsClassic();
 

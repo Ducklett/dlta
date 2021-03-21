@@ -38,15 +38,26 @@ namespace dlta {
 				ImGui::Text("%s", sections[selected]);
 				ImGui::Separator();
 
+
 				// Appearance
 				if (selected == 0) {
-					static int themeIdx = 0;
+
+					EditorTheme& theme = EditorTheme::themes[editor_theme_index];
+
+					// TODO: iterate themes
 					const char* themeNames[] = { "Midnight", "Cherry", "cyber" };
-					ImGui::Combo("Theme", &themeIdx, themeNames, 3);
 
-					if (ImGui::Checkbox("Compact mode", &editor_compact_mode)) EditorTheme::theme.apply();
+					int lastIndex = editor_theme_index;
+					if (ImGui::Combo("Theme", &editor_theme_index, themeNames, 3)) {
+						printf("Theme changed");
+						EditorTheme::themes[editor_theme_index].apply(false, lastIndex);
+					}
 
-					EditorTheme::theme.onGui();
+					if (ImGui::Checkbox("Compact mode", &editor_compact_mode)) {
+						theme.apply(true);
+					}
+
+					theme.onGui();
 				}
 				else {
 					ImGui::Text("placeholder");
