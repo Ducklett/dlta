@@ -189,6 +189,7 @@
     <ClInclude Include="Engine\Color.h" />
     <ClInclude Include="Engine\Time.h" />
     <ClInclude Include="Game\Player.h" />
+    <ClInclude Include="Game\test3D.h" />
     <ClInclude Include="vendor\imgui\imconfig.h" />
     <ClInclude Include="vendor\imgui\imgui.h" />
     <ClInclude Include="vendor\imgui\imgui_impl_glfw.h" />

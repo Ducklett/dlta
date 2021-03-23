@@ -167,5 +167,8 @@
     <ClInclude Include="Engine\Editor\Theme.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game\test3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
