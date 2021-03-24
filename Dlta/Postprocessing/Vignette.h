@@ -12,11 +12,13 @@ namespace dlta {
 
 			Vignette() : Effect("vignette", "Vignette") { }
 
+#ifdef DLTA_EDITOR
 			void onEditorGui() {
 				ImGui::SliderFloat("Radius", &radius, 0, 2);
 				ImGui::SliderFloat("Density", &density, .1f, 10);
 				ImGui::SliderFloat("Falloff", &falloff, 1., 32);
 			}
+#endif
 
 			void onBind() {
 				shader.setFloat("radius", radius);

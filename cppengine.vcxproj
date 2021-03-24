@@ -80,11 +80,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\ivy\Sync\includes;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\ivy\Work\cppengine;C:\Users\ivy\Sync\includes;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\ivy\Sync\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Users\ivy\Sync\includes;C:\Users\ivy\Work\cppengine;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\ivy\Sync\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -142,6 +144,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -156,42 +159,48 @@
     <ClCompile Include="vendor\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Cubemap.h" />
-    <ClInclude Include="Engine\Deps.h" />
-    <ClInclude Include="Engine\Editor\EditorGui.h" />
-    <ClInclude Include="Engine\Editor\EditorWindow.h" />
-    <ClInclude Include="Engine\Editor\Theme.h" />
-    <ClInclude Include="Engine\Editor\Windows\About.h" />
-    <ClInclude Include="Engine\Editor\Windows\EffectEditor.h" />
-    <ClInclude Include="Engine\Editor\Windows\GameView.h" />
-    <ClInclude Include="Engine\Editor\Windows\Preferences.h" />
-    <ClInclude Include="Engine\Editor\Windows\StatOverlay.h" />
-    <ClInclude Include="Engine\FrameBuffer.h" />
-    <ClInclude Include="Engine\Gizmos.h" />
-    <ClInclude Include="Engine\Input.h" />
-    <ClInclude Include="Engine\Application.h" />
-    <ClInclude Include="Engine\Math.h" />
-    <ClInclude Include="Engine\Mesh.h" />
-    <ClInclude Include="Engine\Postprocessing\AntiAliasing.h" />
-    <ClInclude Include="Engine\Postprocessing\Bloom.h" />
-    <ClInclude Include="Engine\Postprocessing\Effect.h" />
-    <ClInclude Include="Engine\Postprocessing\EffectStack.h" />
-    <ClInclude Include="Engine\Postprocessing\Gamma.h" />
-    <ClInclude Include="Engine\Postprocessing\Vignette.h" />
-    <ClInclude Include="Engine\Renderer.h" />
-    <ClInclude Include="Engine\Scripting\Camera.h" />
-    <ClInclude Include="Engine\Scripting\Entity.h" />
+    <ClInclude Include="Dlta\Core.h" />
+    <ClInclude Include="Dlta\Cubemap.h" />
+    <ClInclude Include="Dlta\Deps.h" />
+    <ClInclude Include="Dlta\Dlta.h" />
+    <ClInclude Include="Dlta\Editor.h" />
+    <ClInclude Include="Dlta\Editor\EditorGui.h" />
+    <ClInclude Include="Dlta\Editor\EditorWindow.h" />
+    <ClInclude Include="Dlta\Editor\Theme.h" />
+    <ClInclude Include="Dlta\Editor\Windows\About.h" />
+    <ClInclude Include="Dlta\Editor\Windows\EffectEditor.h" />
+    <ClInclude Include="Dlta\Editor\Windows\GameView.h" />
+    <ClInclude Include="Dlta\Editor\Windows\Preferences.h" />
+    <ClInclude Include="Dlta\Editor\Windows\StatOverlay.h" />
+    <ClInclude Include="Dlta\FrameBuffer.h" />
+    <ClInclude Include="Dlta\Gizmos.h" />
+    <ClInclude Include="Dlta\Input.h" />
+    <ClInclude Include="Dlta\Application.h" />
+    <ClInclude Include="Dlta\Math.h" />
+    <ClInclude Include="Dlta\Mesh.h" />
+    <ClInclude Include="Dlta\Postprocessing.h" />
+    <ClInclude Include="Dlta\Postprocessing\AntiAliasing.h" />
+    <ClInclude Include="Dlta\Postprocessing\Bloom.h" />
+    <ClInclude Include="Dlta\Postprocessing\Effect.h" />
+    <ClInclude Include="Dlta\Postprocessing\EffectStack.h" />
+    <ClInclude Include="Dlta\Postprocessing\Gamma.h" />
+    <ClInclude Include="Dlta\Postprocessing\Vignette.h" />
+    <ClInclude Include="Dlta\Renderer.h" />
+    <ClInclude Include="Dlta\Scripting\Camera.h" />
+    <ClInclude Include="Dlta\Scripting\Entity.h" />
+    <ClInclude Include="Dlta\Scripting.h" />
     <ClInclude Include="Engine\Scripting\Light.h" />
-    <ClInclude Include="Engine\Scripting\MeshRenderer.h" />
-    <ClInclude Include="Engine\Scripting\RectTransform.h" />
-    <ClInclude Include="Engine\Scripting\SpriteRenderer.h" />
-    <ClInclude Include="Engine\Scripting\Transform.h" />
-    <ClInclude Include="Engine\Shader.h" />
-    <ClInclude Include="Engine\Skybox.h" />
-    <ClInclude Include="Engine\Texture.h" />
-    <ClInclude Include="Engine\Color.h" />
-    <ClInclude Include="Engine\Time.h" />
+    <ClInclude Include="Dlta\Scripting\MeshRenderer.h" />
+    <ClInclude Include="Dlta\Scripting\RectTransform.h" />
+    <ClInclude Include="Dlta\Scripting\SpriteRenderer.h" />
+    <ClInclude Include="Dlta\Scripting\Transform.h" />
+    <ClInclude Include="Dlta\Shader.h" />
+    <ClInclude Include="Dlta\Skybox.h" />
+    <ClInclude Include="Dlta\Texture.h" />
+    <ClInclude Include="Dlta\Color.h" />
+    <ClInclude Include="Dlta\Time.h" />
     <ClInclude Include="Game\Player.h" />
+    <ClInclude Include="Game\SceneCam3D.h" />
     <ClInclude Include="Game\test2D.h" />
     <ClInclude Include="Game\test3D.h" />
     <ClInclude Include="vendor\imgui\imconfig.h" />

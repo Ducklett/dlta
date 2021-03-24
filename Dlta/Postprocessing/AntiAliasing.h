@@ -10,14 +10,18 @@ namespace dlta {
 
 			AntiAliasing() : Effect("antialias", "Antialiasing") { }
 
+#ifdef DLTA_EDITOR
 			void onEditorGui() {
+
+
 				const char* QualityText[] = { "Low", "Medium", "High" };
 				ImGui::Combo("Quality", &quality, QualityText, 3);
-			}
+		}
+#endif
 
 			void onBind() {
 
 			}
-		};
-	}
+	};
+}
 }

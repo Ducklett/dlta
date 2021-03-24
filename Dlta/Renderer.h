@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Deps.h"
-#include "FrameBuffer.h"
-#include "Skybox.h"
-#include "Gizmos.h"
-#include "Scripting/MeshRenderer.h"
-#include "Scripting/SpriteRenderer.h"
-#include "Postprocessing/Effect.h"
+#include <Dlta/Deps.h>
+#include <Dlta/FrameBuffer.h>
+#include <Dlta/Skybox.h>
+#include <Dlta/Gizmos.h>
+#include <Dlta/Scripting/MeshRenderer.h>
+#include <Dlta/Scripting/SpriteRenderer.h>
+#include <Dlta/Postprocessing/Effect.h>
 
 namespace dlta {
 	struct Renderer {
@@ -26,6 +26,7 @@ namespace dlta {
 			front = FrameBuffer(width, height);
 			back = FrameBuffer(width, height);
 			if (!targetScreen) screen = FrameBuffer(width, height);
+			else { screen.FBO = 0; }
 
 			cout << "front: " << front.color.id << endl;
 			cout << "back: " << back.color.id << endl;
@@ -135,7 +136,7 @@ namespace dlta {
 					}
 
 					glClearColor(0, 0, 0, 0);
-					glClear(GL_COLOR_BUFFER_BIT);
+					glClear(GL_COLOR_BUFFER_BIT );
 
 					effect->shader.use();
 					effect->onBind();

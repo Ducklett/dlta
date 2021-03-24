@@ -1,9 +1,8 @@
 #pragma once
 
-#include <glad/glad.h> 
-#include <vector>
-#include "Color.h"
-#include "Shader.h"
+#include <Dlta/Deps.h>
+#include <Dlta/Color.h>
+#include <Dlta/Shader.h>
 
 namespace dlta {
 

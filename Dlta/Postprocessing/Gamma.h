@@ -11,6 +11,7 @@ namespace dlta {
 
 			Gamma() : Effect("gamma", "Gamma") { }
 
+#ifdef DLTA_EDITOR
 			void onEditorGui() {
 				if (ImGui::Checkbox("Sync channels ", &sync)) gamma = glm::vec3(gamma.x);
 
@@ -26,6 +27,7 @@ namespace dlta {
 					ImGui::SliderFloat("Blue", &gamma.z, .1f, 2.);
 				}
 			}
+#endif
 
 			void onBind() {
 				shader.setVec3("gamma", gamma);

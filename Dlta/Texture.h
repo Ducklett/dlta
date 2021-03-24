@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Deps.h"
+#include <Dlta/Deps.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 

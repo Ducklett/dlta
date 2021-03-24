@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Engine/Application.h"
-#include "../Game/Player.h"
+#include <Dlta/dlta.h>
+#include "Player.h"
 
 using namespace dlta;
 

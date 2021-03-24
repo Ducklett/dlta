@@ -1,8 +1,8 @@
 #pragma once
 
 #include <unordered_map>
-#include "Deps.h"
-#include "./Color.h"
+#include <Dlta/Deps.h>
+#include <Dlta/Color.h>
 
 namespace dlta {
 

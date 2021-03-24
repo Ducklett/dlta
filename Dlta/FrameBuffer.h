@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./Deps.h"
-#include "./Texture.h"
+#include <Dlta/Deps.h>
+#include <Dlta/Texture.h>
 
 namespace dlta {
 	using namespace std;

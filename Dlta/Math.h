@@ -1,7 +1,5 @@
 #pragma once
 
-#define _USE_MATH_DEFINES
-#include <cmath>
 
 namespace dlta {
 	namespace math {
@@ -52,7 +50,6 @@ namespace dlta {
 			float t = inverseLerp(inMin, inMax, inValue);
 			return lerpUnclamped(outMin, outMax, t);
 		}
-
 
 		static inline int step(int v, int edge) { return v < edge ? 0 : 1; }
 		static inline double step(double v, double edge) { return v < edge ? 0 : 1; }

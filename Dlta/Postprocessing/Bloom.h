@@ -12,11 +12,13 @@ namespace dlta {
 
 			Bloom() : Effect("bloom", "Bloom") { }
 
+#ifdef DLTA_EDITOR
 			void onEditorGui() {
 				ImGui::SliderFloat("Threshold", &threshold, 0, 2.);
 				ImGui::SliderFloat("Transition", &transition, 0, 1.);
 				ImGui::SliderFloat("Intensity", &intensity, .1, 2.);
 			}
+#endif
 
 			void onBind() {
 				shader.setFloat("threshold", threshold);

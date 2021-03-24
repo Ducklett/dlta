@@ -1,30 +1,5 @@
 #pragma once
 
-#include "Deps.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "Skybox.h"
-#include "Gizmos.h"
-#include "Input.h"
-#include "Time.h"
-#include "FrameBuffer.h"
-#include "Editor/EditorGui.h"
-#include "Scripting/Transform.h"
-#include "Scripting/Camera.h"
-#include "Scripting/Entity.h"
-#include "Scripting/MeshRenderer.h"
-
-#include "Postprocessing/EffectStack.h"
-#include "Postprocessing/AntiAliasing.h"
-#include "Postprocessing/Bloom.h"
-#include "Postprocessing/Vignette.h"
-#include "Postprocessing/Gamma.h"
-#include "Renderer.h"
-
-#include "./Editor/Windows/StatOverlay.h"
-#include "./Editor/Windows/EffectEditor.h"
-#include "./Editor/Windows/GameView.h"
-
 namespace dlta {
 	using namespace glm;
 
@@ -113,7 +88,11 @@ namespace dlta {
 			tex.bind(0);
 			tex2.bind(1);
 
+#ifdef DLTA_EDITOR
 			renderer = Renderer(width, height, false);
+#else
+			renderer = Renderer(width, height, true);
+#endif
 
 			// register postprocessing effects
 			// TODO: unique_ptr craziness
@@ -123,9 +102,11 @@ namespace dlta {
 			postProcessEffects.push(new postprocessing::Gamma());
 
 			// register editor windows
+#ifdef DLTA_EDITOR
 			new StatOverlay();
 			new EffectEditor(postProcessEffects);
 			new GameView(renderer.screen.color.id);
+#endif
 
 			// Initialize input
 			// this ensures the mouse delta becomes zero on the first frame
@@ -134,7 +115,9 @@ namespace dlta {
 
 		void run() {
 
+#ifdef DLTA_EDITOR
 			EditorGUI::Init(window);
+#endif
 
 			for (auto entity : entities) {
 				entity->start();
@@ -156,7 +139,9 @@ namespace dlta {
 				render();
 			}
 
+#ifdef DLTA_EDITOR
 			EditorGUI::Cleanup();
+#endif
 			glfwDestroyWindow(window);
 			glfwTerminate();
 		}
@@ -175,8 +160,10 @@ namespace dlta {
 
 			const Texture& tex = renderer.getResultTexture();
 
+#ifdef DLTA_EDITOR
 			// draw editor gui
 			EditorGUI::Update(window, tex.id);
+#endif
 
 			// swap buffers
 			glfwSwapBuffers(window);

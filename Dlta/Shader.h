@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Deps.h"
-#include "Texture.h"
 #include <fstream>
 #include <sstream>
-#include "Color.h"
-#include "./Scripting/Camera.h"
-#include "./Input.h"
+#include <Dlta/Deps.h>
+#include <Dlta/Texture.h>
+#include <Dlta/Color.h>
+#include <Dlta/Input.h>
+#include <Dlta/Scripting/Camera.h>
 
 namespace dlta {
 	using namespace std;
