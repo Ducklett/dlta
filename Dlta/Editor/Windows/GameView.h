@@ -1,7 +1,5 @@
 #pragma once
-#include "../../../vendor/imgui/imgui.h"
-#include "../EditorWindow.h"
-#include "../../Input.h"
+#include <Dlta/Core/Input.h>
 
 namespace dlta {
 

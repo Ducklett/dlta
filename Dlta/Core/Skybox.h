@@ -1,9 +1,10 @@
 #pragma once
 
 #include <Dlta/Deps.h>
-#include <Dlta/Cubemap.h>
-#include <Dlta/Mesh.h>
 #include <Dlta/Scripting/Camera.h>
+
+#include "Cubemap.h"
+#include "Mesh.h"
 
 namespace dlta {
 	using namespace std;

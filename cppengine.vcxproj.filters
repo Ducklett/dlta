@@ -143,47 +143,8 @@
     <ClInclude Include="Dlta\Scripting\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dlta\Application.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Color.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Cubemap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Dlta\Deps.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\FrameBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Gizmos.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Shader.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Texture.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dlta\Time.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Dlta\Dlta.h">
       <Filter>Header Files</Filter>
@@ -199,6 +160,45 @@
     </ClInclude>
     <ClInclude Include="Dlta\Editor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Application.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Color.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Cubemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Gizmos.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Time.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Texture.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dlta\Core\Shader.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

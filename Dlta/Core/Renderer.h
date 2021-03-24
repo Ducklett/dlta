@@ -1,12 +1,13 @@
 #pragma once
 
 #include <Dlta/Deps.h>
-#include <Dlta/FrameBuffer.h>
-#include <Dlta/Skybox.h>
-#include <Dlta/Gizmos.h>
 #include <Dlta/Scripting/MeshRenderer.h>
 #include <Dlta/Scripting/SpriteRenderer.h>
 #include <Dlta/Postprocessing/Effect.h>
+
+#include "FrameBuffer.h"
+#include "Skybox.h"
+#include "Gizmos.h"
 
 namespace dlta {
 	struct Renderer {

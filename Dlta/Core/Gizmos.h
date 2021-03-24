@@ -1,8 +1,8 @@
 #pragma once
 
 #include <Dlta/Deps.h>
-#include <Dlta/Color.h>
-#include <Dlta/Shader.h>
+#include "Color.h"
+#include "Shader.h"
 
 namespace dlta {
 

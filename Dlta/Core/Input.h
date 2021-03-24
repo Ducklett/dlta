@@ -2,7 +2,8 @@
 
 #include <unordered_map>
 #include <Dlta/Deps.h>
-#include <Dlta/Color.h>
+
+#include "Color.h"
 
 namespace dlta {
 

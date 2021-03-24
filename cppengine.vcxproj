@@ -160,7 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dlta\Core.h" />
-    <ClInclude Include="Dlta\Cubemap.h" />
+    <ClInclude Include="Dlta\Core\Cubemap.h" />
     <ClInclude Include="Dlta\Deps.h" />
     <ClInclude Include="Dlta\Dlta.h" />
     <ClInclude Include="Dlta\Editor.h" />
@@ -172,12 +172,12 @@
     <ClInclude Include="Dlta\Editor\Windows\GameView.h" />
     <ClInclude Include="Dlta\Editor\Windows\Preferences.h" />
     <ClInclude Include="Dlta\Editor\Windows\StatOverlay.h" />
-    <ClInclude Include="Dlta\FrameBuffer.h" />
-    <ClInclude Include="Dlta\Gizmos.h" />
-    <ClInclude Include="Dlta\Input.h" />
-    <ClInclude Include="Dlta\Application.h" />
-    <ClInclude Include="Dlta\Math.h" />
-    <ClInclude Include="Dlta\Mesh.h" />
+    <ClInclude Include="Dlta\Core\FrameBuffer.h" />
+    <ClInclude Include="Dlta\Core\Gizmos.h" />
+    <ClInclude Include="Dlta\Core\Input.h" />
+    <ClInclude Include="Dlta\Core\Application.h" />
+    <ClInclude Include="Dlta\Core\Math.h" />
+    <ClInclude Include="Dlta\Core\Mesh.h" />
     <ClInclude Include="Dlta\Postprocessing.h" />
     <ClInclude Include="Dlta\Postprocessing\AntiAliasing.h" />
     <ClInclude Include="Dlta\Postprocessing\Bloom.h" />
@@ -185,7 +185,7 @@
     <ClInclude Include="Dlta\Postprocessing\EffectStack.h" />
     <ClInclude Include="Dlta\Postprocessing\Gamma.h" />
     <ClInclude Include="Dlta\Postprocessing\Vignette.h" />
-    <ClInclude Include="Dlta\Renderer.h" />
+    <ClInclude Include="Dlta\Core\Renderer.h" />
     <ClInclude Include="Dlta\Scripting\Camera.h" />
     <ClInclude Include="Dlta\Scripting\Entity.h" />
     <ClInclude Include="Dlta\Scripting.h" />
@@ -194,11 +194,11 @@
     <ClInclude Include="Dlta\Scripting\RectTransform.h" />
     <ClInclude Include="Dlta\Scripting\SpriteRenderer.h" />
     <ClInclude Include="Dlta\Scripting\Transform.h" />
-    <ClInclude Include="Dlta\Shader.h" />
-    <ClInclude Include="Dlta\Skybox.h" />
-    <ClInclude Include="Dlta\Texture.h" />
-    <ClInclude Include="Dlta\Color.h" />
-    <ClInclude Include="Dlta\Time.h" />
+    <ClInclude Include="Dlta\Core\Shader.h" />
+    <ClInclude Include="Dlta\Core\Skybox.h" />
+    <ClInclude Include="Dlta\Core\Texture.h" />
+    <ClInclude Include="Dlta\Core\Color.h" />
+    <ClInclude Include="Dlta\Core\Time.h" />
     <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Game\SceneCam3D.h" />
     <ClInclude Include="Game\test2D.h" />

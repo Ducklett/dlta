@@ -3,10 +3,11 @@
 #include <fstream>
 #include <sstream>
 #include <Dlta/Deps.h>
-#include <Dlta/Texture.h>
-#include <Dlta/Color.h>
-#include <Dlta/Input.h>
 #include <Dlta/Scripting/Camera.h>
+
+#include "Texture.h"
+#include "Color.h"
+#include "Input.h"
 
 namespace dlta {
 	using namespace std;

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../Shader.h"
-#include "../Mesh.h"
-#include "./RectTransform.h"
+#include <Dlta/Core/Shader.h>
+#include <Dlta/Core/Mesh.h>
+
+#include "RectTransform.h"
 
 namespace dlta {
 	struct SpriteRenderer {

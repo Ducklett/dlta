@@ -1,13 +1,14 @@
 #pragma once
 
-#include <Dlta/Math.h>
-#include <Dlta/Shader.h>
-#include <Dlta/Texture.h>
-#include <Dlta/Skybox.h>
-#include <Dlta/Gizmos.h>
-#include <Dlta/Input.h>
-#include <Dlta/Time.h>
-#include <Dlta/FrameBuffer.h>
-#include <Dlta/Renderer.h>
-#include <Dlta/Application.h>
+#include "Core/Math.h"
+#include "Core/Shader.h"
+#include "Core/Texture.h"
+#include "Core/Skybox.h"
+#include "Core/Gizmos.h"
+#include "Core/Input.h"
+#include "Core/Time.h"
+#include "Core/FrameBuffer.h"
+#include "Core/Renderer.h"
+#include "Core/Mesh.h"
+#include "Core/Application.h"
 

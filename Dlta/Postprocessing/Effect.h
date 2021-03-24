@@ -1,5 +1,5 @@
 #pragma once
-#include "../Shader.h"
+#include <Dlta/Core/Shader.h>
 
 namespace dlta {
 	namespace postprocessing {
