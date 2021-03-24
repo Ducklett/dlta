@@ -182,6 +182,8 @@
     <ClInclude Include="Engine\Scripting\Entity.h" />
     <ClInclude Include="Engine\Scripting\Light.h" />
     <ClInclude Include="Engine\Scripting\MeshRenderer.h" />
+    <ClInclude Include="Engine\Scripting\RectTransform.h" />
+    <ClInclude Include="Engine\Scripting\SpriteRenderer.h" />
     <ClInclude Include="Engine\Scripting\Transform.h" />
     <ClInclude Include="Engine\Shader.h" />
     <ClInclude Include="Engine\Skybox.h" />
@@ -189,6 +191,7 @@
     <ClInclude Include="Engine\Color.h" />
     <ClInclude Include="Engine\Time.h" />
     <ClInclude Include="Game\Player.h" />
+    <ClInclude Include="Game\test2D.h" />
     <ClInclude Include="Game\test3D.h" />
     <ClInclude Include="vendor\imgui\imconfig.h" />
     <ClInclude Include="vendor\imgui\imgui.h" />

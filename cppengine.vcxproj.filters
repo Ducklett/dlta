@@ -170,5 +170,14 @@
     <ClInclude Include="Game\test3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Game\test2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scripting\RectTransform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Scripting\SpriteRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

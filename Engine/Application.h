@@ -48,6 +48,7 @@ namespace dlta {
 		Shader testShader2;
 		vector<Entity*> entities;
 		vector<MeshRenderer*> renderers;
+		vector<SpriteRenderer*> renderers2d;
 		postprocessing::EffectStack postProcessEffects;
 		int width;
 		int height;
@@ -170,7 +171,7 @@ namespace dlta {
 				return;
 			}
 
-			renderer.render(skybox, renderers, postProcessEffects.stack, testShader);
+			renderer.render(skybox, renderers2d, renderers, postProcessEffects.stack, testShader);
 
 			const Texture& tex = renderer.getResultTexture();
 
@@ -181,8 +182,8 @@ namespace dlta {
 			glfwSwapBuffers(window);
 
 			Input::Clear();
-			//glfwPollEvents();
-			glfwWaitEvents();
+			glfwPollEvents();
+			//glfwWaitEvents();
 		}
 
 		static void panic(const std::string& msg) {

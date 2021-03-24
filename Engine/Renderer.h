@@ -5,6 +5,7 @@
 #include "Skybox.h"
 #include "Gizmos.h"
 #include "Scripting/MeshRenderer.h"
+#include "Scripting/SpriteRenderer.h"
 #include "Postprocessing/Effect.h"
 
 namespace dlta {
@@ -47,7 +48,7 @@ namespace dlta {
 		/// <summary>
 		/// render the scene, the result is store in the front buffer
 		/// </summary>
-		void render(Skybox& skybox, const vector<MeshRenderer*>& renderers, vector<postprocessing::Effect*>& effects, Shader& testShader) {
+		void render(Skybox& skybox, const vector<SpriteRenderer*>& renderers2d, const vector<MeshRenderer*>& renderers, vector<postprocessing::Effect*>& effects, Shader& testShader) {
 			bool willDrawToScreen = false;
 
 			if (effects.empty()) {
@@ -66,16 +67,16 @@ namespace dlta {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// TODO: render after opaque qeometry but before transparent
-			skybox.draw();
+			if (skybox.initialized) skybox.draw();
 
 			for (auto rndr : renderers) {
-
 				if (rndr->ignoreDepth) glDisable(GL_DEPTH_TEST);
 
 				rndr->mesh.use();
 				Shader& shader = rndr->shader;
+
+				// TODO: bind required textures (create material system to manage this instead of renderer having raw shader)
 				shader.use();
-				// TODO: move this into material
 				//shader.setTexture("tex", tex);
 				//shader.setTexture("tex2", tex2);
 
@@ -86,6 +87,24 @@ namespace dlta {
 				model = glm::rotate(model, rndr->transform.euler.y, vec3(0, 1, 0));
 				model = glm::rotate(model, rndr->transform.euler.z, vec3(0, 0, 1));
 				model = glm::scale(model, rndr->transform.scale);
+				shader.setMat4("model", model);
+
+				rndr->mesh.draw();
+
+				if (rndr->ignoreDepth) glEnable(GL_DEPTH_TEST);
+			}
+
+			for (auto rndr : renderers2d) {
+				if (rndr->ignoreDepth) glDisable(GL_DEPTH_TEST);
+
+				rndr->mesh.use();
+				Shader& shader = rndr->shader;
+				shader.use();
+
+				mat4 model = glm::mat4(1);
+				model = glm::translate(model, vec3(rndr->transform.position, 0));
+				model = glm::rotate(model, rndr->transform.rotation, vec3(0, 0, 1));
+				model = glm::scale(model, vec3(rndr->transform.size, 1));
 				shader.setMat4("model", model);
 
 				rndr->mesh.draw();

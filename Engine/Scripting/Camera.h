@@ -40,9 +40,10 @@ namespace dlta {
 			float width = 800;
 			float height = 600;
 			float aspect = width / height;
+			float zoom = transform.position.z;
 
 			switch (projection) {
-			case Projection::Orthographic: return glm::ortho(-aspect, aspect, -1.f, 1.f, 0.1f, 100.0f);
+			case Projection::Orthographic: return glm::ortho(-width / 2 * zoom, width / 2 * zoom, -height / 2 * zoom, height / 2 * zoom, 0.1f, 100.0f);
 			case Projection::Perspective: return glm::perspective(glm::radians(fov), (float)width / (float)height, near, far);
 			}
 

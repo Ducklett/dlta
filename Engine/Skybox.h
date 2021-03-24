@@ -14,6 +14,7 @@ namespace dlta {
 		Cubemap cubemap;
 		Mesh cubeMesh;
 		Shader shader;
+		bool initialized = false;
 
 		Skybox() {}
 
@@ -68,6 +69,8 @@ namespace dlta {
 				 1.0f, -1.0f,  1.0f
 			};
 			cubeMesh.create();
+
+			initialized = true;
 		}
 
 		void draw() {
