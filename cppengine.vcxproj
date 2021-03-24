@@ -199,7 +199,7 @@
     <ClInclude Include="Dlta\Core\Texture.h" />
     <ClInclude Include="Dlta\Core\Color.h" />
     <ClInclude Include="Dlta\Core\Time.h" />
-    <ClInclude Include="Game\Player.h" />
+    <ClInclude Include="Game\SceneCam2D.h" />
     <ClInclude Include="Game\SceneCam3D.h" />
     <ClInclude Include="Game\test2D.h" />
     <ClInclude Include="Game\test3D.h" />

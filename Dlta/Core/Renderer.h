@@ -137,7 +137,7 @@ namespace dlta {
 					}
 
 					glClearColor(0, 0, 0, 0);
-					glClear(GL_COLOR_BUFFER_BIT );
+					glClear(GL_COLOR_BUFFER_BIT);
 
 					effect->shader.use();
 					effect->onBind();

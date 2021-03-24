@@ -13,12 +13,18 @@ namespace dlta {
 		EffectEditor(EffectStack& effects) : EditorWindow("Postprocessing"), effects(effects) { open = true; }
 
 		virtual void onGui() override {
-			for (auto& e : effects.stack) {
-				ImGui::BeginGroup();
-				ImGui::Text(e->title);
-				e->onEditorGui();
-				ImGui::EndGroup();
+			if (effects.stack.empty()) {
+				ImGui::Text("No postprocessing effects registered");
 			}
+			else {
+				for (auto& e : effects.stack) {
+					ImGui::BeginGroup();
+					ImGui::Text(e->title);
+					e->onEditorGui();
+					ImGui::EndGroup();
+				}
+			}
+
 		}
 	};
 }

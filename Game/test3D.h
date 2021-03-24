@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Dlta/Dlta.h>
-#include "Player.h"
+#include "SceneCam3D.h"
 
 using namespace dlta;
 
@@ -95,6 +95,14 @@ int test3D()
 
 	game.skybox = Skybox("assets/cubemaps/sea", "assets/shaders/skybox.vert", "assets/shaders/skybox.frag", ".jpg");
 	//game.skybox = Skybox("assets/cubemaps/station", "assets/shaders/skybox.vert", "assets/shaders/skybox.frag", ".png");
+
+	// register postprocessing effects
+	// TODO: unique_ptr craziness
+	game.postProcessEffects.push(new postprocessing::Bloom());
+	game.postProcessEffects.push(new postprocessing::AntiAliasing());
+	game.postProcessEffects.push(new postprocessing::Vignette());
+	game.postProcessEffects.push(new postprocessing::Gamma());
+
 
 	Shader floorShader("assets/shaders/floor.vert", "assets/shaders/floor.frag");
 	Mesh cubeMesh = makeCube();

@@ -1,8 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "../Engine/Application.h"
-#include "../Engine/Scripting/Entity.h"
+#include <Dlta/Dlta.h>
 
 using namespace dlta;
 
@@ -41,7 +40,6 @@ public:
 			transform.euler += vec3(Input::mouseDelta.y, Input::mouseDelta.x, 0) * MouseSensitivity;
 		}
 
-		// TODO: make a math lib and use clamp function
 		transform.euler.x = math::clamp(transform.euler.x, -89.f, 89.f);
 
 		transform.position += transform.forward() * Input::scrollDelta.y * scrollSpeed * Time::deltaTime;

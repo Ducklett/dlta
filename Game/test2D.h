@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Dlta/dlta.h>
-#include "Player.h"
+#include "SceneCam2D.h"
 
 using namespace dlta;
 
@@ -44,12 +44,13 @@ int test2D()
 	Shader spriteShader("assets/shaders/test.vert", "assets/shaders/test.frag");
 	Mesh planeMesh = makePlane();
 
-	Player pl = Player(game, true);
 
 	RectTransform planeTransform = RectTransform();
 	planeTransform.position = vec3(0,0,0);
 	planeTransform.size = vec2(100,100);
 	SpriteRenderer plane(spriteShader, planeTransform, planeMesh);
+
+	Player pl = Player(game, planeTransform);
 
 	game.entities.push_back(&pl);
 

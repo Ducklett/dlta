@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../Deps.h"
+#include <Dlta/Deps.h>
+#include <Dlta/Core/Math.h>
 
 namespace dlta {
 	using namespace glm;
@@ -10,10 +11,9 @@ namespace dlta {
 		float rotation;
 		vec2 size = vec2(1);
 
-		// TODO: bring back relative movement...
-		/*vec3 right() { return normalize(cross(forward(), vec3(0, 1, 0))); }
-		vec3 left() { return -right(); }
-		vec3 up() { return normalize(cross(right(), forward())); }
-		vec3 down() { return -up(); }*/
+		vec2 right() { return normalize(vec2(cos(rotation), sin(rotation))); }
+		vec2 left() { return -right(); }
+		vec2 up() { return normalize(vec2(cos(rotation - math::PI / 2), sin(rotation - math::PI / 2))); }
+		vec2 down() { return -up(); }
 	};
 }
