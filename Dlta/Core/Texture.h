@@ -10,6 +10,7 @@ namespace dlta {
 	struct Texture {
 		GLuint id = 0;
 		int16_t unit = -1;
+		glm::vec2 size;
 
 		static unsigned char* loadImageData(const char* path, int* width, int* height, int* channels, bool flip = true) {
 			stbi_set_flip_vertically_on_load(flip);
@@ -60,7 +61,7 @@ namespace dlta {
 
 			if (mipmap) glGenerateMipmap(GL_TEXTURE_2D);
 
-			return { texture };
+			return { texture, -1, glm::vec2(width, height) };
 		}
 
 		void bind(const int index) {

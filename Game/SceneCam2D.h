@@ -42,7 +42,7 @@ public:
 		}
 
 		transform.position += transform.forward() * Input::scrollDelta.y * scrollSpeed * Time::deltaTime;
-		transform.position.z = math::clamp(transform.position.z, .2f, 20.f);
+		transform.position.z = math::clamp(transform.position.z, .01f, 10.f);
 
 		if (Input::Mouse(MouseButton::Middle) || (Input::Key(Keycode::LEFT_ALT))) {
 			transform.position += transform.right() * -Input::mouseDelta.x * transform.position.z;

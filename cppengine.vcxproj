@@ -189,6 +189,7 @@
     <ClInclude Include="Dlta\Scripting\Camera.h" />
     <ClInclude Include="Dlta\Scripting\Entity.h" />
     <ClInclude Include="Dlta\Scripting.h" />
+    <ClInclude Include="Dlta\Scripting\Sprite.h" />
     <ClInclude Include="Engine\Scripting\Light.h" />
     <ClInclude Include="Dlta\Scripting\MeshRenderer.h" />
     <ClInclude Include="Dlta\Scripting\RectTransform.h" />

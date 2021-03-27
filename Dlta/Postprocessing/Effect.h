@@ -17,7 +17,7 @@ namespace dlta {
 				shader = Shader(vPath.c_str(), fPath.c_str());
 			}
 
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 			virtual void onEditorGui() = 0;
 #endif
 			virtual void onBind() = 0;

@@ -1,5 +1,6 @@
 #pragma once
 
+#ifndef DLTA_INTEGRATED_GRAPHICS
 // prefer dedicated nvidia gpu
 extern "C"
 {
@@ -11,6 +12,7 @@ extern "C"
 {
 	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
+#endif
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -23,7 +25,7 @@ extern "C"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 #include <vendor/imgui/imgui.h>
 #endif
 

@@ -12,7 +12,7 @@ namespace dlta {
 
 			Bloom() : Effect("bloom", "Bloom") { }
 
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 			void onEditorGui() {
 				ImGui::SliderFloat("Threshold", &threshold, 0, 2.);
 				ImGui::SliderFloat("Transition", &transition, 0, 1.);

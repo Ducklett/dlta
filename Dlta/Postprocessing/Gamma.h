@@ -11,7 +11,7 @@ namespace dlta {
 
 			Gamma() : Effect("gamma", "Gamma") { }
 
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 			void onEditorGui() {
 				if (ImGui::Checkbox("Sync channels ", &sync)) gamma = glm::vec3(gamma.x);
 

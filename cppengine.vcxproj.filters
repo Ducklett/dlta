@@ -200,5 +200,8 @@
     <ClInclude Include="Game\SceneCam2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Dlta\Scripting\Sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

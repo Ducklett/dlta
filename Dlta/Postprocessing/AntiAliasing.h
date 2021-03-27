@@ -10,7 +10,7 @@ namespace dlta {
 
 			AntiAliasing() : Effect("antialias", "Antialiasing") { }
 
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 			void onEditorGui() {
 
 

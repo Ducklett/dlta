@@ -43,7 +43,7 @@ namespace dlta {
 			float zoom = transform.position.z;
 
 			switch (projection) {
-			case Projection::Orthographic: return glm::ortho(-width / 2 * zoom, width / 2 * zoom, -height / 2 * zoom, height / 2 * zoom, 0.1f, 100.0f);
+			case Projection::Orthographic: return glm::ortho(-width / 2 * zoom, width / 2 * zoom, -height / 2 * zoom, height / 2 * zoom, 0.009f, 300.0f);
 			case Projection::Perspective: return glm::perspective(glm::radians(fov), (float)width / (float)height, near, far);
 			}
 

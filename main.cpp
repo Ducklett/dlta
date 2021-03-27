@@ -1,5 +1,5 @@
 // run in editor mode
-#define DLTA_EDITOR
+#define DLTA_EDITOR 0
 
 // run 2d sample
 #define _2D

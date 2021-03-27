@@ -29,7 +29,7 @@ namespace dlta {
 		int height;
 		Renderer renderer;
 
-		Application(int width, int height, const std::string& title = "engine") {
+		Application(int width, int height, const std::string& title = "engine", bool postprocessing = true) {
 			this->width = width;
 			this->height = height;
 
@@ -82,20 +82,20 @@ namespace dlta {
 
 			Gizmos::init();
 			Gizmos::shader = Shader("assets/shaders/gizmo.vert", "assets/shaders/gizmo.frag");
-			tex = Texture::load("assets/container.jpg");
+			/*tex = Texture::load("assets/container.jpg");
 			tex2 = Texture::load("assets/icon.png", false, false, false);
 
 			tex.bind(0);
-			tex2.bind(1);
+			tex2.bind(1);*/
 
-#ifdef DLTA_EDITOR
-			renderer = Renderer(width, height, false);
+#if DLTA_EDITOR
+			renderer = Renderer(width, height, false, postprocessing);
 #else
-			renderer = Renderer(width, height, true);
+			renderer = Renderer(width, height, true, postprocessing);
 #endif
 
 			// register editor windows
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 			new StatOverlay();
 			new EffectEditor(postProcessEffects);
 			new GameView(renderer.screen.color.id);
@@ -108,7 +108,7 @@ namespace dlta {
 
 		void run() {
 
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 			EditorGUI::Init(window);
 #endif
 
@@ -132,7 +132,7 @@ namespace dlta {
 				render();
 			}
 
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 			EditorGUI::Cleanup();
 #endif
 			glfwDestroyWindow(window);
@@ -153,7 +153,7 @@ namespace dlta {
 
 			const Texture& tex = renderer.getResultTexture();
 
-#ifdef DLTA_EDITOR
+#if DLTA_EDITOR
 			// draw editor gui
 			EditorGUI::Update(window, tex.id);
 #endif

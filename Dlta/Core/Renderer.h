@@ -23,9 +23,11 @@ namespace dlta {
 		bool targetScreen = true;
 
 		Renderer() {}
-		Renderer(int width, int height, bool targetScreen = true) : targetScreen(targetScreen) {
-			front = FrameBuffer(width, height);
-			back = FrameBuffer(width, height);
+		Renderer(int width, int height, bool targetScreen = true, bool postprocess = true) : targetScreen(targetScreen) {
+			if (postprocess) {
+				front = FrameBuffer(width, height);
+				back = FrameBuffer(width, height);
+			}
 			if (!targetScreen) screen = FrameBuffer(width, height);
 			else { screen.FBO = 0; }
 
@@ -99,17 +101,20 @@ namespace dlta {
 			for (auto rndr : renderers2d) {
 				if (rndr->ignoreDepth) glDisable(GL_DEPTH_TEST);
 
-				rndr->mesh.use();
+				Sprite::spriteQuad.use();
 				Shader& shader = rndr->shader;
 				shader.use();
 
+				rndr->sprite.tex.bind(1);
+				shader.setTexture("tex", rndr->sprite.tex);
+
 				mat4 model = glm::mat4(1);
-				model = glm::translate(model, vec3(rndr->transform.position, 0));
+				model = glm::translate(model, vec3(rndr->transform.position, -(255 - rndr->transform.layer)));
 				model = glm::rotate(model, rndr->transform.rotation, vec3(0, 0, 1));
 				model = glm::scale(model, vec3(rndr->transform.size, 1));
 				shader.setMat4("model", model);
 
-				rndr->mesh.draw();
+				Sprite::spriteQuad.draw();
 
 				if (rndr->ignoreDepth) glEnable(GL_DEPTH_TEST);
 			}

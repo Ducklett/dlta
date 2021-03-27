@@ -8,12 +8,13 @@ namespace dlta {
 
 	struct RectTransform {
 		vec2 position;
-		float rotation;
+		float rotation=0;
+		uint8_t layer=0;
 		vec2 size = vec2(1);
 
 		vec2 right() { return normalize(vec2(cos(rotation), sin(rotation))); }
 		vec2 left() { return -right(); }
-		vec2 up() { return normalize(vec2(cos(rotation - math::PI / 2), sin(rotation - math::PI / 2))); }
+		vec2 up() { return normalize(vec2(cos(rotation + math::PI / 2), sin(rotation + math::PI / 2))); }
 		vec2 down() { return -up(); }
 	};
 }
