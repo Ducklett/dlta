@@ -30,7 +30,7 @@ public:
 
 		// TOOD: maybe fix rotation so it goes the other way?
 		// +deltaTime should rotate clockwise
-		test.rotation -= Time::deltaTime;
+		//test.rotation -= Time::deltaTime;
 
 		if (Input::KeyDown(Keycode::SPACE)) {
 			wire = !wire;
@@ -49,7 +49,7 @@ public:
 			transform.position += transform.up() * -Input::mouseDelta.y * transform.position.z;
 		}
 		else {
-			float velocity = MovementSpeed * Time::deltaTime;
+			float velocity = MovementSpeed * transform.position.z * Time::deltaTime;
 			if (Input::Key(Keycode::W)) transform.position += transform.up() * velocity;
 			if (Input::Key(Keycode::S)) transform.position += transform.down() * velocity;
 			if (Input::Key(Keycode::A)) transform.position += transform.left() * velocity;

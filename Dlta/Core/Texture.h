@@ -28,7 +28,7 @@ namespace dlta {
 
 			if (!data) return Texture{};
 
-			Texture t = create(data, width, height, filter, wrap, mipmap);
+			Texture t = create(data, width, height, filter, wrap, mipmap, nrChannels);
 
 			freeImageData(data);
 
@@ -39,16 +39,22 @@ namespace dlta {
 			return move(create(NULL, width, height, filter, wrap, mipmap));
 		}
 
-		static Texture create(unsigned char* data, int width, int height, bool filter = true, bool wrap = true, bool mipmap = true) {
+		static Texture create(unsigned char* data, int width, int height, bool filter = true, bool wrap = true, bool mipmap = true, int channels = 3) {
 
 			// fixes color flickering in render texture in low ranges
 			// TODO: parametarize format
 			int format = !data ? GL_RGB16 : GL_RGB;
+			if (channels == 4) {
+				if (format == GL_RGB16) format = GL_RGBA16;
+				else format = GL_RGBA;
+			}
+			// TODO: proper input format detection
+			int formatIn = channels == 3 ? GL_RGB : GL_RGBA;
 
 			GLuint texture;
 			glGenTextures(1, &texture);
 			glBindTexture(GL_TEXTURE_2D, texture);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, formatIn, GL_UNSIGNED_BYTE, data);
 
 			int wrapMode = wrap ? GL_REPEAT : GL_CLAMP_TO_EDGE;
 			int filterMode = filter ? GL_LINEAR : GL_NEAREST;

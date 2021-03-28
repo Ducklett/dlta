@@ -7,6 +7,7 @@
 #include "../postprocessing/EffectStack.h"
 #include "EditorWindow.h"
 #include "./Windows/About.h"
+#include "./Windows/Build.h"
 #include "./Windows/Preferences.h"
 #include "./Theme.h"
 
@@ -21,6 +22,7 @@ namespace dlta {
 	static ImGuiIO* io;
 	static AboutEditor* about;
 	static PreferencesEditor* preferences;
+	static BuildEditor* build;
 
 	class EditorGUI {
 	public:
@@ -77,6 +79,7 @@ namespace dlta {
 			// register permanent editor windows
 			about = new AboutEditor();
 			preferences = new PreferencesEditor();
+			build = new BuildEditor();
 		}
 
 		static void Update(GLFWwindow* window, unsigned int gameTexId) {
@@ -98,6 +101,7 @@ namespace dlta {
 				// TODO: more sophisticated system that lets you add windows into any of these sub menus
 				if (ImGui::BeginMenu("Edit", "")) {
 					if (ImGui::MenuItem(preferences->title)) preferences->open = !preferences->open;
+					if (ImGui::MenuItem(build->title)) build->open = !build->open;
 					ImGui::EndMenu();
 				}
 				// ===

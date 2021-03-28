@@ -45,7 +45,8 @@ namespace dlta {
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-			window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+			string windowTitle = "Dlta editor - " + title;
+			window = glfwCreateWindow(width, height, windowTitle.c_str(), NULL, NULL);
 
 			if (window == NULL) {
 				glfwTerminate();

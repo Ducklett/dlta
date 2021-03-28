@@ -136,7 +136,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DLTA_BUILD;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -168,6 +168,7 @@
     <ClInclude Include="Dlta\Editor\EditorWindow.h" />
     <ClInclude Include="Dlta\Editor\Theme.h" />
     <ClInclude Include="Dlta\Editor\Windows\About.h" />
+    <ClInclude Include="Dlta\Editor\Windows\Build.h" />
     <ClInclude Include="Dlta\Editor\Windows\EffectEditor.h" />
     <ClInclude Include="Dlta\Editor\Windows\GameView.h" />
     <ClInclude Include="Dlta\Editor\Windows\Preferences.h" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Dlta\Scripting\Entity.h" />
     <ClInclude Include="Dlta\Scripting.h" />
     <ClInclude Include="Dlta\Scripting\Sprite.h" />
+    <ClInclude Include="Dlta\Scripting\TileMap.h" />
     <ClInclude Include="Engine\Scripting\Light.h" />
     <ClInclude Include="Dlta\Scripting\MeshRenderer.h" />
     <ClInclude Include="Dlta\Scripting\RectTransform.h" />
@@ -204,6 +206,7 @@
     <ClInclude Include="Game\SceneCam3D.h" />
     <ClInclude Include="Game\test2D.h" />
     <ClInclude Include="Game\test3D.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="vendor\imgui\imconfig.h" />
     <ClInclude Include="vendor\imgui\imgui.h" />
     <ClInclude Include="vendor\imgui\imgui_impl_glfw.h" />
@@ -212,6 +215,9 @@
     <ClInclude Include="vendor\imgui\imstb_rectpack.h" />
     <ClInclude Include="vendor\imgui\imstb_textedit.h" />
     <ClInclude Include="vendor\imgui\imstb_truetype.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="cppengine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -51,12 +51,13 @@ int test2D()
 
 	// TODO: move this to engine internals?
 	Shader spriteShader("assets/shaders/sprite.vert", "assets/shaders/sprite.frag");
+	Shader mapShader("assets/shaders/tilemap.vert", "assets/shaders/tilemap.frag");
 
 	// TODO: move this to engine internals
 	Sprite::spriteQuad = makePlane();
 
-	Sprite wall("assets/wall.jpg");
-	Sprite spr("assets/icon.png");
+	Sprite icon("assets/icon.png");
+	TileMap map("assets/map.png", "assets/tileset.png");
 
 	enum class Layer {
 		Background,
@@ -65,9 +66,9 @@ int test2D()
 
 	RectTransform planeTransform = RectTransform();
 	planeTransform.position = vec3(0, 0, 0);
-	planeTransform.size = vec2(100, 100);
+	planeTransform.size = vec2(600, 600);
 	planeTransform.layer = (int)Layer::Foreground;
-	SpriteRenderer plane(spriteShader, planeTransform, spr);
+	SpriteRenderer plane(mapShader, planeTransform, map);
 
 	Player pl = Player(game, planeTransform);
 
@@ -82,7 +83,7 @@ int test2D()
 			tf.size = vec2(50, 50);
 			tf.layer = (int)Layer::Background;
 			// just let it leak..
-			auto sprr = new SpriteRenderer(spriteShader, tf, wall);
+			auto sprr = new SpriteRenderer(spriteShader, tf, icon);
 			game.renderers2d.push_back(sprr);
 		}
 	}

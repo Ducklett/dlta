@@ -15,11 +15,14 @@ uniform samplerCube skybox;
 out vec4 FragColor;
 
 void main() {
-	vec3 col = texture(tex, uv).rgb;
+	vec4 col = texture(tex, uv);
+
+	if (col.a<.2) discard;
 
 	//col = vec3(1,.5,.1);
 	//col = vec3(uv,0);
 
-	FragColor = vec4(col ,1);
+
+	FragColor = vec4(col.rgb,1);
 }
 

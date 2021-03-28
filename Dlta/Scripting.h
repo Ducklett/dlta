@@ -6,3 +6,4 @@
 #include "Scripting/RectTransform.h"
 #include "Scripting/SpriteRenderer.h"
 #include "Scripting/Transform.h"
+#include "Scripting/TileMap.h"

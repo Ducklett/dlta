@@ -40,7 +40,7 @@ namespace dlta {
 			glAttachShader(program, fragmentShader);
 			glLinkProgram(program);
 
-			int  success;
+			int success;
 			glGetShaderiv(program, GL_COMPILE_STATUS, &success);
 
 

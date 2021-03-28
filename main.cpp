@@ -1,5 +1,8 @@
-// run in editor mode
+#if DLTA_BUILD
 #define DLTA_EDITOR 0
+#else
+#define DLTA_EDITOR 1
+#endif
 
 // run 2d sample
 #define _2D
