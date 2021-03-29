@@ -5,7 +5,7 @@
 #endif
 
 // run 2d sample
-#define _2D
+//#define _2D
 
 #ifdef _2D
 #include "Game/test2D.h"
