@@ -14,7 +14,7 @@ namespace dlta {
 		virtual void windowBegin() {
 			auto& style = ImGui::GetStyle();
 			auto pad = style.WindowPadding;
-			style.WindowPadding = ImVec2(64, 64);
+			style.WindowPadding = ImVec2(24, 24);
 
 			if (ImGui::Begin(title, &open, ImGuiWindowFlags_AlwaysAutoResize)) {
 				style.WindowPadding = pad;
