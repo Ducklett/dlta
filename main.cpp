@@ -6,17 +6,19 @@
 
 // run 2d sample
 //#define _2D
+//#define _3D
+#define _PONG
 
 #ifdef _2D
 #include "Game/test2D.h"
-#else
+#endif
+#ifdef _3D
 #include "Game/test3D.h"
 #endif
-
-void main() {
-#ifdef _2D
-	test2D();
-#else
-	test3D();
+#ifdef _PONG
+#include "Game/Pong/Pong.h"
 #endif
+
+int main() {
+	return game();
 }

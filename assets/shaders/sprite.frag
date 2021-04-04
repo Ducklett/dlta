@@ -12,10 +12,22 @@ uniform sampler2D tex;
 // uniform sampler2D tex2;
 uniform samplerCube skybox;
 
+uniform vec2 tiling;
+uniform vec2 offset;
+uniform vec2 size;
+
 out vec4 FragColor;
 
 void main() {
-	vec4 col = texture(tex, uv);
+	//vec2 tiling = vec2(8,8);
+	//vec2 offset = vec2(4,mod(floor(iTime),4.));
+	//vec2 size = vec2(4,1);
+
+	vec2 off = vec2(offset.x, tiling.y-offset.y-1);
+	off.y-=size.y-1;
+
+	vec2 tv = uv/tiling*size+(off/tiling);
+	vec4 col = texture(tex, tv);
 
 	if (col.a<.2) discard;
 

@@ -30,6 +30,9 @@ namespace dlta {
 		Renderer renderer;
 
 		Application(int width, int height, const std::string& title = "engine", bool postprocessing = true) {
+
+			srand((unsigned int)time(NULL));
+
 			this->width = width;
 			this->height = height;
 
@@ -145,10 +148,6 @@ namespace dlta {
 #endif
 			glfwDestroyWindow(window);
 			glfwTerminate();
-		}
-
-		float rand01() {
-			return ((float)rand()) / (float)RAND_MAX;
 		}
 
 		void render() {

@@ -89,7 +89,7 @@ Mesh makePlane() {
 	return move(plane);
 }
 
-int test3D()
+int game()
 {
 	Application game(WIDTH, HEIGHT, "Pog");
 

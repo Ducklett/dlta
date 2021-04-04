@@ -199,7 +199,8 @@ namespace dlta {
 			double xpos, ypos;
 			glfwGetCursorPos(window, &xpos, &ypos);
 
-			vec2 newmouse = vec2(xpos, -ypos);
+			const float height = 600;
+			vec2 newmouse = vec2(xpos, height - ypos);
 
 			mouseDelta = newmouse - mouse;
 			mouse = newmouse;

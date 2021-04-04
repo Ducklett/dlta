@@ -11,7 +11,16 @@ namespace dlta {
 		/*
 		 * basic
 		 */
-		 // TODO: make these work for vectors..
+
+		 // random number between 0 and 1
+		float random() {
+			return ((float)rand()) / (float)RAND_MAX;
+		}
+
+
+		// TODO: make these work for vectors..
+		template <typename T> T sign(T v) { return v < 0 ? -1 : 1; }
+		template <typename T> T abs(T v) { return v < 0 ? -v : v; }
 		template <typename T> T min(T a, T b) { return a < b ? a : b; }
 		template <typename T> T max(T a, T b) { return a > b ? a : b; }
 		template <typename T> T clamp(T v, T minVal, T maxVal) { return max(minVal, min(maxVal, v)); }

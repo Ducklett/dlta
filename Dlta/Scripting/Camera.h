@@ -2,12 +2,19 @@
 
 #include "../Deps.h"
 #include "Transform.h"
+#include <Dlta/Core/Color.h>
 
 namespace dlta {
 
 	enum class Projection {
 		Perspective,
 		Orthographic,
+	};
+
+	enum class ClearType {
+		Skybox,
+		Color,
+		None,
 	};
 
 	class Camera
@@ -18,11 +25,14 @@ namespace dlta {
 		Transform& transform;
 		glm::vec3 WorldUp;
 		float fov = 45;
+		ClearType clearType;
+		Color clearColor;
 
 		// constructor with vectors
-		Camera(Transform& tf, Projection projection = Projection::Perspective, glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f)) : transform(tf), projection(projection)
+		Camera(Transform& tf, Projection projection = Projection::Perspective, ClearType clearType = ClearType::Color, glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f)) : transform(tf), projection(projection), clearType(clearType)
 		{
 			WorldUp = up;
+			this->clearColor = Color::blue;
 		}
 
 		// returns the view matrix calculated using Euler Angles and the LookAt Matrix

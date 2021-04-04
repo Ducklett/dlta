@@ -42,7 +42,7 @@ Mesh makePlane() {
 	return move(plane);
 }
 
-int test2D()
+int game()
 {
 	Application game(WIDTH, HEIGHT, "Pog", false);
 

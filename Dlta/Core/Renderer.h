@@ -67,11 +67,25 @@ namespace dlta {
 
 			glEnable(GL_DEPTH_TEST);
 
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			Camera& cam = *Camera::main;
+			bool drawSkybox = false;
+			switch (cam.clearType) {
+			case ClearType::None:
+				glClear(GL_DEPTH_BUFFER_BIT);
+				break;
+			case ClearType::Color:
+				glClearColor(cam.clearColor.r, cam.clearColor.g, cam.clearColor.b, cam.clearColor.a);
+				glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+				break;
+			case ClearType::Skybox:
+				drawSkybox = true;
+				break;
+			default: break;
+			}
+
 
 			// TODO: render after opaque qeometry but before transparent
-			if (skybox.initialized) skybox.draw();
+			if (drawSkybox && skybox.initialized) skybox.draw();
 
 			for (auto rndr : renderers) {
 				if (rndr->ignoreDepth) glDisable(GL_DEPTH_TEST);
@@ -106,6 +120,9 @@ namespace dlta {
 				shader.use();
 
 				rndr->sprite.tex.bind(1);
+				shader.setVec2("tiling", rndr->sprite.tiling);
+				shader.setVec2("offset", rndr->sprite.offset);
+				shader.setVec2("size", rndr->sprite.size);
 				shader.setTexture("tex", rndr->sprite.tex);
 
 				mat4 model = glm::mat4(1);
