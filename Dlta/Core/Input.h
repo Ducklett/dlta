@@ -196,11 +196,18 @@ namespace dlta {
 		static void Update(GLFWwindow* window, vec2 size) {
 			Input::window = window;
 
+			ImGuiIO& io = ImGui::GetIO();
+
+			const float height = 600;
+#if DLTA_EDITOR
+			vec2 newmouse = vec2(io.MousePos.x, io.MousePos.y) - Input::cursorOffset;
+#else
 			double xpos, ypos;
 			glfwGetCursorPos(window, &xpos, &ypos);
 
-			const float height = 600;
-			vec2 newmouse = vec2(xpos, height - ypos);
+			vec2 newmouse = vec2(xpos, ypos);
+#endif
+			newmouse.y = height - newmouse.y;
 
 			mouseDelta = newmouse - mouse;
 			mouse = newmouse;

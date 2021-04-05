@@ -112,9 +112,6 @@ namespace dlta {
 			new GameView(renderer.screen.color.id);
 #endif
 
-			// Initialize input
-			// this ensures the mouse delta becomes zero on the first frame
-			Input::Update(window, vec2(width, height));
 		}
 
 		void run() {
@@ -122,6 +119,9 @@ namespace dlta {
 #if DLTA_EDITOR
 			EditorGUI::Init(window);
 #endif
+			// Initialize input
+			// this ensures the mouse delta becomes zero on the first frame
+			Input::Update(window, vec2(width, height));
 
 			for (auto entity : entities) {
 				entity->start();
