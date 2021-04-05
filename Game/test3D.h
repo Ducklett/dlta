@@ -109,6 +109,7 @@ int game()
 	Mesh planeMesh = makePlane();
 
 	Player pl = Player(game);
+	pl.cam.clearType = ClearType::Skybox;
 
 	Transform planeTransform = Transform();
 	planeTransform.position = vec3(0, -1, 0);

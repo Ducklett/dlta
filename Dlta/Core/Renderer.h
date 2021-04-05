@@ -78,6 +78,7 @@ namespace dlta {
 				glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 				break;
 			case ClearType::Skybox:
+				glClear(GL_DEPTH_BUFFER_BIT);
 				drawSkybox = true;
 				break;
 			default: break;
@@ -85,7 +86,9 @@ namespace dlta {
 
 
 			// TODO: render after opaque qeometry but before transparent
-			if (drawSkybox && skybox.initialized) skybox.draw();
+			if (drawSkybox && skybox.initialized) {
+				skybox.draw();
+			}
 
 			for (auto rndr : renderers) {
 				if (rndr->ignoreDepth) glDisable(GL_DEPTH_TEST);
