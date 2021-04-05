@@ -41,6 +41,7 @@ Mesh makePlane() {
 	return move(plane);
 }
 
+const int winscore = 8;
 int score1 = 0;
 int score2 = 0;
 
@@ -75,6 +76,9 @@ class AiPaddle : public Paddle {
 public:
 	RectTransform* ball = nullptr;
 
+	float vision = 200;
+	float speedMultiplier = .75;
+
 	AiPaddle(Shader& shader, Sprite& spr) : Paddle(shader, spr) {
 		tf.size = vec2(32, 128);
 		tf.position = vec2(260, 0);
@@ -94,8 +98,6 @@ public:
 		Gizmos::SetColor(Color::red);
 		Gizmos::line(ballPos, ballPos + vec2(0, direction) * 30.f);*/
 
-		const float vision = 200;
-
 		bool ballClose = math::abs(ballPos.x - tf.position.x) < vision;
 		if (ballClose) {
 			direction = ballPos.y > tf.position.y ? 1 : -1;
@@ -104,7 +106,7 @@ public:
 			direction = tf.position.y < -10 ? 1 : tf.position.y > 10 ? -1 : 0;
 		}
 
-		tf.position.y += direction * pspeed * .75 * Time::deltaTime;
+		tf.position.y += direction * pspeed * speedMultiplier * Time::deltaTime;
 		tf.position.y = math::clamp(tf.position.y, -250.f, 250.f);
 		//tf.position.y = ballPos.y;
 	}
@@ -119,19 +121,21 @@ public:
 
 	RectTransform& paddle1;
 	RectTransform& paddle2;
-	float timeout = 2;
-	float speed = 400;
+	float* timeout;
+	float startSpeed = 400;
+	float speed;
+	float speedAdd = 40;
 
-	Ball(Shader& shader, Sprite& spr, RectTransform& paddle1, RectTransform& paddle2) :
+	Ball(Shader& shader, Sprite& spr, RectTransform& paddle1, RectTransform& paddle2, float* timeout) :
 		spr(spr), tf(RectTransform()), renderer(SpriteRenderer(shader, tf, spr)),
-		paddle1(paddle1), paddle2(paddle2) {
-
+		paddle1(paddle1), paddle2(paddle2), timeout(timeout) {
 		auto r = math::random() + .2;
 		auto s = math::random() + .2;
 		cout << "the randoms: " << r << " " << s << endl;
 		direction = glm::normalize(vec2(r, s));
 		tf.position = vec2(0, 0);
 		tf.size = vec2(32, 32);
+		speed = startSpeed;
 	}
 
 	void start() {}
@@ -144,11 +148,7 @@ public:
 	};
 
 	void update() {
-		if (timeout > 0) {
-			timeout -= Time::deltaTime;
-			return;
-		}
-		timeout = 0;
+		if (*timeout > 0) return;
 
 		auto delta = direction * Time::deltaTime * speed;
 		tf.position += delta;
@@ -165,7 +165,7 @@ public:
 				break;
 
 			case Collision::WallVertical: {
-				bool playerScore = tf.position.x < 0;
+				bool playerScore = tf.position.x > 0;
 				if (playerScore) {
 					score1++;
 				}
@@ -173,16 +173,16 @@ public:
 					score2++;
 				}
 
-				speed = 300;
+				speed = startSpeed;
 
 				cout << "The score is " << score1 << " - " << score2 << endl;
 
 				tf.position = vec2(0, 0);
-				timeout = 2;
+				if (score1 < winscore && score2 < winscore) *timeout = 2;
 			} break;
 
 			case Collision::Paddle:
-				speed += 40;
+				speed += speedAdd;
 
 				direction = -direction;
 				direction.y += math::random() * .9;
@@ -248,6 +248,16 @@ public:
 	}
 };
 
+class Image {
+public:
+	RectTransform rt;
+	Shader& shader;
+	Sprite& sprite;
+	SpriteRenderer renderer;
+
+	Image(Shader& shader, Sprite& sprite) : rt(RectTransform()), shader(shader), sprite(sprite), renderer(shader, rt, sprite) {}
+};
+
 class Pong : public Entity {
 public:
 	enum class GameState {
@@ -255,9 +265,15 @@ public:
 		Game,
 		EndScreen,
 	};
+	enum class Difficulty {
+		Easy,
+		Normal,
+		Hard,
+	};
 
 	Application& game;
 	GameState state = GameState::StartMenu;
+	float timeout = 0;
 
 	Shader paddleShader = Shader("assets/shaders/sprite.vert", "assets/shaders/sprite.frag");
 	Transform camTransform;
@@ -266,28 +282,47 @@ public:
 	Sprite pongSprite = Sprite("assets/pongts.png");
 	Sprite paddleSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(0, 0), vec2(1, 4));
 	Sprite ballSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(1, 0), vec2(1, 1));
-	Sprite startButtonSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(4, 0), vec2(4, 1));
+	Sprite easyButtonSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(4, 0), vec2(4, 1));
+	Sprite normalButtonSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(4, 1), vec2(4, 1));
+	Sprite hardButtonSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(4, 2), vec2(4, 1));
+	Sprite quitButtonSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(4, 3), vec2(4, 1));
+	Sprite p1ScoreSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(4, 3), vec2(4, 1));
+	Sprite p1winSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(0, 4), vec2(8, 1));
+	Sprite scoreSprite = Sprite::slice(pongSprite, vec2(8, 8), vec2(0, 6), vec2(1, 1));
+	Sprite scoreSprite2 = Sprite::slice(pongSprite, vec2(8, 8), vec2(0, 6), vec2(1, 1));
+	Image winImg = Image(paddleShader, p1winSprite);
+	Image score1Img = Image(paddleShader, scoreSprite);
+	Image score2Img = Image(paddleShader, scoreSprite2);
 
 	Paddle paddle = Paddle(paddleShader, paddleSprite);
 	AiPaddle aipaddle = AiPaddle(paddleShader, paddleSprite);
-	Ball ball = Ball(paddleShader, ballSprite, paddle.tf, aipaddle.tf);
+	Ball ball = Ball(paddleShader, ballSprite, paddle.tf, aipaddle.tf, &timeout);
 
-	Button startButton = Button(paddleShader, startButtonSprite);
+	Button easyButton = Button(paddleShader, easyButtonSprite);
+	Button normalButton = Button(paddleShader, normalButtonSprite);
+	Button hardButton = Button(paddleShader, hardButtonSprite);
+	Button quitButton = Button(paddleShader, quitButtonSprite);
 
 	Pong(Application& game) :game(game) {
 		camTransform.position = vec3(0, 0, 1);
 		camTransform.euler.y = -90;
 		camTransform.euler.x = 0;
 
-		cam.clearColor = Color::black;
+		cam.clearColor = Color::rgb(.1f, .1, .1);
 
 		Camera::main = &cam;
 
-
 		aipaddle.ball = &ball.tf;
 
-		startButton.rt.position = vec2(0, 0);
-		startButton.rt.size = vec2(128, 32);
+		easyButton.rt.position = vec2(0, 80); easyButton.rt.size = vec2(128, 32);
+		normalButton.rt.position = vec2(0, 40); normalButton.rt.size = vec2(128, 32);
+		hardButton.rt.position = vec2(0, 0); hardButton.rt.size = vec2(128, 32);
+		quitButton.rt.position = vec2(0, -40); quitButton.rt.size = vec2(128, 32);
+
+		score1Img.rt.position = vec2(-100, 100); score1Img.rt.size = vec2(32, 32);
+		score2Img.rt.position = vec2(100, 100); score2Img.rt.size = vec2(32, 32);
+
+		winImg.rt.position = vec2(0, 0); winImg.rt.size = vec2(256, 32);
 
 		changeState(state);
 	}
@@ -297,30 +332,41 @@ public:
 	}
 
 	void update() {
+		if (timeout > 0) {
+			(timeout) -= Time::deltaTime;
+		}
+
 		switch (state) {
 		case GameState::StartMenu: {
-			if (startButton.clicked()) {
-				cout << "start game!" << endl;
-				changeState(GameState::Game);
-			}
+			if (easyButton.clicked()) { changeState(GameState::Game, Difficulty::Easy); }
+			if (normalButton.clicked()) { changeState(GameState::Game, Difficulty::Normal); }
+			if (hardButton.clicked()) { changeState(GameState::Game, Difficulty::Hard); }
+			if (quitButton.clicked()) { game.quit(); }
 		} break;
 		case GameState::Game: {
-			if (score1 > 8 || score2 > 8) {
+			score1Img.sprite.offset = offsetForScore(score1);
+			score2Img.sprite.offset = offsetForScore(score2);
+
+			if (score1 >= winscore || score2 >= winscore) {
 				changeState(GameState::EndScreen);
 			}
 		} break;
 		case GameState::EndScreen: {
-			if (startButton.clicked()) {
+			if (timeout <= 0) {
+				// end immediately after timeout is complete
 				cout << "end game!" << endl;
 				changeState(GameState::StartMenu);
 			}
-
 		} break;
 		}
 
 	}
 
-	void changeState(GameState s) {
+	vec2 offsetForScore(int score) {
+		return vec2(0 + (score % 8), 6 + (score / 8));
+	}
+
+	void changeState(GameState s, Difficulty d = Difficulty::Easy) {
 		// clear everything
 		game.entities.clear();
 		game.renderers2d.clear();
@@ -333,18 +379,35 @@ public:
 			score2 = 0;
 			paddle.tf.position.y = 0;
 			aipaddle.tf.position.y = 0;
-			game.renderers2d.push_back(&startButton.renderer);
+			game.renderers2d.push_back(&easyButton.renderer);
+			game.renderers2d.push_back(&normalButton.renderer);
+			game.renderers2d.push_back(&hardButton.renderer);
+			game.renderers2d.push_back(&quitButton.renderer);
 		} break;
 		case GameState::Game: {
+			timeout = 2;
+			switch (d) {
+			case Difficulty::Easy: {ball.startSpeed = 350; ball.speedAdd = 10; aipaddle.vision = 100; aipaddle.speedMultiplier = .7; } break;
+			case Difficulty::Normal: {ball.startSpeed = 400; ball.speedAdd = 40; aipaddle.vision = 110; aipaddle.speedMultiplier = .75; } break;
+			case Difficulty::Hard: {ball.startSpeed = 500; ball.speedAdd = 60; aipaddle.vision = 240; aipaddle.speedMultiplier = 1; } break;
+			}
 			game.entities.push_back(&paddle);
 			game.entities.push_back(&aipaddle);
 			game.entities.push_back(&ball);
 			game.renderers2d.push_back(&paddle.renderer);
 			game.renderers2d.push_back(&aipaddle.renderer);
 			game.renderers2d.push_back(&ball.renderer);
+			game.renderers2d.push_back(&score1Img.renderer);
+			game.renderers2d.push_back(&score2Img.renderer);
 		} break;
 		case GameState::EndScreen: {
-			game.renderers2d.push_back(&startButton.renderer);
+			timeout = 4;
+			cout << (score1 > score2 ? "p1 wins" : "p2 wins") << endl;
+			winImg.sprite.offset.y = (score1 > score2 ? 4 : 5);
+
+			game.renderers2d.push_back(&score1Img.renderer);
+			game.renderers2d.push_back(&score2Img.renderer);
+			game.renderers2d.push_back(&winImg.renderer);
 		} break;
 		}
 
